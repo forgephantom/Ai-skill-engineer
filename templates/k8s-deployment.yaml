@@ -1,0 +1,585 @@
+# Kubernetes Deployment for {{PROJECT_NAME}}
+# Apply with: kubectl apply -k overlays/{{ENVIRONMENT}}
+# Generated: {{DATE}}
+
+---
+# =============================================================================
+# BASE RESOURCES (base/)
+# =============================================================================
+
+# base/namespace.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{NAMESPACE}}
+  labels:
+    app.kubernetes.io/name: {{PROJECT_NAME}}
+    app.kubernetes.io/part-of: {{PROJECT_NAME}}
+    environment: {{ENVIRONMENT}}
+
+---
+# base/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{SERVICE_ACCOUNT}}
+  namespace: {{NAMESPACE}}
+  labels:
+    app.kubernetes.io/name: {{PROJECT_NAME}}
+  annotations:
+    {{#if IRSA_ROLE}}
+    eks.amazonaws.com/role-arn: {{IRSA_ROLE}}
+    {{/if}}
+    {{#if GCP_WI}}
+    iam.gke.io/gcp-service-account: {{GCP_WI}}
+    {{/if}}
+
+---
+# base/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{CONFIGMAP_NAME}}
+  namespace: {{NAMESPACE}}
+  labels:
+    app.kubernetes.io/name: {{PROJECT_NAME}}
+data:
+  {{#each CONFIG_VARS}}
+  {{KEY}}: "{{VALUE}}"
+  {{/each}}
+  {{#if CONFIG_FILES}}
+  {{#each CONFIG_FILES}}
+  {{FILENAME}}: |
+{{CONTENT}}
+  {{/each}}
+  {{/if}}
+
+---
+# base/secret.yaml (SealedSecret or ExternalSecrets recommended for production)
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{SECRET_NAME}}
+  namespace: {{NAMESPACE}}
+  labels:
+    app.kubernetes.io/name: {{PROJECT_NAME}}
+type: Opaque
+stringData:
+  {{#each SECRET_VARS}}
+  {{KEY}}: "{{VALUE}}"
+  {{/each}}
+
+---
+# base/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{DEPLOYMENT_NAME}}
+  namespace: {{NAMESPACE}}
+  labels:
+    app.kubernetes.io/name: {{PROJECT_NAME}}
+    app.kubernetes.io/component: {{COMPONENT}}
+    app.kubernetes.io/version: "{{VERSION}}"
+  annotations:
+    {{#if RELOAD_ON_CONFIG_CHANGE}}
+    reloader.stakater.com/auto: "true"
+    {{/if}}
+spec:
+  replicas: {{REPLICAS}}
+  revisionHistoryLimit: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: {{MAX_SURGE}}
+      maxUnavailable: {{MAX_UNAVAILABLE}}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{PROJECT_NAME}}
+      app.kubernetes.io/component: {{COMPONENT}}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{PROJECT_NAME}}
+        app.kubernetes.io/component: {{COMPONENT}}
+        app.kubernetes.io/version: "{{VERSION}}"
+      annotations:
+        {{#if PROMETHEUS_SCRAPE}}
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "{{METRICS_PORT}}"
+        prometheus.io/path: "/metrics"
+        {{/if}}
+        {{#if DATADOG_ANNOTATIONS}}
+        ad.datadoghq.com/{{PROJECT_NAME}}.logs: '[{"source": "{{PROJECT_NAME}}", "service": "{{PROJECT_NAME}}'}]'
+        ad.datadoghq.com/{{PROJECT_NAME}}.init_configs: '[{}]'
+        {{/if}}
+        checksum/config: {{CONFIG_CHECKSUM}}
+        checksum/secret: {{SECRET_CHECKSUM}}
+    spec:
+      serviceAccountName: {{SERVICE_ACCOUNT}}
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: {{RUN_AS_USER}}
+        runAsGroup: {{RUN_AS_GROUP}}
+        fsGroup: {{FS_GROUP}}
+        seccompProfile:
+          type: RuntimeDefault
+      {{#if INIT_CONTAINERS}}
+      initContainers:
+        {{#each INIT_CONTAINERS}}
+        - name: {{NAME}}
+          image: {{IMAGE}}
+          command: {{COMMAND}}
+          args: {{ARGS}}
+          envFrom:
+          - configMapRef:
+              name: {{CONFIGMAP_NAME}}
+          - secretRef:
+              name: {{SECRET_NAME}}
+          resources:
+            requests:
+              memory: "{{INIT_MEMORY_REQUEST}}"
+              cpu: "{{INIT_CPU_REQUEST}}"
+            limits:
+              memory: "{{INIT_MEMORY_LIMIT}}"
+              cpu: "{{INIT_CPU_LIMIT}}"
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            readOnlyRootFilesystem: true
+        {{/each}}
+      {{/if}}
+      containers:
+        - name: {{CONTAINER_NAME}}
+          image: {{IMAGE}}:{{VERSION}}
+          imagePullPolicy: {{IMAGE_PULL_POLICY}}
+          command: {{COMMAND}}
+          args: {{ARGS}}
+          ports:
+            - name: http
+              containerPort: {{PORT}}
+              protocol: TCP
+            {{#if METRICS_PORT}}
+            - name: metrics
+              containerPort: {{METRICS_PORT}}
+              protocol: TCP
+            {{/if}}
+            {{#if DEBUG_PORT}}
+            - name: debug
+              containerPort: {{DEBUG_PORT}}
+              protocol: TCP
+            {{/if}}
+          envFrom:
+            - configMapRef:
+                name: {{CONFIGMAP_NAME}}
+            - secretRef:
+                name: {{SECRET_NAME}}
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          resources:
+            requests:
+              memory: "{{MEMORY_REQUEST}}"
+              cpu: "{{CPU_REQUEST}}"
+              {{#if GPU_REQUEST}}
+              nvidia.com/gpu: "{{GPU_REQUEST}}"
+              {{/if}}
+            limits:
+              memory: "{{MEMORY_LIMIT}}"
+              cpu: "{{CPU_LIMIT}}"
+              {{#if GPU_LIMIT}}
+              nvidia.com/gpu: "{{GPU_LIMIT}}"
+              {{/if}}
+          livenessProbe:
+            httpGet:
+              path: {{LIVENESS_PATH}}
+              port: http
+            initialDelaySeconds: {{LIVENESS_INITIAL_DELAY}}
+            periodSeconds: {{LIVENESS_PERIOD}}
+            timeoutSeconds: {{LIVENESS_TIMEOUT}}
+            failureThreshold: {{LIVENESS_FAILURE_THRESHOLD}}
+          readinessProbe:
+            httpGet:
+              path: {{READINESS_PATH}}
+              port: http
+            initialDelaySeconds: {{READINESS_INITIAL_DELAY}}
+            periodSeconds: {{READINESS_PERIOD}}
+            timeoutSeconds: {{READINESS_TIMEOUT}}
+            failureThreshold: {{READINESS_FAILURE_THRESHOLD}}
+          startupProbe:
+            httpGet:
+              path: {{STARTUP_PATH}}
+              port: http
+            initialDelaySeconds: {{STARTUP_INITIAL_DELAY}}
+            periodSeconds: {{STARTUP_PERIOD}}
+            timeoutSeconds: {{STARTUP_TIMEOUT}}
+            failureThreshold: {{STARTUP_FAILURE_THRESHOLD}}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            readOnlyRootFilesystem: true
+            {{#if PRIVILEGED}}
+            privileged: {{PRIVILEGED}}
+            {{/if}}
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: cache
+              mountPath: /app/cache
+            {{#each VOLUME_MOUNTS}}
+            - name: {{NAME}}
+              mountPath: {{MOUNT: {{MOUNT_PATH}}
+              readOnly: {{READ_ONLY}}
+            {{/each}}
+      volumes:
+        - name: tmp
+          emptyDir:
+            sizeLimit: {{TMP_SIZE}}
+        - name: cache
+          emptyDir:
+            sizeLimit: {{CACHE_SIZE}}
+        {{#each VOLUMES}}
+        - name: {{NAME}}
+          {{TYPE}}:
+            {{#each VOLUME_CONFIG}}
+            {{KEY}}: {{VALUE}}
+            {{/each}}
+        {{/each}}
+      {{#if NODE_SELECTOR}}
+      nodeSelector:
+        {{#each NODE_SELECTOR}}
+        {{KEY}}: "{{VALUE}}"
+        {{/each}}
+      {{/if}}
+      {{#if TOLERATIONS}}
+      tolerations:
+        {{#each TOLERATIONS}}
+        - key: "{{KEY}}"
+          operator: "{{OPERATOR}}"
+          value: "{{VALUE}}"
+          effect: "{{EFFECT}}"
+          tolerationSeconds: {{TOLERATION_SECONDS}}
+        {{/each}}
+      {{/if}}
+      {{#if AFFINITY}}
+      affinity:
+        {{AFFINITY}}
+      {{/if}}
+      {{#if PRIORITY_CLASS}}
+      priorityClassName: {{PRIORITY_CLASS}}
+      {{/if}}
+      {{#if RUNTIME_CLASS}}
+      runtimeClassName: {{RUNTIME_CLASS}}
+      {{/if}}
+      {{#if TERMINATION_GRACE_PERIOD}}
+      terminationGracePeriodSeconds: {{TERMINATION_GRACE_PERIOD}}
+      {{/if}}
+
+---
+# base/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{SERVICE_NAME}}
+  namespace: {{NAMESPACE}}
+  labels:
+    app.kubernetes.io/name: {{PROJECT_NAME}}
+    app.kubernetes.io/component: {{COMPONENT}}
+  annotations:
+    {{#if SERVICE_ANNOTATIONS}}
+    {{#each SERVICE_ANNOTATIONS}}
+    {{KEY}}: "{{VALUE}}"
+    {{/each}}
+    {{/if}}
+spec:
+  type: {{SERVICE_TYPE}}
+  ports:
+    - name: http
+      port: {{SERVICE_PORT}}
+      targetPort: http
+      protocol: TCP
+    {{#if METRICS_PORT}}
+    - name: metrics
+      port: {{METRICS_SERVICE_PORT}}
+      targetPort: metrics
+      protocol: TCP
+    {{/if}}
+  selector:
+    app.kubernetes.io/name: {{PROJECT_NAME}}
+    app.kubernetes.io/component: {{COMPONENT}}
+
+---
+# base/hpa.yaml
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{HPA_NAME}}
+  namespace: {{NAMESPACE}}
+  labels:
+    app.kubernetes.io/name: {{PROJECT_NAME}}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{DEPLOYMENT_NAME}}
+  minReplicas: {{MIN_REPLICAS}}
+  maxReplicas: {{MAX_REPLICAS}}
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: {{SCALE_DOWN_STABILIZATION}}
+      policies:
+        - type: Percent
+          value: {{SCALE_DOWN_PERCENT}}
+          periodSeconds: {{SCALE_DOWN_PERIOD}}
+    scaleUp:
+      stabilizationWindowSeconds: {{SCALE_UP_STABILIZATION}}
+      policies:
+        - type: Percent
+          value: {{SCALE_UP_PERCENT}}
+          periodSeconds: {{SCALE_UP_PERIOD}}
+        - type: Pods
+          value: {{SCALE_UP_PODS}}
+          periodSeconds: {{SCALE_UP_PERIOD}}
+      selectPolicy: Max
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{CPU_TARGET_UTILIZATION}}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{MEMORY_TARGET_UTILIZATION}}
+    {{#if CUSTOM_METRICS}}
+    {{#each CUSTOM_METRICS}}
+    - type: Pods
+      pods:
+        metric:
+          name: {{METRIC_NAME}}
+        target:
+          type: AverageValue
+          averageValue: "{{METRIC_TARGET}}"
+    {{/each}}
+    {{/if}}
+
+---
+# base/pdb.yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{PDB_NAME}}
+  namespace: {{NAMESPACE}}
+  labels:
+    app.kubernetes.io/name: {{PROJECT_NAME}}
+spec:
+  minAvailable: {{PDB_MIN_AVAILABLE}}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{PROJECT_NAME}}
+      app.kubernetes.io/component: {{COMPONENT}}
+
+---
+# base/networkpolicy.yaml (Optional - enable for zero-trust)
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{NETPOL_NAME}}
+  namespace: {{NAMESPACE}}
+  labels:
+    app.kubernetes.io/name: {{PROJECT_NAME}}
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: {{PROJECT_NAME}}
+      app.kubernetes.io/component: {{COMPONENT}}
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ingress-nginx
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: {{PROJECT_NAME}}
+      ports:
+        - protocol: TCP
+          port: {{PORT}}
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+      ports:
+        - protocol: TCP
+          port: 53
+        - protocol: UDP
+          port: 53
+    {{#if EGRESS_RULES}}
+    {{#each EGRESS_RULES}}
+    - to:
+        {{#if NAMESPACE_SELECTOR}}
+        - namespaceSelector:
+            {{NAMESPACE_SELECTOR}}
+        {{/if}}
+        {{#if POD_SELECTOR}}
+        - podSelector:
+            {{POD_SELECTOR}}
+        {{/if}}
+      ports:
+        {{#each PORTS}}
+        - protocol: {{PROTOCOL}}
+          port: {{PORT}}
+        {{/each}}
+    {{/each}}
+    {{/if}}
+
+---
+# base/servicemonitor.yaml (Prometheus Operator)
+{{#if PROMETHEUS_OPERATOR}}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{SERVICEMONITOR_NAME}}
+  namespace: {{NAMESPACE}}
+  labels:
+    app.kubernetes.io/name: {{PROJECT_NAME}}
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{PROJECT_NAME}}
+      app.kubernetes.io/component: {{COMPONENT}}
+  endpoints:
+    - port: metrics
+      path: /metrics
+      interval: {{SCRAPE_INTERVAL}}
+      scrapeTimeout: {{SCRAPE_TIMEOUT}}
+{{/if}}
+
+---
+# =============================================================================
+# OVERLAYS (overlays/{{ENVIRONMENT}}/)
+# =============================================================================
+
+# overlays/development/kustomization.yaml
+# apiVersion: kustomize.config.k8s.io/v1beta1
+# kind: Kustomization
+# namespace: {{PROJECT_NAME}}-dev
+# resources:
+#   - ../../base
+# patches:
+#   - patch: |-
+#       - op: replace
+#         path: /spec/replicas
+#         value: 1
+#     target:
+#       kind: Deployment
+#   - patch: |-
+#       - op: replace
+#         path: /spec/template/spec/containers/0/resources/requests/memory
+#         value: "128Mi"
+#     target:
+#       kind: Deployment
+# images:
+#   - name: {{IMAGE}}
+#     newTag: dev-{{GIT_COMMIT_SHORT}}
+
+# overlays/staging/kustomization.yaml
+# apiVersion: kustomize.config.k8s.io/v1beta1
+# kind: Kustomization
+# namespace: {{PROJECT_NAME}}-staging
+# resources:
+#   - ../../base
+# patches:
+#   - patch: |-
+#       - op: replace
+#         path: /spec/replicas
+#         value: 2
+#     target:
+#       kind: Deployment
+# images:
+#   - name: {{IMAGE}}
+#     newTag: staging-{{GIT_COMMIT_SHORT}}
+
+# overlays/production/kustomization.yaml
+# apiVersion: kustomize.config.k8s.io/v1beta1
+# kind: Kustomization
+# namespace: {{PROJECT_NAME}}
+# resources:
+#   - ../../base
+# patches:
+#   - patch: |-
+#       - op: replace
+#         path: /spec/replicas
+#         value: 5
+#     target:
+#       kind: Deployment
+#   - patch: |-
+#       - op: replace
+#         path: /spec/template/spec/containers/0/resources/requests/memory
+#         value: "512Mi"
+#     target:
+#       kind: Deployment
+#   - patch: |-
+#       - op: replace
+#         path: /spec/template/spec/containers/0/resources/limits/memory
+#         value: "1Gi"
+#     target:
+#       kind: Deployment
+# images:
+#   - name: {{IMAGE}}
+#     newTag: "{{VERSION}}"
+
+---
+# =============================================================================
+# INGRESS (Optional)
+# =============================================================================
+
+# base/ingress.yaml
+{{#if INGRESS_ENABLED}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{INGRESS_NAME}}
+  namespace: {{NAMESPACE}}
+  labels:
+    app.kubernetes.io/name: {{PROJECT_NAME}}
+  annotations:
+    {{#each INGRESS_ANNOTATIONS}}
+    {{KEY}}: "{{VALUE}}"
+    {{/each}}
+spec:
+  ingressClassName: {{INGRESS_CLASS}}
+  tls:
+    - hosts:
+        - {{HOST}}
+      secretName: {{TLS_SECRET_NAME}}
+  rules:
+    - host: {{HOST}}
+      http:
+        paths:
+          - path: {{PATH}}
+            pathType: {{PATH_TYPE}}
+            backend:
+              service:
+                name: {{SERVICE_NAME}}
+                port:
+                  number: {{SERVICE_PORT}}
+{{/if}}

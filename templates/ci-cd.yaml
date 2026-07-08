@@ -1,0 +1,722 @@
+# CI/CD Pipeline for {{PROJECT_NAME}}
+# GitHub Actions / GitLab CI / Azure Pipelines compatible structure
+# Generated: {{DATE}}
+
+---
+# =============================================================================
+# GITHUB ACTIONS WORKFLOWS
+# =============================================================================
+
+# .github/workflows/ci.yaml
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+    tags: ['v*']
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: false
+        type: choice
+        options: [development, staging, production]
+        default: 'development'
+
+env:
+  REGISTRY: {{REGISTRY}}
+  IMAGE_NAME: {{IMAGE_NAME}}
+  NODE_VERSION: '{{NODE_VERSION}}'
+  GO_VERSION: '{{GO_VERSION}}'
+  PYTHON_VERSION: '{{PYTHON_VERSION}}'
+  JAVA_VERSION: '{{JAVA_VERSION}}'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # =============================================================================
+  # LINT & STATIC ANALYSIS
+  # =============================================================================
+  lint:
+    name: Lint & Static Analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      {{#if HAS_NODE}}
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      {{/if}}
+
+      {{#if HAS_GO}}
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: true
+      {{/if}}
+
+      {{#if HAS_PYTHON}}
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+      {{/if}}
+
+      {{#if HAS_JAVA}}
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: 'maven'
+      {{/if}}
+
+      - name: Install dependencies
+        run: |
+          {{DEP_INSTALL_CMD}}
+
+      - name: Run linters
+        run: |
+          {{LINT_CMD}}
+
+      - name: Run static analysis
+        run: |
+          {{STATIC_ANALYSIS_CMD}}
+
+      - name: Check formatting
+        run: |
+          {{FORMAT_CHECK_CMD}}
+
+      {{#if HAS_SECRET_SCAN}}
+      - name: Secret scan
+        uses: trufflesecurity/trufflehog@v3
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: ${{ github.sha }}
+      {{/if}}
+
+  # =============================================================================
+  # TYPE CHECKING
+  # =============================================================================
+  typecheck:
+    name: Type Checking
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      {{#if HAS_NODE}}
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      {{/if}}
+
+      {{#if HAS_PYTHON}}
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+      {{/if}}
+
+      - name: Install dependencies
+        run: |
+          {{DEP_INSTALL_CMD}}
+
+      - name: Run type checker
+        run: |
+          {{TYPECHECK_CMD}}
+
+  # =============================================================================
+  # UNIT TESTS
+  # =============================================================================
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      {{#if HAS_NODE}}
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      {{/if}}
+
+      {{#if HAS_GO}}
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: true
+      {{/if}}
+
+      {{#if HAS_PYTHON}}
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+      {{/if}}
+
+      - name: Install dependencies
+        run: |
+          {{DEP_INSTALL_CMD}}
+
+      - name: Start services
+        run: |
+          {{START_SERVICES_CMD}}
+
+      - name: Run unit tests
+        run: |
+          {{UNIT_TEST_CMD}}
+        env:
+          {{#each TEST_ENV_VARS}}
+          {{KEY}}: "{{VALUE}}"
+          {{/each}}
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
+          fail_ci_if_error: true
+
+  # =============================================================================
+  # INTEGRATION TESTS
+  # =============================================================================
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    services:
+      {{#each INTEGRATION_SERVICES}}
+      {{NAME}}:
+        image: {{IMAGE}}
+        ports: {{PORTS}}
+        env: {{ENV}}
+        options: {{OPTIONS}}
+      {{/each}}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      {{#if HAS_NODE}}
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      {{/if}}
+
+      {{#if HAS_GO}}
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: true
+      {{/if}}
+
+      - name: Install dependencies
+        run: |
+          {{DEP_INSTALL_CMD}}
+
+      - name: Run migrations
+        run: |
+          {{MIGRATE_CMD}}
+
+      - name: Run integration tests
+        run: |
+          {{INTEGRATION_TEST_CMD}}
+        env:
+          {{#each INTEGRATION_TEST_ENV}}
+          {{KEY}}: "{{VALUE}}"
+          {{/each}}
+
+  # =============================================================================
+  # CONTRACT TESTS
+  # =============================================================================
+  contract-tests:
+    name: Contract Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pact
+        uses: pact-foundation/pact-setup-action@v2
+
+      - name: Run contract tests
+        run: |
+          {{CONTRACT_TEST_CMD}}
+
+      - name: Publish contracts
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          {{PUBLISH_CONTRACTS_CMD}}
+        env:
+          PACT_BROKER_BASE_URL: ${{ secrets.PACT_BROKER_URL }}
+          PACT_BROKER_TOKEN: ${{ secrets.PACT_BROKER_TOKEN }}
+
+  # =============================================================================
+  # SECURITY SCANNING
+  # =============================================================================
+  security:
+    name: Security Scanning
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run SCA (Dependency Scan)
+        uses: actions/dependency-review-action@v4
+        with:
+          config-file: '.github/dependency-review-config.yml'
+
+      - name: Run SAST (CodeQL)
+        uses: github/codeql-action/init@v3
+        with:
+          languages: {{CODEQL_LANGUAGES}}
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:{{CODEQL_LANGUAGES}}"
+
+      - name: Container scan
+        if: github.event_name == 'push'
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy results
+        if: github.event_name == 'push'
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+  # =============================================================================
+  # BUILD & PUSH IMAGE
+  # =============================================================================
+  build:
+    name: Build & Push Image
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: [lint, typecheck, unit-tests, integration-tests, security]
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64,linux/arm64
+          provenance: true
+          sbom: true
+
+      - name: Sign image
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: sigstore/cosign-installer@v3
+        with:
+          cosign-release: 'v2.2.0'
+
+      - name: Sign with cosign
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          cosign sign --yes ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ steps.build.outputs.digest }}
+
+  # =============================================================================
+  # E2E TESTS
+  # =============================================================================
+  e2e-tests:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    needs: [build]
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to test environment
+        run: |
+          {{DEPLOY_TEST_CMD}}
+        env:
+          KUBECONFIG: ${{ secrets.KUBECONFIG_TEST }}
+          IMAGE_TAG: ${{ github.sha }}
+
+      - name: Wait for deployment
+        run: |
+          {{WAIT_DEPLOY_CMD}}
+
+      - name: Run E2E tests
+        run: |
+          {{E2E_TEST_CMD}}
+        env:
+          TEST_BASE_URL: ${{ secrets.TEST_BASE_URL }}
+          {{#each E2E_TEST_ENV}}
+          {{KEY}}: "{{VALUE}}"
+          {{/each}}
+
+      - name: Upload E2E artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-artifacts
+          path: |
+            cypress/videos/
+            cypress/screenshots/
+            playwright-report/
+
+  # =============================================================================
+  # PERFORMANCE TESTS
+  # =============================================================================
+  performance-tests:
+    name: Performance Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    needs: [build]
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to performance environment
+        run: |
+          {{DEPLOY_PERF_CMD}}
+
+      - name: Run k6 tests
+        uses: grafana/k6-action@v0.2.0
+        with:
+          filename: tests/performance/main.js
+          env: |
+            BASE_URL=${{ secrets.PERF_BASE_URL }}
+            VUS=${{ github.event.inputs.vus || '50' }}
+            DURATION=${{ github.event.inputs.duration || '5m' }}
+
+      - name: Check thresholds
+        run: |
+          {{CHECK_PERF_THRESHOLDS_CMD}}
+
+  # =============================================================================
+  # DEPLOY TO STAGING
+  # =============================================================================
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: [build, e2e-tests]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+    environment: staging
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure kubectl
+        uses: azure/k8s-set-context@v4
+        with:
+          kubeconfig: ${{ secrets.KUBECONFIG_STAGING }}
+
+      - name: Deploy with Kustomize
+        run: |
+          kubectl apply -k overlays/staging
+          kubectl set image deployment/{{DEPLOYMENT_NAME}} {{CONTAINER_NAME}}=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} -n {{NAMESPACE}}
+
+      - name: Wait for rollout
+        run: |
+          kubectl rollout status deployment/{{DEPLOYMENT_NAME}} -n {{NAMESPACE}} --timeout=5m
+
+      - name: Run smoke tests
+        run: |
+          {{SMOKE_TEST_CMD}}
+        env:
+          BASE_URL: ${{ secrets.STAGING_BASE_URL }}
+
+      - name: Notify
+        if: always()
+        run: |
+          {{NOTIFY_CMD}}
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          STATUS: ${{ job.status }}
+
+  # =============================================================================
+  # DEPLOY TO PRODUCTION
+  # =============================================================================
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    needs: [build, e2e-tests]
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    environment: production
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure kubectl
+        uses: azure/k8s-set-context@v4
+        with:
+          kubeconfig: ${{ secrets.KUBECONFIG_PRODUCTION }}
+
+      - name: Deploy with Kustomize (Blue/Green)
+        run: |
+          # Blue/Green deployment
+          kubectl apply -k overlays/production
+          kubectl set image deployment/{{DEPLOYMENT_NAME}}-green {{CONTAINER_NAME}}=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} -n {{NAMESPACE}}
+
+      - name: Wait for green rollout
+        run: |
+          kubectl rollout status deployment/{{DEPLOYMENT_NAME}}-green -n {{NAMESPACE}} --timeout=10m
+
+      - name: Run production smoke tests
+        run: |
+          {{SMOKE_TEST_CMD}}
+        env:
+          BASE_URL: ${{ secrets.PRODUCTION_BASE_URL }}
+
+      - name: Switch traffic (Argo Rollouts / manual)
+        run: |
+          {{SWITCH_TRAFFIC_CMD}}
+
+      - name: Monitor for issues
+        run: |
+          {{MONITOR_CMD}}
+        env:
+          DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY }}
+          PAGERDUTY_KEY: ${{ secrets.PAGERDUTY_KEY }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          generate_release_notes: true
+
+      - name: Notify
+        if: always()
+        run: |
+          {{NOTIFY_CMD}}
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          STATUS: ${{ job.status }}
+
+---
+# =============================================================================
+# GITLAB CI ALTERNATIVE
+# =============================================================================
+
+# .gitlab-ci.yml
+{{#if GITLAB_CI}}
+stages:
+  - lint
+  - typecheck
+  - test
+  - security
+  - build
+  - e2e
+  - deploy
+
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: "/certs"
+  REGISTRY: {{REGISTRY}}
+  IMAGE_NAME: {{IMAGE_NAME}}
+
+lint:
+  stage: lint
+  image: {{LINT_IMAGE}}
+  script:
+    - {{LINT_CMD}}
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == "main"
+
+typecheck:
+  stage: typecheck
+  image: {{TYPECHECK_IMAGE}}
+  script:
+    - {{TYPECHECK_CMD}}
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == "main"
+
+unit-tests:
+  stage: test
+  image: {{TEST_IMAGE}}
+  services:
+    {{#each INTEGRATION_SERVICES}}
+    - name: {{IMAGE}}
+      alias: {{NAME}}
+    {{/each}}
+  script:
+    - {{DEP_INSTALL_CMD}}
+    - {{START_SERVICES_CMD}}
+    - {{MIGRATE_CMD}}
+    - {{UNIT_TEST_CMD}}
+  coverage: '/Coverage: \d+\.\d+%/'
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage/cobertura.xml
+    expire_in: 1 week
+
+integration-tests:
+  stage: test
+  image: {{TEST_IMAGE}}
+  services:
+    {{#each INTEGRATION_SERVICES}}
+    - name: {{IMAGE}}
+      alias: {{NAME}}
+    {{/each}}
+  script:
+    - {{DEP_INSTALL_CMD}}
+    - {{MIGRATE_CMD}}
+    - {{INTEGRATION_TEST_CMD}}
+  artifacts:
+    reports:
+      junit: test-results/*.xml
+    expire_in: 1 week
+
+security-sast:
+  stage: security
+  include:
+    - template: Security/SAST.gitlab-ci.yml
+  variables:
+    SAST_EXCLUDED_PATHS: "tests/,vendor/,node_modules/"
+
+security-dependency:
+  stage: security
+  include:
+    - template: Security/Dependency-Scanning.gitlab-ci.yml
+
+security-container:
+  stage: security
+  include:
+    - template: Security/Container-Scanning.gitlab-ci.yml
+
+build:
+  stage: build
+  image: docker:24
+  services:
+    - docker:24-dind
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $REGISTRY
+  script:
+    - docker buildx create --use
+    - docker buildx build --push --platform linux/amd64,linux/arm64 -t $REGISTRY/$IMAGE_NAME:$CI_COMMIT_SHA -t $REGISTRY/$IMAGE_NAME:latest .
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_TAG
+
+e2e-tests:
+  stage: e2e
+  image: {{E2E_IMAGE}}
+  script:
+    - {{DEPLOY_TEST_CMD}}
+    - {{WAIT_DEPLOY_CMD}}
+    - {{E2E_TEST_CMD}}
+  artifacts:
+    when: on_failure
+    reports:
+      junit: cypress/results/*.xml
+    expire_in: 1 week
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_TAG
+
+deploy-staging:
+  stage: deploy
+  image: {{KUBECTL_IMAGE}}
+  environment:
+    name: staging
+    url: https://staging.{{DOMAIN}}
+  script:
+    - kubectl config use-context staging
+    - kubectl set image deployment/{{DEPLOYMENT_NAME}} {{CONTAINER_NAME}}=$REGISTRY/$IMAGE_NAME:$CI_COMMIT_SHA -n {{NAMESPACE}}
+    - kubectl rollout status deployment/{{DEPLOYMENT_NAME}} -n {{NAMESPACE}} --timeout=5m
+    - {{SMOKE_TEST_CMD}}
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+
+deploy-production:
+  stage: deploy
+  image: {{KUBECTL_IMAGE}}
+  environment:
+    name: production
+    url: https://{{DOMAIN}}
+  when: manual
+  script:
+    - kubectl config use-context production
+    - kubectl apply -k overlays/production
+    - kubectl set image deployment/{{DEPLOYMENT_NAME}} {{CONTAINER_NAME}}=$REGISTRY/$IMAGE_NAME:$CI_COMMIT_SHA -n {{NAMESPACE}}
+    - kubectl rollout status deployment/{{DEPLOYMENT_NAME}} -n {{NAMESPACE}} --timeout=10m
+    - {{SMOKE_TEST_CMD}}
+  rules:
+    - if: $CI_COMMIT_TAG
+{{/if}}

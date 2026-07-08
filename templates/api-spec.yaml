@@ -1,0 +1,222 @@
+openapi: 3.1.0
+info:
+  title: {{PROJECT_NAME}} API
+  version: {{VERSION}}
+  description: |
+    {{API_DESCRIPTION}}
+
+    ## Authentication
+    {{AUTH_DESCRIPTION}}
+
+    ## Rate Limiting
+    {{RATE_LIMIT_DESCRIPTION}}
+
+    ## Error Handling
+    {{ERROR_HANDLING_DESCRIPTION}}
+  contact:
+    name: {{CONTACT_NAME}}
+    email: {{CONTACT_EMAIL}}
+  license:
+    name: {{LICENSE}}
+    url: {{LICENSE_URL}}
+
+servers:
+  - url: {{DEV_SERVER_URL}}
+    description: Development
+  - url: {{STAGING_SERVER_URL}}
+    description: Staging
+  - url: {{PROD_SERVER_URL}}
+    description: Production
+
+security:
+  - {{AUTH_SCHEME}}: []
+
+tags:
+  - name: {{TAG_1}}
+    description: {{TAG_1_DESC}}
+  - name: {{TAG_2}}
+    description: {{TAG_2_DESC}}
+
+paths:
+  {{PATH_1}}:
+    {{METHOD_1}}:
+      tags:
+        - {{TAG_1}}
+      summary: {{SUMMARY_1}}
+      description: {{DESCRIPTION_1}}
+      operationId: {{OPERATION_ID_1}}
+      security:
+        - {{AUTH_SCHEME}}: [{{SCOPE_1}}]
+      parameters:
+        - $ref: '#/components/parameters/{{PARAM_REF_1}}'
+      requestBody:
+        description: {{REQUEST_DESC}}
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/{{REQUEST_SCHEMA}}'
+      responses:
+        '200':
+          description: {{SUCCESS_DESC}}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/{{RESPONSE_SCHEMA}}'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  securitySchemes:
+    {{AUTH_SCHEME}}:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: {{AUTH_DESC}}
+
+  parameters:
+    {{PARAM_REF_1}}:
+      name: {{PARAM_NAME}}
+      in: {{PARAM_IN}}
+      description: {{PARAM_DESC}}
+      required: {{PARAM_REQUIRED}}
+      schema:
+        type: {{PARAM_TYPE}}
+        format: {{PARAM_FORMAT}}
+
+  schemas:
+    {{REQUEST_SCHEMA}}:
+      type: object
+      required:
+        - {{REQ_FIELD_1}}
+        - {{REQ_FIELD_2}}
+      properties:
+        {{REQ_FIELD_1}}:
+          type: {{REQ_FIELD_1_TYPE}}
+          description: {{REQ_FIELD_1_DESC}}
+          example: {{REQ_FIELD_1_EXAMPLE}}
+        {{REQ_FIELD_2}}:
+          type: {{REQ_FIELD_2_TYPE}}
+          description: {{REQ_FIELD_2_DESC}}
+          example: {{REQ_FIELD_2_EXAMPLE}}
+
+    {{RESPONSE_SCHEMA}}:
+      type: object
+      properties:
+        {{RES_FIELD_1}}:
+          type: {{RES_FIELD_1_TYPE}}
+          description: {{RES_FIELD_1_DESC}}
+        {{RES_FIELD_2}}:
+          type: {{RES_FIELD_2_TYPE}}
+          description: {{RES_FIELD_2_DESC}}
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+        - timestamp
+        - requestId
+      properties:
+        error:
+          type: string
+          enum: [BAD_REQUEST, UNAUTHORIZED, FORBIDDEN, NOT_FOUND, UNPROCESSABLE_ENTITY, TOO_MANY_REQUESTS, INTERNAL_ERROR]
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              code:
+                type: string
+              message:
+                type: string
+        timestamp:
+          type: string
+          format: date-time
+        requestId:
+          type: string
+          format: uuid
+
+  responses:
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: Insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    UnprocessableEntity:
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    TooManyRequests:
+      description: Rate limit exceeded
+      headers:
+        Retry-After:
+          schema:
+            type: integer
+          description: Seconds until retry allowed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+  headers:
+    RequestId:
+      description: Unique request identifier for tracing
+      schema:
+        type: string
+        format: uuid
+    RateLimit-Limit:
+      description: Request limit in current window
+      schema:
+        type: integer
+    RateLimit-Remaining:
+      description: Requests remaining in current window
+      schema:
+        type: integer
+    RateLimit-Reset:
+      description: Unix timestamp when limit resets
+      schema:
+        type: integer
