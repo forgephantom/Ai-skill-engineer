@@ -7,6 +7,7 @@
 import { EventEmitter } from 'eventemitter3';
 import * as fs from 'fs-extra';
 import * as path from 'path';
+import { pathToFileURL } from 'url';
 import { glob } from 'glob';
 import {
   SkillDefinition,
@@ -21,7 +22,7 @@ import {
   SkillValidationResult,
   ExecutionContext,
 } from '../types';
-import { createLogger, LogLevel, ensureDir, readFileSafe, writeFileSafe } from '../utils';
+import { createLogger, LogLevel, ensureDir, readFileSafe, writeFileSafe, generateId } from '../utils';
 
 // ============================================================================
 // Skill Registry Class
@@ -175,7 +176,9 @@ export class SkillRegistry extends EventEmitter {
     try {
       const skillDirs = await glob('*/skill.yaml', { cwd: this.skillsDir });
       for (const skillDir of skillDirs) {
-        const skillPath = path.join(this.skillsDir, skillDir);
+        // skillDir is like "validation-engine/skill.yaml", get the directory part
+        const skillDirOnly = path.dirname(skillDir);
+        const skillPath = path.join(this.skillsDir, skillDirOnly);
         await this.loadSkillFromDirectory(skillPath);
       }
     } catch (error) {
@@ -190,12 +193,25 @@ export class SkillRegistry extends EventEmitter {
       if (!definitionContent) return;
 
       const definition = this.parseSkillDefinition(definitionContent);
-      const executorPath = path.join(skillPath, 'executor.ts');
 
       let executor: SkillExecutor;
-      if (await fs.pathExists(executorPath)) {
-        // Dynamic import would go here in production
-        executor = this.createDefaultExecutor(definition);
+      const tsExecutorPath = path.join(skillPath, 'executor.ts');
+      const jsExecutorPath = path.join(skillPath, 'executor.js');
+
+      if (await fs.pathExists(tsExecutorPath)) {
+        try {
+          const executorModule = await import(pathToFileURL(tsExecutorPath).href);
+          executor = executorModule.createExecutor ? executorModule.createExecutor() : this.createDefaultExecutor(definition);
+        } catch {
+          executor = this.createDefaultExecutor(definition);
+        }
+      } else if (await fs.pathExists(jsExecutorPath)) {
+        try {
+          const executorModule = await import(pathToFileURL(jsExecutorPath).href);
+          executor = executorModule.createExecutor ? executorModule.createExecutor() : this.createDefaultExecutor(definition);
+        } catch {
+          executor = this.createDefaultExecutor(definition);
+        }
       } else {
         executor = this.createDefaultExecutor(definition);
       }
@@ -219,6 +235,8 @@ export class SkillRegistry extends EventEmitter {
     // Simple YAML parsing - in production use proper YAML parser
     const lines = content.split('\n');
     const definition: Partial<SkillDefinition> = {
+      responsibilities: [],
+      knowledgeAreas: [],
       inputs: [],
       outputs: [],
       dependencies: [],
@@ -244,6 +262,34 @@ export class SkillRegistry extends EventEmitter {
         continue;
       }
 
+      // Handle array items (lines starting with - )
+      if (trimmed.startsWith('- ') && currentArray) {
+        const itemValue = trimmed.slice(2).trim();
+        switch (currentArray) {
+          case 'responsibilities':
+            definition.responsibilities!.push(itemValue.replace(/^["']|["']$/g, ''));
+            break;
+          case 'knowledge_areas':
+          case 'knowledge-areas':
+            definition.knowledgeAreas!.push(itemValue.replace(/^["']|["']$/g, ''));
+            break;
+          case 'dependencies':
+            definition.dependencies!.push(itemValue.replace(/^["']|["']$/g, ''));
+            break;
+          case 'best_practices':
+          case 'best-practices':
+            definition.bestPractices!.push(itemValue.replace(/^["']|["']$/g, ''));
+            break;
+          case 'tools':
+            definition.tools!.push(itemValue.replace(/^["']|["']$/g, ''));
+            break;
+          case 'templates':
+            definition.templates!.push(itemValue.replace(/^["']|["']$/g, ''));
+            break;
+        }
+        continue;
+      }
+
       if (colonIndex === -1) continue;
 
       const key = trimmed.slice(0, colonIndex).trim();
@@ -256,22 +302,6 @@ export class SkillRegistry extends EventEmitter {
         case 'name': definition.name = value; break;
         case 'version': definition.version = value; break;
         case 'mission': definition.mission = value; break;
-        case 'responsibilities':
-          if (value.startsWith('- ')) {
-            (definition.responsibilities || []).push(value.slice(2));
-          }
-          break;
-        case 'knowledge_areas':
-        case 'knowledge-areas':
-          if (value.startsWith('- ')) {
-            (definition.knowledgeAreas || []).push(value.slice(2));
-          }
-          break;
-        case 'dependencies':
-          if (value.startsWith('- ')) {
-            (definition.dependencies || []).push(value.slice(2));
-          }
-          break;
       }
     }
 

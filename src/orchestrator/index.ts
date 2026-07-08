@@ -544,9 +544,9 @@ export class Orchestrator extends EventEmitter<OrchestratorEvents> {
     this.state!.fixOutput = fixOutput;
 
     // Re-run validation on fixed artifacts
-    if (this.config.autoFix && fixOutput.fixedArtifacts.length > 0) {
+    if (this.config.autoFix && fixOutput.fixedArtifacts?.length) {
       // Update build output with fixed artifacts
-      this.state!.buildOutput!.artifacts.push(...fixOutput.fixedArtifacts);
+      this.state!.buildOutput!.artifacts.push(...(fixOutput.fixedArtifacts || []));
     }
 
     await this.savePhaseArtifacts('fix', fixOutput);

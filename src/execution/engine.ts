@@ -119,9 +119,11 @@ export class ExecutionEngine {
   // ============================================================================
 
   async executeBuild(skillGraph: SkillGraph, context: ExecutionContext): Promise<SkillResult> {
+    const skills = skillGraph.skills || [];
+    const parallelGroups = skillGraph.parallelGroups || [];
     this.logger.info('Starting build phase', {
-      totalSkills: skillGraph.skills.length,
-      parallelGroups: skillGraph.parallelGroups.length,
+      totalSkills: skills.length,
+      parallelGroups: parallelGroups.length,
     });
 
     const allResults: SkillResult[] = [];
@@ -129,8 +131,8 @@ export class ExecutionEngine {
     const skillOutputs: Record<string, any> = {};
 
     // Execute each parallel group sequentially
-    for (let groupIndex = 0; groupIndex < skillGraph.parallelGroups.length; groupIndex++) {
-      const group = skillGraph.parallelGroups[groupIndex] || [];
+    for (let groupIndex = 0; groupIndex < parallelGroups.length; groupIndex++) {
+      const group = parallelGroups[groupIndex] || [];
       this.logger.info(`Executing parallel group ${groupIndex + 1}/${skillGraph.parallelGroups.length}`, {
         skills: group,
       });

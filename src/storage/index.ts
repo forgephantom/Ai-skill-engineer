@@ -187,8 +187,23 @@ export class FileSystemStateStore implements StateStore {
     try {
       const projects = await fs.readdir(this.basePath);
       for (const project of projects) {
-        const state = await this.get(project);
-        if (state) states.push(state);
+        const projectPath = path.join(this.basePath, project);
+        const statePath = path.join(projectPath, 'state.json');
+        if (await fs.pathExists(statePath)) {
+          const content = await fs.readFile(statePath, 'utf-8');
+          const data = JSON.parse(content);
+          states.push({
+            ...data,
+            artifacts: new Map(Object.entries(data.artifacts || {})),
+            phases: data.phases.map((p: any) => ({
+              ...p,
+              startedAt: p.startedAt ? new Date(p.startedAt) : undefined,
+              completedAt: p.completedAt ? new Date(p.completedAt) : undefined,
+            })),
+            createdAt: new Date(data.createdAt),
+            updatedAt: new Date(data.updatedAt),
+          });
+        }
       }
     } catch (error) {
       this.logger.warn('Failed to list states', { error });
@@ -197,7 +212,7 @@ export class FileSystemStateStore implements StateStore {
   }
 
   async delete(projectId: string): Promise<void> {
-    const statePath = this.getStatePath(projectId);
+    const statePath = path.join(this.basePath, projectId, 'state.json');
     if (await fs.pathExists(statePath)) {
       await fs.remove(statePath);
       this.logger.debug(`Deleted state for project: ${projectId}`);

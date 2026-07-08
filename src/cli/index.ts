@@ -254,11 +254,53 @@ export class AISECLI {
     const spinner = ora('Loading project...').start();
 
     try {
-      const basePath = path.resolve('./output', options.project);
+      // First check the default output directory
+      let basePath = path.resolve('./output', options.project);
+
+      // If not found, try to find the project in any output directory
       if (!await fs.pathExists(basePath)) {
-        spinner.fail(chalk.red(`Project not found: ${options.project}`));
-        console.log(chalk.yellow('Run "ai-se init" to create a new project'));
-        process.exit(1);
+        // Search for project-config.json in common output directories
+        const searchPaths = ['./output', './test-output'];
+        let found = false;
+
+        for (const searchPath of searchPaths) {
+          const testPath = path.resolve(searchPath, options.project);
+          if (await fs.pathExists(testPath)) {
+            basePath = testPath;
+            found = true;
+            break;
+          }
+        }
+
+        if (!found) {
+          // Try to find the project by scanning output directories
+          const outputDirs = ['./output', './test-output'];
+          for (const dir of outputDirs) {
+            try {
+              const projects = await fs.readdir(dir);
+              for (const proj of projects) {
+                const configPath = path.join(dir, proj, 'project-config.json');
+                if (await fs.pathExists(configPath)) {
+                  const config = JSON.parse(await fs.readFile(configPath, 'utf-8'));
+                  if (config.projectId === options.project || config.name === options.project) {
+                    basePath = path.join(dir, proj);
+                    found = true;
+                    break;
+                  }
+                }
+              }
+              if (found) break;
+            } catch {
+              // Directory doesn't exist
+            }
+          }
+        }
+
+        if (!found) {
+          spinner.fail(chalk.red(`Project not found: ${options.project}`));
+          console.log(chalk.yellow('Run "ai-se init" to create a new project'));
+          process.exit(1);
+        }
       }
 
       // Load project config
@@ -909,18 +951,19 @@ templates:
     console.log(chalk.gray('─'.repeat(50)));
 
     const checks = [
-      { name: 'Node.js', check: () => process.version },
+      { name: 'Node.js', check: () => Promise.resolve(process.version) },
       { name: 'npm', check: async () => { try { const { execSync } = await import('child_process'); return execSync('npm --version').toString().trim(); } catch { return 'not found'; } } },
       { name: 'TypeScript', check: async () => { try { const ts = await import('typescript'); return ts.version; } catch { return 'not installed'; } } },
-      { name: 'Jest', check: async () => { try { const jest = await import('jest'); return 'installed'; } catch { return 'not installed'; } } },
+      { name: 'Jest', check: async () => { try { await import('jest'); return 'installed'; } catch { return 'not installed'; } } },
       { name: 'ESLint', check: async () => { try { await import('eslint'); return 'installed'; } catch { return 'not installed'; } } },
       { name: 'Prettier', check: async () => { try { await import('prettier'); return 'installed'; } catch { return 'not installed'; } } },
     ];
 
     for (const check of checks) {
       const result = await check.check();
-      const status = result.includes('not') ? chalk.red('✗') : chalk.green('✓');
-      console.log(`  ${status} ${check.name}: ${chalk.gray(result)}`);
+      const resultStr = String(result || 'unknown');
+      const status = resultStr.includes('not') ? chalk.red('✗') : chalk.green('✓');
+      console.log(`  ${status} ${check.name}: ${chalk.gray(resultStr)}`);
     }
 
     console.log('');
