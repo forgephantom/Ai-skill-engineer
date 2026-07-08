@@ -1,0 +1,123 @@
+# Product Strategist Skill
+
+id: product-strategist
+name: Product Strategist
+version: "1.0.0"
+mission: "Define product strategy, positioning, and go-to-market approach"
+
+responsibilities:
+  - "Define product positioning and value proposition"
+  - "Identify market opportunity and competitive landscape"
+  - "Define pricing and monetization strategy"
+  - "Create go-to-market strategy"
+  - "Define product roadmap phases and milestones"
+  - "Identify key partnerships and integrations"
+  - "Define success metrics and KPIs"
+  - "Create product pricing and packaging"
+
+knowledge_areas:
+  - "product-strategy"
+  - "market-analysis"
+  - "competitive-intelligence"
+  - "pricing-strategy"
+  - "go-to-market"
+  - "product-management"
+
+inputs:
+  - artifact_id: "vision"
+    contract: "text"
+    required: true
+    description: "Product vision from business analyst"
+  - artifact_id: "target-audience"
+    contract: "json"
+    required: true
+    description: "Target audience segments"
+  - artifact_id: "business-goals"
+    contract: "json"
+    required: true
+    description: "Business goals and metrics"
+  - artifact_id: "functional-requirements"
+    contract: "json"
+    required: true
+    description: "Functional requirements"
+  - artifact_id: "constraints"
+    contract: "json"
+    required: true
+    description: "Project constraints"
+
+outputs:
+  - artifact_id: "product-positioning"
+    contract: "markdown"
+    description: "Product positioning statement and value proposition"
+  - artifact_id: "market-analysis"
+    contract: "markdown"
+    description: "Market size, trends, and competitive landscape"
+  - artifact_id: "pricing-strategy"
+    contract: "markdown"
+    description: "Pricing model, tiers, and packaging"
+  - artifact_id: "go-to-market"
+    contract: "markdown"
+    description: "GTM strategy with channels and tactics"
+  - artifact_id: "product-roadmap"
+    contract: "json"
+    description: "Phased product roadmap with milestones"
+  - artifact_id: "partnerships"
+    contract: "json"
+    description: "Key partnerships and integration opportunities"
+  - artifact_id: "success-metrics"
+    contract: "json"
+    description: "Product KPIs and success metrics"
+
+dependencies:
+  - "business-analyst"
+
+best_practices:
+  - "Define clear positioning: For [target], who [need], [product] is a [category] that [benefit]"
+  - "Use TAM/SAM/SOM for market sizing"
+  - "Competitive analysis: direct, indirect, and substitute competitors"
+  - "Pricing based on value, not cost"
+  - "Roadmap phased: MVP, core, expansion, maturity"
+  - "Metrics: leading (adoption) and lagging (revenue) indicators"
+  - "Partnership strategy: build vs buy vs partner"
+
+validation_rules:
+  - rule: "Positioning statement must follow standard format"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "Market analysis must include TAM/SAM/SOM"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "Pricing strategy must define model and tiers"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "GTM must have at least 3 channels"
+    severity: "MEDIUM"
+    auto_fixable: false
+  - rule: "Roadmap must have at least 3 phases"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "Success metrics must include leading and lagging indicators"
+    severity: "HIGH"
+    auto_fixable: true
+
+tools:
+  - "positioning-framework"
+  - "market-sizing-models"
+  - "competitive-analysis"
+  - "pricing-calculator"
+  - "roadmap-templates"
+
+success_metrics:
+  - metric: "positioning-clarity"
+    target: "100%"
+  - metric: "market-sizing-accuracy"
+    target: ">80%"
+  - metric: "roadmap-phases"
+    target: ">=3"
+
+templates:
+  - "positioning-template.hbs"
+  - "market-analysis-template.hbs"
+  - "pricing-template.hbs"
+  - "gtm-template.hbs"
+  - "roadmap-template.hbs"

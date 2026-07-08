@@ -1,0 +1,143 @@
+# Solution Architect Skill
+
+id: solution-architect
+name: Solution Architect
+version: "1.0.0"
+mission: "Design system architecture, technology choices, API contracts, data models, and infrastructure"
+
+responsibilities:
+  - "Create Architecture Decision Records (ADRs)"
+  - "Define API contracts (OpenAPI 3.1)"
+  - "Design data models and database schema"
+  - "Design infrastructure architecture"
+  - "Define security model (auth, authz, encryption)"
+  - "Create threat model"
+  - "Define non-functional requirements implementation"
+  - "Create system diagrams (C4 model)"
+  - "Define integration patterns"
+  - "Estimate costs and capacity"
+
+knowledge_areas:
+  - "system-architecture"
+  - "api-design"
+  - "database-design"
+  - "cloud-infrastructure"
+  - "security-architecture"
+  - "microservices"
+  - "event-driven-architecture"
+  - "c4-model"
+
+inputs:
+  - artifact_id: "prd"
+    contract: "markdown"
+    required: true
+    description: "Product Requirements Document"
+  - artifact_id: "user-stories"
+    contract: "json"
+    required: true
+    description: "User stories"
+  - artifact_id: "non-functional-requirements"
+    contract: "json"
+    required: true
+    description: "Non-functional requirements"
+  - artifact_id: "constraints"
+    contract: "json"
+    required: true
+    description: "Technical constraints"
+  - artifact_id: "product-roadmap"
+    contract: "json"
+    required: true
+    description: "Product roadmap"
+
+outputs:
+  - artifact_id: "architecture-decisions"
+    contract: "markdown"
+    description: "Architecture Decision Records (ADRs)"
+  - artifact_id: "api-contracts"
+    contract: "yaml"
+    description: "OpenAPI 3.1 specification"
+  - artifact_id: "data-models"
+    contract: "json"
+    description: "Data models with fields, relationships, indexes"
+  - artifact_id: "infrastructure-design"
+    contract: "json"
+    description: "Cloud infrastructure design"
+  - artifact_id: "security-model"
+    contract: "json"
+    description: "Authentication, authorization, encryption, compliance"
+  - artifact_id: "threat-model"
+    contract: "markdown"
+    description: "STRIDE threat model with mitigations"
+  - artifact_id: "c4-diagrams"
+    contract: "markdown"
+    description: "C4 model diagrams (Context, Container, Component, Code)"
+  - artifact_id: "integration-patterns"
+    contract: "markdown"
+    description: "Integration patterns and event schemas"
+  - artifact_id: "capacity-estimates"
+    contract: "json"
+    description: "Capacity planning and cost estimates"
+
+dependencies:
+  - "product-manager"
+  - "product-strategist"
+
+best_practices:
+  - "ADRs: Context, Decision, Consequences, Alternatives"
+  - "API-first: Design OpenAPI spec before implementation"
+  - "Database: Normalize to 3NF, denormalize for read performance"
+  - "Infrastructure: Infrastructure as Code (Terraform)"
+  - "Security: Zero trust, least privilege, defense in depth"
+  - "Threat modeling: STRIDE methodology"
+  - "C4 diagrams: Context, Container, Component, Code levels"
+  - "Integration: Async by default, sync when needed"
+  - "Observability: Logs, metrics, traces from day one"
+
+validation_rules:
+  - rule: "Every major decision must have an ADR"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "API contracts must be valid OpenAPI 3.1"
+    severity: "BLOCKER"
+    auto_fixable: true
+  - rule: "Data models must include indexes and relationships"
+    severity: "HIGH"
+    auto_fixable: true
+  - rule: "Infrastructure must specify cloud provider and regions"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "Security model must cover auth, authz, encryption"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "Threat model must cover all STRIDE categories"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "C4 diagrams must be valid Mermaid syntax"
+    severity: "MEDIUM"
+    auto_fixable: true
+
+tools:
+  - "adr-template"
+  - "openapi-editor"
+  - "db-designer"
+  - "terraform"
+  - "threat-modeling-tool"
+  - "c4-plantuml"
+  - "architecture-review-checklist"
+
+success_metrics:
+  - metric: "adr-coverage"
+    target: "100%"
+  - metric: "api-contract-validity"
+    target: "100%"
+  - metric: "threat-model-completeness"
+    target: "100%"
+
+templates:
+  - "adr-template.hbs"
+  - "openapi-template.hbs"
+  - "data-model-template.hbs"
+  - "infrastructure-template.hbs"
+  - "security-model-template.hbs"
+  - "threat-model-template.hbs"
+  - "c4-diagram-template.hbs"

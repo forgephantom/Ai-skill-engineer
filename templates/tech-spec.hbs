@@ -1,0 +1,186 @@
+# Technical Specification: {{projectName}}
+
+> **Version:** 1.0.0
+> **Status:** {{status}}
+> **Last Updated:** {{date}}
+> **Author:** AI Skill Engineer - Solution Architect
+
+---
+
+## 1. Architecture Overview
+
+{{architectureOverview}}
+
+## 2. Architecture Decision Records (ADRs)
+
+{{#each architectureDecisions}}
+### ADR-{{id}}: {{title}}
+**Status:** {{status}}
+**Date:** {{date}}
+
+#### Context
+{{context}}
+
+#### Decision
+{{decision}}
+
+#### Consequences
+{{consequences}}
+
+#### Alternatives Considered
+{{#each alternatives}}
+- {{.}}
+{{/each}}
+
+---
+{{/each}}
+
+## 3. API Contracts (OpenAPI 3.1)
+
+{{#each apiContracts}}
+### {{method | upper}} {{path}}
+**Summary:** {{summary}}
+**Auth Required:** {{#if authRequired}}Yes{{else}}No{{/if}}
+{{#if rateLimit}}**Rate Limit:** {{rateLimit}}{{/if}}
+
+#### Request
+{{#if requestSchema}}
+```json
+{{stringify requestSchema}}
+```
+{{/if}}
+
+#### Response
+{{#if responseSchema}}
+```json
+{{stringify responseSchema}}
+```
+{{/if}}
+{{/each}}
+
+## 4. Data Models
+
+{{#each dataModels}}
+### {{name}}
+{{#each fields}}
+- **{{name}}** ({{type}}) {{#if required}}[REQUIRED]{{/if}} {{#if unique}}[UNIQUE]{{/if}} {{#if nullable}}[NULLABLE]{{/if}} {{#if default}}[DEFAULT: {{default}}]{{/if}} - {{description}}
+{{/each}}
+
+**Indexes:** {{#each indexes}}{{.}}{{#unless @last}}, {{/unless}}{{/each}}
+
+**Relationships:**
+{{#each relationships}}
+- {{type}} with {{targetModel}} via {{foreignKey}}
+{{/each}}
+{{/each}}
+
+## 5. Infrastructure Design
+
+### Cloud Provider
+**Provider:** {{infrastructureDesign.cloudProvider}}
+**Regions:** {{#each infrastructureDesign.regions}}{{.}}{{#unless @last}}, {{/unless}}{{/each}}
+
+### Compute
+**Type:** {{infrastructureDesign.compute.type}}
+{{#each infrastructureDesign.compute.specs}}
+- **{{@key}}:** {{.}}
+{{/each}}
+
+### Storage
+#### Databases
+{{#each infrastructureDesign.storage.databases}}
+- **{{engine}}** v{{version}} ({{size}}) - Backup: {{backup}} {{#if replication}}[Replicated]{{/if}}
+{{/each}}
+
+#### Caches
+{{#each infrastructureDesign.storage.caches}}
+- **{{engine}}** ({{size}}) {{#if clusterMode}}[Cluster Mode]{{/if}}
+{{/each}}
+
+#### Object Storage
+{{#each infrastructureDesign.storage.objectStorage}}
+- **{{provider}}** - Bucket: {{bucketName}}
+{{/each}}
+
+### Networking
+**VPC:** {{infrastructureDesign.networking.vpc}}
+
+**Subnets:**
+{{#each infrastructureDesign.networking.subnets}}
+- **{{name}}** ({{cidr}}) - {{type}} in {{az}}
+{{/each}}
+
+**Load Balancers:**
+{{#each infrastructureDesign.networking.loadBalancers}}
+- **{{name}}** ({{type}}, {{scheme}}) - Targets: {{#each targets}}{{.}}{{#unless @last}}, {{/unless}}{{/each}}
+{{/each}}
+
+**CDN:** {{#if infrastructureDesign.networking.cdn}}Enabled{{else}}Disabled{{/if}}
+
+### Observability
+**Metrics:** {{#each infrastructureDesign.observability.metrics}}{{.}}{{#unless @last}}, {{/unless}}{{/each}}
+**Logging:** {{infrastructureDesign.observability.logging}}
+**Tracing:** {{infrastructureDesign.observability.tracing}}
+**Alerting:** {{infrastructureDesign.observability.alerting}}
+
+### Cost Estimate
+**Estimated Monthly Cost:** ${{infrastructureDesign.estimatedMonthlyCost}}
+
+## 6. Security Model
+
+### Authentication
+**Providers:** {{#each securityModel.authentication.providers}}{{.}}{{#unless @last}}, {{/unless}}{{/each}}
+**MFA:** {{#if securityModel.authentication.mfa}}Enabled{{else}}Disabled{{/if}}
+**Session Management:** {{securityModel.authentication.sessionManagement}}
+**Token Strategy:** {{securityModel.authentication.tokenStrategy}}
+
+### Authorization
+**Model:** {{securityModel.authorization.model}}
+**Roles:**
+{{#each securityModel.authorization.roles}}
+- **{{name}}:** {{description}} - Permissions: {{#each permissions}}{{.}}{{#unless @last}}, {{/unless}}{{/each}}
+{{/each}}
+
+**Permissions:**
+{{#each securityModel.authorization.permissions}}
+- **{{resource}}:** {{#each actions}}{{.}}{{#unless @last}}, {{/unless}}{{/each}} {{#if conditions}}[Conditions: {{conditions}}]{{/if}}
+{{/each}}
+
+### Encryption
+**At Rest:** {{securityModel.encryption.atRest}}
+**In Transit:** {{securityModel.encryption.inTransit}}
+**Key Management:** {{securityModel.encryption.keyManagement}}
+
+### Compliance
+{{#each securityModel.compliance}}
+- {{.}}
+{{/each}}
+
+### Threat Model
+**Assets:** {{#each securityModel.threatModel.assets}}{{.}}{{#unless @last}}, {{/unless}}{{/each}}
+
+**Threats:**
+{{#each securityModel.threatModel.threats}}
+- **{{id}}** ({{category}}): {{description}} - Severity: {{severity}}, Likelihood: {{likelihood}}
+{{/each}}
+
+**Mitigations:**
+{{#each securityModel.threatModel.mitigations}}
+- {{.}}
+{{/each}}
+
+## 7. Integration Patterns
+
+{{integrationPatterns}}
+
+## 8. Capacity Planning
+
+{{capacityPlan}}
+
+## 9. Deployment Architecture
+
+{{deploymentArchitecture}}
+
+## 10. Operational Considerations
+
+{{operationalConsiderations}}

@@ -1,0 +1,125 @@
+# UI Designer Skill
+
+id: ui-designer
+name: UI Designer
+version: "1.0.0"
+mission: "Create visual design system, high-fidelity mockups, component specifications, and design tokens"
+
+responsibilities:
+  - "Create design system (colors, typography, spacing, shadows)"
+  - "Design high-fidelity mockups for all screens"
+  - "Create component library specifications"
+  - "Define design tokens (Figma/JSON)"
+  - "Design responsive breakpoints"
+  - "Create icon system"
+  - "Define motion and animation guidelines"
+  - "Create design handoff assets"
+
+knowledge_areas:
+  - "ui-design"
+  - "design-systems"
+  - "visual-design"
+  - "design-tokens"
+  - "responsive-design"
+  - "motion-design"
+  - "design-handoff"
+
+inputs:
+  - artifact_id: "wireframes"
+    contract: "markdown"
+    required: true
+    description: "Wireframes from UX designer"
+  - artifact_id: "user-flows"
+    contract: "markdown"
+    required: true
+    description: "User flows"
+  - artifact_id: "brand-guidelines"
+    contract: "markdown"
+    required: false
+    description: "Existing brand guidelines if any"
+  - artifact_id: "accessibility-requirements"
+    contract: "json"
+    required: true
+    description: "WCAG requirements from UX"
+
+outputs:
+  - artifact_id: "design-system"
+    contract: "json"
+    description: "Complete design system specification"
+  - artifact_id: "high-fidelity-mockups"
+    contract: "markdown"
+    description: "High-fidelity mockups for all screens"
+  - artifact_id: "component-specs"
+    contract: "json"
+    description: "Component specifications with variants"
+  - artifact_id: "design-tokens"
+    contract: "json"
+    description: "Design tokens in Figma/JSON format"
+  - artifact_id: "responsive-specs"
+    contract: "json"
+    description: "Breakpoint and responsive behavior specs"
+  - artifact_id: "icon-system"
+    contract: "json"
+    description: "Icon specifications and naming"
+  - artifact_id: "motion-guidelines"
+    contract: "markdown"
+    description: "Animation and transition guidelines"
+  - artifact_id: "handoff-assets"
+    contract: "json"
+    description: "Developer handoff package"
+
+dependencies:
+  - "ux-designer"
+
+best_practices:
+  - "Design system: Atomic design methodology"
+  - "Tokens: Semantic naming, platform-agnostic"
+  - "Components: Props, variants, states, accessibility"
+  - "Mockups: Real content, all states (loading, error, empty)"
+  - "Responsive: Mobile-first, 4 breakpoints minimum"
+  - "Motion: Purposeful, respect prefers-reduced-motion"
+  - "Handoff: Specs, assets, tokens, redlines"
+
+validation_rules:
+  - rule: "Design system must include color, typography, spacing"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "All components must have specs for all states"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "Color contrast must meet WCAG AA"
+    severity: "BLOCKER"
+    auto_fixable: true
+  - rule: "Design tokens must be platform-agnostic"
+    severity: "HIGH"
+    auto_fixable: true
+  - rule: "Mockups must cover all user flow screens"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "Responsive specs must define 4+ breakpoints"
+    severity: "MEDIUM"
+    auto_fixable: true
+
+tools:
+  - "figma"
+  - "design-token-generator"
+  - "color-contrast-checker"
+  - "component-documentation"
+  - "handoff-plugin"
+
+success_metrics:
+  - metric: "design-system-completeness"
+    target: "100%"
+  - metric: "token-coverage"
+    target: "100%"
+  - metric: "contrast-compliance"
+    target: "100%"
+
+templates:
+  - "design-system-template.hbs"
+  - "mockup-template.hbs"
+  - "component-spec-template.hbs"
+  - "design-tokens-template.hbs"
+  - "responsive-template.hbs"
+  - "icon-system-template.hbs"
+  - "motion-guidelines-template.hbs"

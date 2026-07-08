@@ -1,0 +1,132 @@
+# Documentation Engineer Skill
+
+id: documentation-engineer
+name: Documentation Engineer
+version: "1.0.0"
+mission: "Produce complete documentation: API docs, architecture docs, runbooks, user guides, onboarding"
+
+responsibilities:
+  - "Generate API documentation from OpenAPI spec"
+  - "Write architecture documentation with diagrams"
+  - "Create operational runbooks"
+  - "Write user guides and tutorials"
+  - "Create developer onboarding guide"
+  - "Write troubleshooting guide"
+  - "Document deployment procedures"
+  - "Maintain changelog and release notes"
+
+knowledge_areas:
+  - "technical-writing"
+  - "api-documentation"
+  - "diataxis-framework"
+  - "runbook-authoring"
+  - "developer-experience"
+  - "documentation-systems"
+
+inputs:
+  - artifact_id: "api-contracts"
+    contract: "yaml"
+    required: true
+    description: "OpenAPI specification"
+  - artifact_id: "architecture-decisions"
+    contract: "markdown"
+    required: true
+    description: "Architecture Decision Records"
+  - artifact_id: "c4-diagrams"
+    contract: "markdown"
+    required: true
+    description: "C4 model diagrams"
+  - artifact_id: "user-stories"
+    contract: "json"
+    required: true
+    description: "User stories"
+  - artifact_id: "runbooks"
+    contract: "markdown"
+    required: true
+    description: "Runbooks from devops"
+  - artifact_id: "deployment-guide"
+    contract: "markdown"
+    required: true
+    description: "Deployment guide from devops"
+
+outputs:
+  - artifact_id: "api-docs"
+    contract: "filesystem"
+    description: "Complete API documentation site"
+  - artifact_id: "architecture-docs"
+    contract: "filesystem"
+    description: "Architecture documentation"
+  - artifact_id: "runbooks"
+    contract: "filesystem"
+    description: "Operational runbooks"
+  - artifact_id: "user-guides"
+    contract: "filesystem"
+    description: "User guides and tutorials"
+  - artifact_id: "onboarding-guide"
+    contract: "markdown"
+    description: "Developer onboarding guide"
+  - artifact_id: "troubleshooting-guide"
+    contract: "markdown"
+    description: "Troubleshooting guide"
+  - artifact_id: "deployment-docs"
+    contract: "filesystem"
+    description: "Deployment documentation"
+  - artifact_id: "changelog"
+    contract: "markdown"
+    description: "Changelog and release notes"
+
+dependencies:
+  - "solution-architect"
+  - "devops-engineer"
+  - "qa-engineer"
+
+best_practices:
+  - "Diátaxis: Tutorial, How-to, Reference, Explanation"
+  - "API docs: Redoc/Scalar from OpenAPI + manual pages"
+  - "Runbooks: Symptom, Diagnosis, Resolution, Verification"
+  - "Diagrams: Mermaid in markdown, versioned"
+  - "Search: Algolia or built-in search"
+  - "Versioning: Docs versioned with releases"
+  - "Accessibility: WCAG 2.1 AA for docs site"
+
+validation_rules:
+  - rule: "API docs must cover all OpenAPI endpoints"
+    severity: "BLOCKER"
+    auto_fixable: true
+  - rule: "Runbooks must have symptom, diagnosis, resolution"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "Architecture docs must include C4 diagrams"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "Onboarding must cover setup, build, test, deploy"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "All docs must be accessible (WCAG AA)"
+    severity: "HIGH"
+    auto_fixable: true
+
+tools:
+  - "redoc"
+  - "scalar"
+  - "mermaid"
+  - "docusaurus"
+  - "algolia"
+  - "vale"
+
+success_metrics:
+  - metric: "api-coverage"
+    target: "100%"
+  - metric: "onboarding-time"
+    target: "<30min"
+  - metric: "docs-accessibility"
+    target: "AA"
+
+templates:
+  - "api-docs-template.hbs"
+  - "architecture-docs-template.hbs"
+  - "runbook-template.hbs"
+  - "user-guide-template.hbs"
+  - "onboarding-template.hbs"
+  - "troubleshooting-template.hbs"
+  - "deployment-docs-template.hbs"

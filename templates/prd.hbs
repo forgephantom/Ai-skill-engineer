@@ -1,0 +1,127 @@
+# Product Requirements Document: {{projectName}}
+
+> **Version:** 1.0.0
+> **Status:** {{status}}
+> **Last Updated:** {{date}}
+> **Author:** AI Skill Engineer - Product Manager
+
+---
+
+## 1. Problem Statement
+
+{{problemStatement}}
+
+## 2. Solution Overview
+
+{{solutionOverview}}
+
+## 3. Target Users & Personas
+
+{{#each userPersonas}}
+### {{name}}
+- **Role:** {{role}}
+- **Goals:** {{goals}}
+- **Pain Points:** {{painPoints}}
+- **Technical Proficiency:** {{proficiency}}
+{{/each}}
+
+## 4. User Stories
+
+{{#each userStories}}
+### {{id}}: {{title}}
+**As a** {{asA}}
+**I want to** {{iWantTo}}
+**So that** {{soThat}}
+
+**Priority:** {{priority}} | **Story Points:** {{storyPoints}}
+
+**Acceptance Criteria:**
+{{#each acceptanceCriteria}}
+- **Given** {{given}} **When** {{when}} **Then** {{then}}
+{{/each}}
+
+{{/each}}
+
+## 5. Functional Requirements
+
+{{#each functionalRequirements}}
+### {{id}}: {{description}}
+**Priority:** {{priority}} ({{moscow}})
+**Acceptance Criteria:**
+{{#each acceptanceCriteria}}
+- {{.}}
+{{/each}}
+{{/each}}
+
+## 6. Non-Functional Requirements
+
+{{#each nonFunctionalRequirements}}
+### {{category | upper}}: {{requirement}}
+**Criteria:** {{criteria}}
+**Measurable:** {{#if measurable}}Yes{{else}}No{{/if}}
+{{/each}}
+
+## 7. MVP Scope
+
+### In Scope
+{{#each mvpInScope}}
+- {{.}}
+{{/each}}
+
+### Out of Scope
+{{#each mvpOutOfScope}}
+- {{.}}
+{{/each}}
+
+## 8. Success Metrics & KPIs
+
+{{#each successMetrics}}
+- **{{metric}}:** {{target}} ({{measurementMethod}})
+{{/each}}
+
+## 9. Constraints & Assumptions
+
+### Constraints
+{{#each constraints}}
+- [{{category}}] {{description}} (Impact: {{impact}})
+{{/each}}
+
+### Assumptions
+{{#each assumptions}}
+- {{.}}
+{{/each}}
+
+## 10. Risks & Mitigations
+
+{{#each risks}}
+### {{id}}: {{description}}
+**Likelihood:** {{likelihood}} | **Impact:** {{impact}}
+**Mitigation:** {{mitigation}}
+{{/each}}
+
+## 11. Dependencies
+
+{{#each dependencies}}
+- {{.}}
+{{/each}}
+
+## 12. Timeline & Milestones
+
+{{#each milestones}}
+### {{name}} ({{startDate}} - {{endDate}})
+**Deliverables:** {{#each deliverables}}{{.}}{{#unless @last}}, {{/unless}}{{/each}}
+**Exit Criteria:** {{#each exitCriteria}}{{.}}{{#unless @last}}; {{/unless}}{{/each}}
+**Responsible Skills:** {{#each responsibleSkills}}{{.}}{{#unless @last}}, {{/unless}}{{/each}}
+{{/each}}
+
+## 13. Appendix
+
+### Glossary
+{{#each glossary}}
+- **{{term}}:** {{definition}}
+{{/each}}
+
+### References
+{{#each references}}
+- {{.}}
+{{/each}}

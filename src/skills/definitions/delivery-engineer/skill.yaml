@@ -1,0 +1,143 @@
+# Delivery Engineer Skill
+
+id: delivery-engineer
+name: Delivery Engineer
+version: "1.0.0"
+mission: "Package complete project for handoff: summary, architecture, code, tests, docs, deploy guide, infra, CI/CD, monitoring, future improvements"
+
+responsibilities:
+  - "Create executive summary"
+  - "Create product overview"
+  - "Package architecture (ADRs, diagrams, threat model, data flow)"
+  - "Package features (user stories, acceptance criteria, feature flags)"
+  - "Document technical decisions"
+  - "Create folder structure documentation"
+  - "Package complete source code (buildable)"
+  - "Package all tests (unit, integration, E2E, contract, perf, security)"
+  - "Package documentation (API, architecture, runbooks, onboarding, troubleshooting)"
+  - "Create deployment guide"
+  - "Package infrastructure (Terraform, Helm, K8s)"
+  - "Package CI/CD pipelines and environments"
+  - "Package monitoring (dashboards, alerts, SLIs)"
+  - "Create future improvements roadmap"
+  - "Create handover notes"
+
+knowledge_areas:
+  - "technical-documentation"
+  - "project-packaging"
+  - "knowledge-transfer"
+  - "deployment-engineering"
+  - "operations"
+
+inputs:
+  - artifact_id: "all-artifacts"
+    contract: "filesystem"
+    required: true
+    description: "All project artifacts"
+  - artifact_id: "state"
+    contract: "json"
+    required: true
+    description: "Orchestrator state"
+  - artifact_id: "project-config"
+    contract: "json"
+    required: true
+    description: "Project configuration"
+
+outputs:
+  - artifact_id: "delivery-package"
+    contract: "filesystem"
+    description: "Complete delivery package directory"
+  - artifact_id: "executive-summary"
+    contract: "markdown"
+    description: "Executive summary"
+  - artifact_id: "product-overview"
+    contract: "markdown"
+    description: "Product overview"
+  - artifact_id: "architecture-package"
+    contract: "filesystem"
+    description: "Architecture documentation"
+  - artifact_id: "features-package"
+    contract: "filesystem"
+    description: "Features documentation"
+  - artifact_id: "source-code-package"
+    contract: "filesystem"
+    description: "Complete source code"
+  - artifact_id: "tests-package"
+    contract: "filesystem"
+    description: "All tests"
+  - artifact_id: "documentation-package"
+    contract: "filesystem"
+    description: "Complete documentation"
+  - artifact_id: "deployment-guide"
+    contract: "markdown"
+    description: "Deployment guide"
+  - artifact_id: "infrastructure-package"
+    contract: "filesystem"
+    description: "Infrastructure as Code"
+  - artifact_id: "ci-cd-package"
+    contract: "filesystem"
+    description: "CI/CD pipelines"
+  - artifact_id: "monitoring-package"
+    contract: "filesystem"
+    description: "Monitoring and alerting"
+  - artifact_id: "future-improvements"
+    contract: "markdown"
+    description: "Future improvements roadmap"
+  - artifact_id: "handover-notes"
+    contract: "markdown"
+    description: "Handover notes"
+
+dependencies:
+  - "optimization-engine"
+  - "all-skills"
+
+best_practices:
+  - "Complete package: everything needed to run, operate, extend"
+  - "Structure: Standard delivery package format (SPEC.md Section 10)"
+  - "Executive summary: 1-page for stakeholders"
+  - "Architecture: ADRs, C4 diagrams, threat model, data flow"
+  - "Code: Buildable, with build instructions"
+  - "Tests: All types, with run instructions"
+  - "Docs: Diátaxis framework (tutorial, how-to, reference, explanation)"
+  - "Deployment: Step-by-step-by-step with rollback"
+  - "Infra: Terraform, Helm, K8s manifests"
+  - "CI/CD: All pipelines, environments"
+  - "Monitoring: Dashboards, alerts, SLIs/SLOs"
+  - "Handover: What's next, debt, scaling, onboarding, runbooks"
+
+validation_rules:
+  - rule: "Delivery package must have all required directories"
+    severity: "BLOCKER"
+    auto_fixable: true
+  - rule: "Source code must be buildable"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "All test types must be included"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "Deployment guide must be complete"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "Handover notes must cover 5 required topics"
+    severity: "HIGH"
+    auto_fixable: false
+
+tools:
+  - "packaging-scripts"
+  - "doc-generator"
+  - "archive-tools"
+
+success_metrics:
+  - metric: "package-completeness"
+    target: "100%"
+  - metric: "build-success"
+    target: "100%"
+  - metric: "handover-clarity"
+    target: ">90%"
+
+templates:
+  - "delivery-manifest-template.hbs"
+  - "executive-summary-template.hbs"
+  - "architecture-package-template.hbs"
+  - "deployment-guide-template.hbs"
+  - "handover-notes-template.hbs"

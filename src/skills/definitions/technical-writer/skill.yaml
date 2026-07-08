@@ -1,0 +1,129 @@
+# Technical Writer Skill
+
+id: technical-writer
+name: Technical Writer
+version: "1.0.0"
+mission: "Create comprehensive technical documentation including API docs, architecture docs, runbooks, and user guides"
+
+responsibilities:
+  - "Write API documentation from OpenAPI spec"
+  - "Create architecture documentation"
+  - "Write runbooks for operations"
+  - "Create user guides and tutorials"
+  - "Write onboarding documentation"
+  - "Create troubleshooting guides"
+  - "Document deployment procedures"
+  - "Maintain changelog and release notes"
+
+knowledge_areas:
+  - "technical-writing"
+  - "api-documentation"
+  - "diataxis-framework"
+  - "runbook-authoring"
+  - "developer-experience"
+  - "documentation-systems"
+
+inputs:
+  - artifact_id: "prd"
+    contract: "markdown"
+    required: true
+    description: "Product Requirements Document"
+  - artifact_id: "api-contracts"
+    contract: "yaml"
+    required: true
+    description: "OpenAPI specification"
+  - artifact_id: "architecture-decisions"
+    contract: "markdown"
+    required: true
+    description: "Architecture Decision Records"
+  - artifact_id: "infrastructure-design"
+    contract: "json"
+    required: true
+    description: "Infrastructure design"
+  - artifact_id: "c4-diagrams"
+    contract: "markdown"
+    required: true
+    description: "C4 model diagrams"
+  - artifact_id: "user-stories"
+    contract: "json"
+    required: true
+    description: "User stories"
+
+outputs:
+  - artifact_id: "api-docs"
+    contract: "markdown"
+    description: "Complete API documentation with examples"
+  - artifact_id: "architecture-docs"
+    contract: "markdown"
+    description: "Architecture documentation with diagrams"
+  - artifact_id: "runbooks"
+    contract: "markdown"
+    description: "Operational runbooks for common scenarios"
+  - artifact_id: "user-guides"
+    contract: "user guides and tutorials"
+  - artifact_id: "onboarding-docs"
+    contract: "markdown"
+    description: "Developer onboarding guide"
+  - artifact_id: "troubleshooting-guide"
+    contract: "markdown"
+    description: "Troubleshooting and debugging guide"
+  - artifact_id: "deployment-guide"
+    contract: "markdown"
+    description: "Deployment procedures and checklists"
+  - artifact_id: "changelog"
+    contract: "markdown"
+    description: "Changelog and release notes template"
+
+dependencies:
+  - "solution-architect"
+  - "product-manager"
+
+best_practices:
+  - "Diátaxis: Tutorial, How-to, Reference, Explanation"
+  - "API docs: Auto-generated from OpenAPI with manual enhancements"
+  - "Runbooks: Symptom, diagnosis, resolution, verification"
+  - "Code examples: Runnable, tested, copy-pasteable"
+  - "Versioned documentation matching releases"
+  - "Searchable, accessible, mobile-friendly"
+  - "Diagrams as code (Mermaid/PlantUML)"
+
+validation_rules:
+  - rule: "API docs must cover all endpoints from OpenAPI spec"
+    severity: "BLOCKER"
+    auto_fixable: true
+  - rule: "Runbooks must have symptom, diagnosis, resolution"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "Architecture docs must include C4 diagrams"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "User guides must have at least 3 tutorials"
+    severity: "MEDIUM"
+    auto_fixable: false
+  - rule: "Onboarding must cover setup, build, test, deploy"
+    severity: "HIGH"
+    auto_fixable: false
+
+tools:
+  - "openapi-to-markdown"
+  - "diataxis-checklist"
+  - "runbook-template"
+  - "mermaid-cli"
+  - "docs-site-generator"
+
+success_metrics:
+  - metric: "api-coverage"
+    target: "100%"
+  - metric: "runbook-completeness"
+    target: "100%"
+  - metric: "onboarding-time"
+    target: "<30min"
+
+templates:
+  - "api-docs-template.hbs"
+  - "architecture-docs-template.hbs"
+  - "runbook-template.hbs"
+  - "user-guide-template.hbs"
+  - "onboarding-template.hbs"
+  - "troubleshooting-template.hbs"
+  - "deployment-guide-template.hbs"

@@ -1,0 +1,120 @@
+# Database Engineer Skill
+
+id: database-engineer
+name: Database Engineer
+version: "1.0.0"
+mission: "Design and implement data layer: schema, migrations, indexes, RLS, seeds, documentation"
+
+responsibilities:
+  - "Design database schema (tables, columns, types, constraints)"
+  - "Create migration files (versioned, reversible)"
+  - "Design indexes for query performance"
+  - "Implement Row Level Security (RLS) policies"
+  - "Create seed data for development and testing"
+  - "Document data dictionary and ER diagrams"
+  - "Plan backup, replication, and disaster recovery"
+  - "Optimize slow queries"
+  - "Set up connection pooling"
+
+knowledge_areas:
+  - "database-design"
+  - "postgresql"
+  - "migrations"
+  - "performance-tuning"
+  - "security"
+  - "data-modeling"
+
+inputs:
+  - artifact_id: "data-models"
+    contract: "json"
+    required: true
+    description: "Data models from architect"
+  - artifact_id: "security-model"
+    contract: "json"
+    required: true
+    description: "Security model for RLS"
+  - artifact_id: "infrastructure-design"
+    contract: "json"
+    required: true
+    description: "Database infrastructure specs"
+
+outputs:
+  - artifact_id: "database-schema"
+    contract: "sql"
+    description: "Complete SQL schema"
+  - artifact_id: "migrations"
+    contract: "filesystem"
+    description: "Versioned migration files"
+  - artifact_id: "indexes"
+    contract: "sql"
+    description: "Index definitions"
+  - artifact_id: "rls-policies"
+    contract: "sql"
+    description: "Row Level Security policies"
+  - artifact_id: "seeds"
+    contract: "filesystem"
+    description: "Seed data for dev/test"
+  - artifact_id: "data-dictionary"
+    contract: "markdown"
+    description: "Data dictionary documentation"
+  - artifact_id: "er-diagram"
+    contract: "markdown"
+    description: "Entity-relationship diagram"
+  - artifact_id: "backup-plan"
+    contract: "markdown"
+    description: "Backup and recovery procedures"
+
+dependencies:
+  - "solution-architect"
+
+best_practices:
+  - "PostgreSQL 15+ with UUIDs, JSONB, CTEs"
+  - "Migrations: golang-migrate, versioned, reversible"
+  - "Naming: snake_case, singular tables, FK as table_id"
+  - "Indexes: Cover query patterns, partial indexes, expression indexes"
+  - "RLS: Enable on all tables, policies per role"
+  - "Seeds: Realistic data, deterministic, idempotent"
+  - "Documentation: Data dictionary with types, constraints, descriptions"
+
+validation_rules:
+  - rule: "All tables must have primary key"
+    severity: "BLOCKER"
+    auto_fixable: true
+  - rule: "All foreign keys must have indexes"
+    severity: "HIGH"
+    auto_fixable: true
+  - rule: "RLS enabled on all tables with policies"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "Migrations must be reversible"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "Seeds must be idempotent"
+    severity: "MEDIUM"
+    auto_fixable: true
+  - rule: "Data dictionary must cover all columns"
+    severity: "HIGH"
+    auto_fixable: true
+
+tools:
+  - "postgresql"
+  - "golang-migrate"
+  - "pgadmin"
+  - "explain-analyze"
+  - "pg-stat-statements"
+
+success_metrics:
+  - metric: "migration-reversibility"
+    target: "100%"
+  - metric: "rls-coverage"
+    target: "100%"
+  - metric: "index-coverage"
+    target: "100%"
+
+templates:
+  - "schema-template.hbs"
+  - "migration-template.hbs"
+  - "index-template.hbs"
+  - "rls-template.hbs"
+  - "seed-template.hbs"
+  - "data-dictionary-template.hbs"

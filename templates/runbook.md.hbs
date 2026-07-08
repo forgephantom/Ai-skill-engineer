@@ -1,0 +1,314 @@
+# Runbook: {{serviceName}}
+
+> **Version:** 1.0.0
+> **Last Updated:** {{date}}
+> **Owner:** {{team}}
+> **Severity:** {{severity}}
+
+---
+
+## 1. Service Overview
+
+| Property | Value |
+|----------|-------|
+| Service | {{serviceName}} |
+| Description | {{description}} |
+| Repository | {{repository}} |
+| Language/Framework | {{techStack}} |
+| Deployment | {{deploymentType}} |
+| On-call | {{oncallRotation}} |
+
+---
+
+## 2. Architecture
+
+{{architectureDiagram}}
+
+### Key Dependencies
+{{#each dependencies}}
+- **{{name}}** ({{type}}): {{description}} - SLA: {{sla}}
+{{/each}}
+
+---
+
+## 3. Monitoring & Alerts
+
+### Key Metrics
+| Metric | Target | Alert Threshold | Dashboard |
+|--------|--------|-----------------|-----------|
+{{#each keyMetrics}}
+| {{name}} | {{target}} | {{alertThreshold}} | [{{dashboard}}]({{dashboardUrl}}) |
+{{/each}}
+
+### Critical Alerts
+{{#each criticalAlerts}}
+#### {{name}}
+- **Condition:** {{condition}}
+- **Severity:** {{severity}}
+- **Runbook:** {{runbookLink}}
+{{/each}}
+
+---
+
+## 4. Common Operations
+
+### 4.1 Deployment
+```bash
+# Standard deployment
+helm upgrade --install {{serviceName}} ./helm \
+  --namespace {{namespace}} \
+  --set image.tag={{version}} \
+  --wait --timeout=300s
+
+# Verify
+kubectl rollout status deployment/{{serviceName}} -n {{namespace}}
+```
+
+### 4.2 Rollback
+```bash
+# Quick rollback (last revision)
+helm rollback {{serviceName}} -n {{namespace}}
+
+# Rollback to specific revision
+helm rollback {{serviceName}} {{revision}} -n {{namespace}}
+
+# Verify
+kubectl rollout status deployment/{{serviceName}} -n {{namespace}}
+```
+
+### 4.3 Scaling
+```bash
+# Manual scale
+kubectl scale deployment {{serviceName}} --replicas={{replicas}} -n {{namespace}}
+
+# HPA is configured for automatic scaling
+```
+
+### 4.4 Database Migrations
+```bash
+# Run migrations
+kubectl run migration-job --image={{migrationImage}} --restart=Never \
+  -n {{namespace}} -- {{migrationCommand}}
+
+# Check status
+kubectl logs migration-job -n {{namespace}}
+```
+
+---
+
+## 5. Incident Response
+
+### 5.1 High Latency / Timeouts
+
+#### Symptoms
+- {{#each latencySymptoms}}- {{.}}{{/each}}
+
+#### Diagnosis
+1. Check dashboard: [Latency Dashboard]({{latencyDashboardUrl}})
+2. Check recent deployments: `kubectl rollout history deployment/{{serviceName}} -n {{namespace}}`
+3. Check dependencies: {{dependencyChecks}}
+4. Check resource usage: `kubectl top pods -n {{namespace}} -l app={{serviceName}}`
+
+#### Resolution
+{{#each latencyResolutions}}
+- {{.}}
+{{/each}}
+
+#### Verification
+- Latency returns to < {{targetLatency}}ms p99
+- Error rate < {{targetErrorRate}}%
+
+---
+
+### 5.2 High Error Rate
+
+#### Symptoms
+- {{#each errorSymptoms}}- {{.}}{{/each}}
+
+#### Diagnosis
+1. Check error logs: `kubectl logs -n {{namespace}} -l app={{serviceName}} --tail=100 | grep ERROR`
+2. Check error dashboard: [Error Dashboard]({{errorDashboardUrl}})
+3. Check recent changes: `git log --oneline -20`
+4. Check dependency health
+
+#### Resolution
+{{#each errorResolutions}}
+- {{.}}
+{{/each}}
+
+#### Verification
+- Error rate returns to < {{targetErrorRate}}%
+- No 5xx errors in logs
+
+---
+
+### 5.3 Service Unavailable / CrashLoopBackOff
+
+#### Symptoms
+- Pods in CrashLoopBackOff
+- Service returning 503
+- Health checks failing
+
+#### Diagnosis
+1. Check pod status: `kubectl get pods -n {{namespace}} -l app={{serviceName}}`
+2. Check logs: `kubectl logs -n {{namespace}} -l app={{serviceName}} --previous`
+3. Check events: `kubectl get events -n {{namespace}} --sort-by=.metadata.creationTimestamp`
+4. Check resource limits: `kubectl describe pod -n {{namespace}} -l app={{serviceName}}`
+
+#### Resolution
+{{#each crashResolutions}}
+- {{.}}
+{{/each}}
+
+#### Verification
+- All pods Running and Ready
+- Health endpoint returns 200
+- No restarts in 5 minutes
+
+---
+
+### 5.4 Database Issues
+
+#### Symptoms
+- {{#each dbSymptoms}}- {{.}}{{/each}}
+
+#### Diagnosis
+1. Check DB connections: `kubectl exec -it {{dbPod}} -n {{namespace}} -- pg_stat_activity`
+2. Check slow queries: `pg_stat_statements`
+3. Check disk space: `df -h`
+4. Check replication lag
+
+#### Resolution
+{{#each dbResolutions}}
+- {{.}}
+{{/each}}
+
+#### Verification
+- Connection pool healthy
+- Query latency normal
+- Replication lag < 1s
+
+---
+
+### 5.5 Security Incident
+
+#### Symptoms
+- {{#each securitySymptoms}}- {{.}}{{/each}}
+
+#### Diagnosis
+1. Check audit logs
+2. Check WAF logs
+3. Check for anomalous traffic patterns
+4. Review recent access
+
+#### Resolution
+{{#each securityResolutions}}
+- {{.}}
+{{/each}}
+
+#### Verification
+- No suspicious activity in logs
+- All security scans pass
+- Access reviewed and cleaned up
+
+---
+
+## 6. Disaster Recovery
+
+### 6.1 Regional Failover
+```bash
+# Failover to secondary region
+kubectl config use-context {{secondaryRegion}}
+helm upgrade --install {{serviceName}} ./helm \
+  --namespace {{namespace}} \
+  --set replicaCount={{drReplicas}} \
+  --wait --timeout=300s
+
+# Update DNS
+# (Automated via health checks or manual)
+```
+
+### 6.2 Data Recovery
+```bash
+# Restore from backup
+# 1. Identify backup timestamp
+# 2. Restore database
+pg_restore -h {{dbHost}} -U {{dbUser}} -d {{dbName}} {{backupFile}}
+
+# 3. Verify data integrity
+# 4. Run smoke tests
+```
+
+### 6.3 Complete Rebuild
+```bash
+# 1. Provision infrastructure
+terraform apply -target=module.{{serviceName}}
+
+# 2. Deploy application
+helm install {{serviceName}} ./helm -n {{namespace}}
+
+# 3. Restore data
+# 4. Verify all systems
+```
+
+---
+
+## 7. Maintenance Procedures
+
+### 7.1 Certificate Rotation
+```bash
+# Certificates managed by cert-manager
+# Check status:
+kubectl get certificates -n {{namespace}}
+
+# Force renewal:
+kubectl delete certificate {{certName}} -n {{namespace}}
+```
+
+### 7.2 Dependency Updates
+```bash
+# 1. Update dependencies
+npm update / go get -u
+
+# 2. Run tests
+npm test / go test ./...
+
+# 3. Deploy to staging
+# 4. Run integration tests
+# 5. Deploy to production
+```
+
+### 7.3 Log Rotation
+- Logs rotated by Loki/Fluent Bit
+- Retention: {{logRetention}}
+- Archive: {{archiveLocation}}
+
+---
+
+## 8. Contacts & Escalation
+
+| Role | Name | Contact | Escalation Time |
+|------|------|---------|-----------------|
+| Primary On-call | {{primaryOncall}} | {{primaryContact}} | 0 min |
+| Secondary On-call | {{secondaryOncall}} | {{secondaryContact}} | 15 min |
+| Team Lead | {{teamLead}} | {{teamLeadContact}} | 30 min |
+| Engineering Manager | {{engManager}} | {{engManagerContact}} | 60 min |
+| Security Team | {{securityTeam}} | {{securityContact}} | Immediate |
+
+---
+
+## 9. Related Documentation
+
+- [Architecture Docs]({{archDocsUrl}})
+- [API Documentation]({{apiDocsUrl}})
+- [Deployment Guide]({{deployGuideUrl}})
+- [Troubleshooting Guide]({{troubleshootingUrl}})
+- [Security Policy]({{securityPolicyUrl}})
+
+---
+
+## 10. Change Log
+
+| Date | Version | Author | Changes |
+|------|---------|--------|---------|
+| {{date}} | 1.0.0 | AI Skill Engineer | Initial creation |

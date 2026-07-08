@@ -1,0 +1,93 @@
+# Optimization Engine Skill
+
+id: optimization-engine
+name: Optimization Engine
+version: "1.0.0"
+mission: "Continuous improvement until diminishing returns: perf, security, scale, DX, UX, cost, reliability"
+
+responsibilities:
+  - "Measure all optimization targets"
+  - "Identify top 3 improvement opportunities"
+  - "Apply optimizations (caching, query optimization, bundle splitting, etc.)"
+  - "Re-run validation to verify no regressions"
+  - "Stop when improvement <5% on all targets for 2 iterations"
+  - "Track total improvement across iterations"
+
+knowledge_areas:
+  - "performance-optimization"
+  - "security-hardening"
+  - "scalability-engineering"
+  - "developer-experience"
+  - "cost-optimization"
+  - "reliability-engineering"
+  - "profiling"
+
+inputs:
+  - artifact_id: "artifacts"
+    contract: "filesystem"
+    required: true
+    description: "Current artifacts to optimize"
+  - artifact_id: "approval-decision"
+    contract: "json"
+    required: true
+    description: "Approval decision"
+  - artifact_id: "config"
+    contract: "json"
+    required: true
+    description: "Optimization configuration"
+
+outputs:
+  - artifact_id: "optimized-artifacts"
+    contract: "filesystem"
+    description: "Optimized artifacts"
+  - artifact_id: "optimization-report"
+    contract: "json"
+    description: "Per-iteration improvement metrics"
+  - artifact_id: "optimization-targets"
+    contract: "json"
+    description: "Target metrics with current/target values"
+
+dependencies:
+  - "principal-engineer-simulator"
+  - "validation-engine"
+
+best_practices:
+  - "Targets: Performance, Security, Scalability, DX, UX, Cost, Reliability"
+  - "Measure before and after each optimization"
+  - "Apply one optimization at a time, validate"
+  - "Stop criteria: <5% improvement on all targets for 2 iterations"
+  - "Techniques: profiling, caching, query opt, CDN, pooling, right-sizing"
+  - "Never sacrifice correctness for optimization"
+
+validation_rules:
+  - rule: "Must have approval before optimizing"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "No regressions in validation after optimization"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "Stop when <5% improvement on all targets for 2 iterations"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "Track improvement per target per iteration"
+    severity: "HIGH"
+    auto_fixable: false
+
+tools:
+  - "profiling-tools"
+  - "bundle-analyzer"
+  - "query-analyzer"
+  - "cost-analyzer"
+  - "load-testing"
+
+success_metrics:
+  - metric: "performance-improvement"
+    target: ">10%"
+  - metric: "cost-reduction"
+    target: ">10%"
+  - metric: "reliability-improvement"
+    target: ">5%"
+
+templates:
+  - "optimization-report-template.hbs"
+  - "targets-template.hbs"

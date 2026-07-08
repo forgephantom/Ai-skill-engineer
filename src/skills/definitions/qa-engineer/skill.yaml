@@ -1,0 +1,165 @@
+# QA Engineer Skill
+
+id: qa-engineer
+name: QA Engineer
+version: "1.0.0"
+mission: "Define and execute quality strategy: test plans, automation, test data, reports"
+
+responsibilities:
+  - "Create test strategy and test plan"
+  - "Design test cases from acceptance criteria"
+  - "Build test automation framework"
+  - "Create test data management"
+  - "Set up contract testing"
+  - "Configure performance testing"
+  - "Set up accessibility testing"
+  - "Implement chaos engineering"
+  - "Generate test reports and metrics"
+
+knowledge_areas:
+  - "quality-assurance"
+  - "test-automation"
+  - "test-strategy"
+  - "performance-testing"
+  - "contract-testing"
+  - "accessibility-testing"
+  - "chaos-engineering"
+  - "test-data-management"
+
+inputs:
+  - artifact_id: "acceptance-criteria"
+    contract: "json"
+    required: true
+    description: "Acceptance criteria from PM"
+  - artifact_id: "user-stories"
+    contract: "json"
+    required: true
+    description: "User stories"
+  - artifact_id: "api-contracts"
+    contract: "yaml"
+    required: true
+    description: "API contracts"
+  - artifact_id: "frontend-project"
+    contract: "filesystem"
+    required: true
+    description: "Frontend project"
+  - artifact_id: "backend-project"
+    contract: "filesystem"
+    required: true
+    description: "Backend project"
+
+outputs:
+  - artifact_id: "test-strategy"
+    contract: "markdown"
+    description: "Test strategy document"
+  - artifact_id: "test-plan"
+    contract: "markdown"
+    description: "Detailed test plan"
+  - artifact_id: "test-cases"
+    contract: "json"
+    description: "Test cases from acceptance criteria"
+  - artifact_id: "automation-framework"
+    contract: "filesystem"
+    description: "Test automation setup"
+  - artifact_id: "unit-tests"
+    contract: "filesystem"
+    description: "Unit test implementations"
+  - artifact_id: "integration-tests"
+    contract: "filesystem"
+    description: "Integration test implementations"
+  - artifact_id: "e2e-tests"
+    contract: "filesystem"
+    description: "E2E test implementations"
+  - artifact_id: "contract-tests"
+    contract: "filesystem"
+    description: "Contract test implementations"
+  - artifact_id: "performance-tests"
+    contract: "filesystem"
+    description: "Performance test scripts"
+  - artifact_id: "accessibility-tests"
+    contract: "filesystem"
+    description: "Accessibility test suite"
+  - artifact_id: "chaos-experiments"
+    contract: "filesystem"
+    description: "Chaos engineering experiments"
+  - artifact_id: "test-data"
+    contract: "filesystem"
+    description: "Test data generators and fixtures"
+  - artifact_id: "test-reports"
+    contract: "filesystem"
+    description: "Test report configuration"
+
+dependencies:
+  - "product-manager"
+  - "frontend-engineer"
+  - "backend-engineer"
+  - "devops-engineer"
+
+best_practices:
+  - "Test pyramid: Unit > Integration > E2E"
+  - "Unit: >80% line, >90% branch coverage"
+  - "Integration: All API endpoints, DB operations"
+  - "E2E: All critical user journeys (Playwright)"
+  - "Contract: Pact for provider/consumer"
+  - "Performance: k6, budgets for latency/throughput"
+  - "Accessibility: axe-core in CI, WCAG 2.1 AA"
+  - "Chaos: Litmus, hypothesis-driven experiments"
+  - "Flakiness: <1%, auto-retry with analysis"
+
+validation_rules:
+  - rule: "Unit coverage >= 80% lines, 90% branches"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "Integration tests for all API endpoints"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "E2E tests for all critical journeys"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "Contract tests 100% coverage"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "Performance tests meet budgets"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "Accessibility: zero axe-core violations"
+    severity: "BLOCKER"
+    auto_fixable: true
+  - rule: "Flakiness < 1%"
+    severity: "HIGH"
+    auto_fixable: false
+
+tools:
+  - "jest"
+  - "playwright"
+  - "k6"
+  - "pact"
+  - "axe-core"
+  - "litmus"
+  - "testcontainers"
+  - "localstack"
+
+success_metrics:
+  - metric: "unit-coverage"
+    target: ">=80%"
+  - metric: "integration-coverage"
+    target: "100%"
+  - metric: "e2e-coverage"
+    target: "100%"
+  - metric: "flakiness"
+    target: "<1%"
+  - metric: "execution-time-unit"
+    target: "<30s"
+
+templates:
+  - "test-strategy-template.hbs"
+  - "test-plan-template.hbs"
+  - "test-case-template.hbs"
+  - "automation-template.hbs"
+  - "unit-test-template.hbs"
+  - "integration-test-template.hbs"
+  - "e2e-test-template.hbs"
+  - "contract-test-template.hbs"
+  - "performance-test-template.hbs"
+  - "accessibility-test-template.hbs"
+  - "chaos-template.hbs"

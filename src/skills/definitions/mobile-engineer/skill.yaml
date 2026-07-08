@@ -1,0 +1,131 @@
+# Mobile Engineer Skill
+
+id: mobile-engineer
+name: Mobile Engineer
+version: "1.0.0"
+mission: "Build production-ready native mobile applications (iOS/Android) or cross-platform"
+
+responsibilities:
+  - "Set up mobile project (React Native, Flutter, or native)"
+  - "Implement screens from designs"
+  - "Set up navigation and deep linking"
+  - "Integrate with backend API"
+  - "Implement offline support and caching"
+  - "Set up push notifications"
+  - "Implement biometric authentication"
+  - "Write unit, integration, and E2E tests"
+  - "Configure CI/CD for app stores"
+  - "Optimize app size and performance"
+
+knowledge_areas:
+  - "mobile-development"
+  - "react-native"
+  - "flutter"
+  - "ios-development"
+  - "android-development"
+  - "mobile-testing"
+  - "app-store-deployment"
+  - "offline-first"
+
+inputs:
+  - artifact_id: "design-system"
+    contract: "json"
+    required: true
+    description: "Design system specification"
+  - artifact_id: "high-fidelity-mockups"
+    contract: "markdown"
+    required: true
+    description: "High-fidelity mockups"
+  - artifact_id: "api-contracts"
+    contract: "yaml"
+    required: true
+    description: "OpenAPI specification"
+  - artifact_id: "user-flows"
+    contract: "markdown"
+    required: true
+    description: "User flows"
+
+outputs:
+  - artifact_id: "mobile-project"
+    contract: "filesystem"
+    description: "Complete mobile project structure"
+  - artifact_id: "screens"
+    contract: "filesystem"
+    description: "Screen components"
+  - artifact_id: "navigation"
+    contract: "filesystem"
+    description: "Navigation setup"
+  - artifact_id: "api-client"
+    contract: "filesystem"
+    description: "Type-safe API client"
+  - artifact_id: "offline-storage"
+    contract: "filesystem"
+    description: "Offline support and caching"
+  - artifact_id: "push-notifications"
+    contract: "filesystem"
+    description: "Push notification setup"
+  - artifact_id: "mobile-tests"
+    contract: "filesystem"
+    description: "Unit, integration, E2E tests"
+  - artifact_id: "ci-cd-mobile"
+    contract: "filesystem"
+    description: "App store deployment pipelines"
+
+dependencies:
+  - "solution-architect"
+  - "ui-designer"
+
+best_practices:
+  - "React Native / Flutter with TypeScript/Dart"
+  - "Expo for React Native (managed workflow)"
+  - "Navigation: React Navigation or Flutter Navigator 2.0"
+  - "State: Redux Toolkit, Zustand, or Riverpod"
+  - "API: Typed client from OpenAPI"
+  - "Offline: SQLite/Realm + sync engine"
+  - "Testing: Detox (E2E), Jest (unit)"
+  - "CI/CD: Fastlane, EAS Build, or GitHub Actions"
+  - "Performance: <3s cold start, 60fps UI"
+
+validation_rules:
+  - rule: "TypeScript/Dart strict mode passes"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "All screens from mockups implemented"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "Offline support for critical flows"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "Push notifications configured"
+    severity: "MEDIUM"
+    auto_fixable: false
+  - rule: "E2E tests for critical journeys"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "App store build passes"
+    severity: "BLOCKER"
+    auto_fixable: false
+
+tools:
+  - "react-native"
+  - "expo"
+  - "typescript"
+  - "detox"
+  - "fastlane"
+  - "eas-cli"
+
+success_metrics:
+  - metric: "screen-coverage"
+    target: "100%"
+  - metric: "test-coverage"
+    target: ">=80%"
+  - metric: "cold-start"
+    target: "<3s"
+
+templates:
+  - "react-native-template.hbs"
+  - "screen-template.hbs"
+  - "navigation-template.hbs"
+  - "api-client-mobile-template.hbs"
+  - "offline-template.hbs"
+  - "test-template-mobile.hbs"

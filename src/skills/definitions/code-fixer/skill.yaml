@@ -1,0 +1,97 @@
+# Code Fixer Skill
+
+id: code-fixer
+name: Code Fixer
+version: "1.0.0"
+mission: "Automatically remediate all review findings that are marked as auto-fixable"
+
+responsibilities:
+  - "Apply code pattern corrections (lint, style, best practices)"
+  - "Apply security hardening (headers, validation, sanitization)"
+  - "Apply performance optimizations (indexes, caching, query rewrites)"
+  - "Apply accessibility fixes (ARIA, semantics, contrast)"
+  - "Add missing test boilerplate"
+  - "Update documentation to sync with code"
+  - "Verify fixes don't introduce regressions"
+  - "Escalate non-auto-fixable findings to human"
+
+knowledge_areas:
+  - "automated-refactoring"
+  - "code-transformation"
+  - "security-hardening"
+  - "performance-optimization"
+  - "accessibility-fixes"
+  - "test-generation"
+
+inputs:
+  - artifact_id: "review-findings"
+    contract: "json"
+    required: true
+    description: "Review findings from code reviewer"
+  - artifact_id: "build-output"
+    contract: "filesystem"
+    required: true
+    description: "Build output artifacts"
+  - artifact_id: "frontend-project"
+    contract: "filesystem"
+    required: true
+    description: "Frontend project"
+  - artifact_id: "backend-project"
+    contract: "filesystem"
+    required: true
+    description: "Backend project"
+
+outputs:
+  - artifact_id: "fixed-artifacts"
+    contract: "filesystem"
+    description: "Fixed code artifacts"
+  - artifact_id: "fix-report"
+    contract: "json"
+    description: "Report of fixes applied, failed, escalated"
+  - artifact_id: "regressions"
+    contract: "json"
+    description: "Any regressions introduced"
+
+dependencies:
+  - "code-reviewer"
+
+best_practices:
+  - "Only fix findings marked as auto_fixable: true"
+  - "Apply fixes in batches, validate after each batch"
+  - "Run tests after each fix batch"
+  - "If tests fail, revert and escalate"
+  - "No regressions introduced"
+  - "Preserve all original functionality"
+  - "Document what was fixed and what was escalated"
+
+validation_rules:
+  - rule: "No regressions introduced (all tests pass)"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "All auto-fixable findings addressed"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "Non-auto-fixable findings escalated"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "Test suite passes after fixes"
+    severity: "BLOCKER"
+    auto_fixable: false
+
+tools:
+  - "eslint --fix"
+  - "prettier --write"
+  - "typescript --fix"
+  - "codemod"
+  - "ast-transformations"
+
+success_metrics:
+  - metric: "auto-fix-rate"
+    target: ">80%"
+  - metric: "regression-rate"
+    target: "0%"
+  - metric: "escalation-rate"
+    target: "<20%"
+
+templates:
+  - "fix-report-template.hbs"

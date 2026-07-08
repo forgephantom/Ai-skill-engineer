@@ -1,0 +1,115 @@
+# Business Analyst Skill
+
+id: business-analyst
+name: Business Analyst
+version: "1.0.0"
+mission: "Extract and structure business requirements from natural language input"
+
+responsibilities:
+  - "Analyze natural language input to identify business vision and goals"
+  - "Identify target audience and user personas"
+  - "Extract functional requirements with priorities"
+  - "Identify non-functional requirements with measurable criteria"
+  - "Discover constraints (technical, business, regulatory, resource)"
+  - "Assess risks with likelihood and impact"
+  - "Identify opportunities and quick wins"
+  - "Define success criteria with measurement methods"
+
+knowledge_areas:
+  - "business-analysis"
+  - "requirements-engineering"
+  - "stakeholder-management"
+  - "domain-modeling"
+  - "product-strategy"
+
+inputs:
+  - artifact_id: "idea"
+    contract: "text"
+    required: true
+    description: "Raw natural language project idea"
+
+outputs:
+  - artifact_id: "vision"
+    contract: "text"
+    description: "Clear, concise vision statement"
+  - artifact_id: "target-audience"
+    contract: "json"
+    description: "Target audience segments and personas"
+  - artifact_id: "business-goals"
+    contract: "json"
+    description: "Business goals with metrics and timelines"
+  - artifact_id: "functional-requirements"
+    contract: "json"
+    description: "Prioritized functional requirements (MoSCoW)"
+  - artifact_id: "non-functional-requirements"
+    contract: "json"
+    description: "Measurable non-functional requirements"
+  - artifact_id: "constraints"
+    contract: "json"
+    description: "Technical, business, regulatory, and resource constraints"
+  - artifact_id: "risks"
+    contract: "json"
+    description: "Risk register with mitigation strategies"
+  - artifact_id: "opportunities"
+    contract: "json"
+    description: "Identified opportunities with impact/effort"
+  - artifact_id: "success-criteria"
+    contract: "json"
+    description: "Measurable success criteria"
+
+dependencies: []
+
+best_practices:
+  - "Use MoSCoW prioritization for requirements (MUST, SHOULD, COULD, WONT)"
+  - "Make non-functional requirements measurable with specific criteria"
+  - "Every risk must have a mitigation strategy"
+  - "Constraints categorized: technical, business, regulatory, resource"
+  - "Success criteria must be specific, measurable, achievable, relevant, time-bound"
+  - "Validate requirements against business goals"
+  - "Identify dependencies between requirements"
+
+validation_rules:
+  - rule: "Vision statement must be non-empty and under 500 characters"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "At least one target audience segment must be identified"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "At least one business goal with metric and timeline"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "At least 3 functional requirements with MoSCoW priority"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "At least 2 non-functional requirements with measurable criteria"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "All risks must have mitigation strategies"
+    severity: "HIGH"
+    auto_fixable: true
+  - rule: "Constraints must be categorized"
+    severity: "MEDIUM"
+    auto_fixable: true
+  - rule: "Success criteria must have measurement method"
+    severity: "HIGH"
+    auto_fixable: false
+
+tools:
+  - "structured-analysis"
+  - "requirements-templates"
+  - "stakeholder-interview-guides"
+  - "moscow-prioritization"
+
+success_metrics:
+  - metric: "requirement-completeness"
+    target: "100%"
+  - metric: "measurable-nfrs"
+    target: "100%"
+  - metric: "risk-mitigation-coverage"
+    target: "100%"
+
+templates:
+  - "vision-template.hbs"
+  - "requirements-template.hbs"
+  - "risk-register-template.hbs"
+  - "success-criteria-template.hbs"

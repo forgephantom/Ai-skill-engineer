@@ -1,0 +1,127 @@
+# Validation Engine Skill
+
+id: validation-engine
+name: Validation Engine
+version: "1.0.0"
+mission: "Orchestrate comprehensive quality gate simulation: static analysis, type checking, linting, unit, integration, E2E, security, performance, accessibility, contract, chaos testing"
+
+responsibilities:
+  - "Run static analysis (ESLint, SonarQube, CodeQL)"
+  - "Run type checking (TypeScript, mypy, go vet)"
+  - "Run linting (project-specific rules)"
+  - "Run unit tests (Jest, Vitest, pytest, Go test)"
+  - "Run integration tests (Testcontainers, LocalStack)"
+  - "Run E2E tests (Playwright, Cypress)"
+  - "Run security scans (SAST, DAST, SCA, secrets)"
+  - "Run performance tests (k6, Artillery)"
+  - "Run accessibility tests (axe-core, Lighthouse)"
+  - "Run contract tests (Pact, Schemathesis)"
+  - "Run chaos engineering (Litmus, Chaos Mesh)"
+  - "Aggregate results and determine pass/fail"
+
+knowledge_areas:
+  - "test-orchestration"
+  - "static-analysis"
+  - "security-testing"
+  - "performance-testing"
+  - "accessibility-testing"
+  - "chaos-engineering"
+  - "ci-cd-pipelines"
+
+inputs:
+  - artifact_id: "fixed-artifacts"
+    contract: "filesystem"
+    required: true
+    description: "Fixed build artifacts"
+  - artifact_id: "build-output"
+    contract: "filesystem"
+    required: true
+    description: "Build output"
+  - artifact_id: "config"
+    contract: "json"
+    required: true
+    description: "Validation configuration"
+
+outputs:
+  - artifact_id: "validation-results"
+    contract: "json"
+    description: "Complete validation results per stage"
+  - artifact_id: "validation-summary"
+    contract: "json"
+    description: "Overall pass/fail and metrics"
+  - artifact_id: "failed-stages"
+    contract: "json"
+    description: "Stages that failed for retry"
+
+dependencies:
+  - "code-fixer"
+  - "frontend-engineer"
+  - "backend-engineer"
+  - "qa-engineer"
+  - "security-engineer"
+
+best_practices:
+  - "Run stages in parallel where possible"
+  - "Fail fast on critical stages"
+  - "Collect detailed metrics per stage"
+  - "Generate machine-readable reports"
+  - "Cache dependencies between runs"
+  - "Run in isolated environments (containers)"
+  - "Parallelize test execution"
+
+validation_rules:
+  - rule: "Static analysis: zero errors, <10 warnings"
+    severity: "BLOCKER"
+    auto_fixable: true
+  - rule: "Type checking: zero errors"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "Linting: zero errors"
+    severity: "BLOCKER"
+    auto_fixable: true
+  - rule: "Unit tests: >=80% coverage, 100% pass"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "Integration tests: 100% pass"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "E2E tests: 100% critical paths pass"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "Security: zero critical/high"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "Performance: meet all budgets"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "Accessibility: WCAG 2.1 AA"
+    severity: "BLOCKER"
+    auto_fixable: true
+  - rule: "Contract tests: 100% pass"
+    severity: "HIGH"
+    auto_fixable: false
+
+tools:
+  - "eslint"
+  - "typescript"
+  - "jest"
+  - "playwright"
+  - "codeql"
+  - "semgrep"
+  - "trufflehog"
+  - "k6"
+  - "axe-core"
+  - "pact"
+  - "litmus"
+
+success_metrics:
+  - metric: "first-pass-rate"
+    target: ">80%"
+  - metric: "total-duration"
+    target: "<10min"
+  - metric: "flakiness"
+    target: "<1%"
+
+templates:
+  - "validation-config-template.hbs"
+  - "validation-report-template.hbs"

@@ -1,0 +1,119 @@
+# Code Reviewer Skill
+
+id: code-reviewer
+name: Code Reviewer
+version: "1.0.0"
+mission: "Senior-engineer level code review across all dimensions: correctness, architecture, security, performance, scalability, maintainability, accessibility, reliability"
+
+responsibilities:
+  - "Review code for correctness (logic, edge cases, null handling, race conditions)"
+  - "Review architecture (coupling, cohesion, boundaries, patterns, scalability)"
+  - "Review security (OWASP Top 10, secrets, injection, authz, crypto, dependencies)"
+  - "Review performance (N+1, unbounded loops, memory leaks, caching, DB indexes)"
+  - "Review scalability (horizontal scaling, statelessness, partitioning, backpressure)"
+  - "Review maintainability (complexity, duplication, naming, modularity, testability)"
+  - "Review accessibility (WCAG 2.1 AA, semantic HTML, ARIA, contrast, keyboard)"
+  - "Review reliability (error handling, retries, timeouts, circuit breakers, observability)"
+  - "Categorize findings: BLOCKER, HIGH, MEDIUM, LOW, NIT"
+  - "Identify auto-fixable findings"
+
+knowledge_areas:
+  - "code-review"
+  - "software-architecture"
+  - "security"
+  - "performance-engineering"
+  - "accessibility"
+  - "reliability-engineering"
+  - "maintainability"
+
+inputs:
+  - artifact_id: "frontend-project"
+    contract: "filesystem"
+    required: true
+    description: "Frontend project code"
+  - artifact_id: "backend-project"
+    contract: "filesystem"
+    required: true
+    description: "Backend project code"
+  - artifact_id: "mobile-project"
+    contract: "filesystem"
+    required: false
+    description: "Mobile project code"
+  - artifact_id: "infrastructure"
+    contract: "filesystem"
+    required: true
+    description: "Infrastructure code"
+  - artifact_id: "api-contracts"
+    contract: "yaml"
+    required: true
+    description: "API contracts"
+  - artifact_id: "security-model"
+    contract: "json"
+    required: true
+    description: "Security model"
+
+outputs:
+  - artifact_id: "review-findings"
+    contract: "json"
+    description: "All review findings with severity and location"
+  - artifact_id: "review-summary"
+    contract: "json"
+    description: "Summary by severity and dimension"
+  - artifact_id: "auto-fixable-findings"
+    contract: "json"
+    description: "Findings that can be auto-fixed"
+
+dependencies:
+  - "frontend-engineer"
+  - "backend-engineer"
+  - "devops-engineer"
+  - "security-engineer"
+  - "qa-engineer"
+
+best_practices:
+  - "Review each dimension independently with specialized knowledge"
+  - "Findings must include: location, description, impact, fix suggestion, reference"
+  - "BLOCKER: Production-blocking issues (security vulns, data loss, crashes)"
+  - "HIGH: Significant issues affecting quality, security, performance"
+  - "MEDIUM: Noticeable issues, technical debt, best practice violations"
+  - "LOW: Minor improvements, style, documentation"
+  - "NIT: Cosmetic, subjective preferences"
+  - "Auto-fixable: Lint, style, simple patterns, security headers"
+
+validation_rules:
+  - rule: "Zero BLOCKER findings allowed"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "Zero HIGH security findings allowed"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "All findings must have location and fix suggestion"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "Each dimension must be reviewed"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "Auto-fixable findings must be marked"
+    severity: "MEDIUM"
+    auto_fixable: true
+
+tools:
+  - "eslint"
+  - "sonarqube"
+  - "codeql"
+  - "semgrep"
+  - "axe-core"
+  - "lighthouse"
+  - "dependency-check"
+
+success_metrics:
+  - metric: "blocker-findings"
+    target: "0"
+  - metric: "high-security-findings"
+    target: "0"
+  - metric: "auto-fixable-rate"
+    target: ">50%"
+
+templates:
+  - "review-findings-template.hbs"
+  - "review-summary-template.hbs"

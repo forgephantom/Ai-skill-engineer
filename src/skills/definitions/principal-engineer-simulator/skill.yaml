@@ -1,0 +1,106 @@
+# Principal Engineer Simulator Skill
+
+id: principal-engineer-simulator
+name: Principal Engineer Simulator
+version: "1.0.0"
+mission: "Simulate Principal Engineer PR review for production approval decision"
+
+responsibilities:
+  - "Evaluate architecture: Would I approve this for production? Is it maintainable?"
+  - "Evaluate code quality: Readable? Consistent? Well-tested?"
+  - "Evaluate security: Threats mitigated? Secrets managed? Compliance met?"
+  - "Evaluate operations: Observable? Debuggable? Recoverable? Scalable?"
+  - "Evaluate UX: Intuitive? Accessible? Performant? Reliable?"
+  - "Evaluate team: Can new engineer onboard? Is knowledge captured?"
+  - "Make decision: APPROVE, REQUEST_CHANGES, or REJECT"
+  - "Provide specific, actionable feedback for changes"
+
+knowledge_areas:
+  - "software-architecture"
+  - "code-quality"
+  - "security"
+  - "operations"
+  - "user-experience"
+  - "team-dynamics"
+  - "technical-leadership"
+
+inputs:
+  - artifact_id: "validation-results"
+    contract: "json"
+    required: true
+    description: "Complete validation results"
+  - artifact_id: "review-findings"
+    contract: "json"
+    required: true
+    description: "Code review findings"
+  - artifact_id: "fix-report"
+    contract: "json"
+    required: true
+    description: "Fix report from code fixer"
+  - artifact_id: "architecture-decisions"
+    contract: "markdown"
+    required: true
+    description: "Architecture Decision Records"
+  - artifact_id: "security-model"
+    contract: "json"
+    required: true
+    description: "Security model"
+  - artifact_id: "delivery-package"
+    contract: "json"
+    required: true
+    description: "Delivery package preview"
+
+outputs:
+  - artifact_id: "approval-decision"
+    contract: "json"
+    description: "APPROVE, REQUEST_CHANGES, or REJECT"
+  - artifact_id: "approval-feedback"
+    contract: "json"
+    description: "Detailed feedback per category"
+  - artifact_id: "required-changes"
+    contract: "json"
+    description: "Specific changes required if REQUEST_CHANGES"
+
+dependencies:
+  - "validation-engine"
+  - "code-reviewer"
+  - "code-fixer"
+
+best_practices:
+  - "Strict standards: simulate experienced principal engineer"
+  - "Categories: Architecture, Code Quality, Security, Operations, UX, Team"
+  - "APPROVE: All categories meet production standards"
+  - "REQUEST_CHANGES: Specific, actionable feedback per issue"
+  - "REJECT: Fundamental issues requiring re-plan (Phase 2)"
+  - "Feedback must be specific: file, line, issue, expected fix"
+  - "Only approve if simulated approval = YES"
+
+validation_rules:
+  - rule: "Decision must be one of: APPROVE, REQUEST_CHANGES, REJECT"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "If REQUEST_CHANGES, must have specific feedback"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "If REJECT, must identify fundamental issues"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "All categories must be evaluated"
+    severity: "HIGH"
+    auto_fixable: false
+
+tools:
+  - "review-checklist"
+  - "architecture-evaluation"
+  - "code-quality-metrics"
+  - "security-assessment"
+
+success_metrics:
+  - metric: "approval-accuracy"
+    target: ">95%"
+  - metric: "feedback-actionability"
+    target: "100%"
+
+templates:
+  - "approval-template.hbs"
+  - "feedback-template.hbs"

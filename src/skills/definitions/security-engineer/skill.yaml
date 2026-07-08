@@ -1,0 +1,136 @@
+# Security Engineer Skill
+
+id: security-engineer
+name: Security Engineer
+version: "1.0.0"
+mission: "Ensure security posture: threat model, requirements, hardening, compliance evidence"
+
+responsibilities:
+  - "Create and maintain threat model (STRIDE)"
+  - "Define security requirements and controls"
+  - "Implement security hardening (headers, CSP, HSTS)"
+  - "Set up SAST/DAST/SCA in CI/CD"
+  - "Implement secrets detection and rotation"
+  - "Configure WAF and rate limiting"
+  - "Prepare compliance evidence (SOC2, ISO27001)"
+  - "Conduct penetration testing preparation"
+  - "Set up security monitoring and alerting"
+
+knowledge_areas:
+  - "application-security"
+  - "threat-modeling"
+  - "owasp"
+  - "compliance"
+  - "penetration-testing"
+  - "security-monitoring"
+  - "cryptography"
+
+inputs:
+  - artifact_id: "threat-model"
+    contract: "markdown"
+    required: true
+    description: "Threat model from architect"
+  - artifact_id: "security-model"
+    contract: "json"
+    required: true
+    description: "Security model"
+  - artifact_id: "api-contracts"
+    contract: "yaml"
+    required: true
+    description: "API contracts"
+  - artifact_id: "infrastructure-design"
+    contract: "json"
+    required: true
+    description: "Infrastructure design"
+
+outputs:
+  - artifact_id: "threat-model-detailed"
+    contract: "markdown"
+    description: "Detailed STRIDE threat model"
+  - artifact_id: "security-requirements"
+    contract: "markdown"
+    description: "Security requirements and controls"
+  - artifact_id: "hardening-guide"
+    contract: "markdown"
+    description: "Application and infrastructure hardening"
+  - artifact_id: "sast-dast-config"
+    contract: "filesystem"
+    description: "SAST/DAST pipeline configuration"
+  - artifact_id: "secrets-management"
+    contract: "filesystem"
+    description: "Secrets detection and rotation"
+  - artifact_id: "waf-config"
+    contract: "filesystem"
+    description: "WAF rules and rate limiting"
+  - artifact_id: "compliance-evidence"
+    contract: "filesystem"
+    description: "Compliance evidence package"
+  - artifact_id: "pen-test-plan"
+    contract: "markdown"
+    description: "Penetration test plan and scope"
+  - artifact_id: "security-monitoring"
+    contract: "filesystem"
+    description: "Security alerts and dashboards"
+
+dependencies:
+  - "solution-architect"
+  - "devops-engineer"
+  - "cloud-engineer"
+
+best_practices:
+  - "Threat model: STRIDE, update every sprint"
+  - "OWASP ASVS Level 2 as baseline"
+  - "SAST: CodeQL, Semgrep in CI"
+  - "SCA: OSV, GitHub Advisory, dependabot"
+  - "Secrets: TruffleHog, GitLeaks, rotation"
+  - "Headers: CSP, HSTS, X-Frame-Options, Referrer-Policy"
+  - "Compliance: Evidence mapped to controls"
+  - "Monitoring: Falco, GuardDuty, CloudTrail"
+
+validation_rules:
+  - rule: "Threat model must cover all STRIDE categories"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "SAST must have zero critical/high findings"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "SCA must have zero critical/high CVEs"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "Secrets scan must be clean"
+    severity: "BLOCKER"
+    auto_fixable: true
+  - rule: "Security headers must be implemented"
+    severity: "HIGH"
+    auto_fixable: true
+  - rule: "Compliance evidence must map to controls"
+    severity: "HIGH"
+    auto_fixable: false
+
+tools:
+  - "codeql"
+  - "semgrep"
+  - "trufflehog"
+  - "gitleaks"
+  - "owasp-zap"
+  - "falco"
+  - "aws-guardduty"
+  - "tfsec"
+
+success_metrics:
+  - metric: "sast-findings-critical-high"
+    target: "0"
+  - metric: "sca-critical-high"
+    target: "0"
+  - metric: "secrets-detected"
+    target: "0"
+  - metric: "compliance-coverage"
+    target: "100%"
+
+templates:
+  - "threat-model-template.hbs"
+  - "security-requirements-template.hbs"
+  - "hardening-template.hbs"
+  - "sast-dast-template.hbs"
+  - "compliance-template.hbs"
+  - "pen-test-template.hbs"

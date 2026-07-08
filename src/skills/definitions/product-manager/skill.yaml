@@ -1,0 +1,136 @@
+# Product Manager Skill
+
+id: product-manager
+name: Product Manager
+version: "1.0.0"
+mission: "Create comprehensive Product Requirements Document (PRD) with user stories and acceptance criteria"
+
+responsibilities:
+  - "Write detailed Product Requirements Document (PRD)"
+  - "Create user stories following INVEST criteria"
+  - "Define executable acceptance criteria (Gherkin)"
+  - "Prioritize features using MoSCoW and RICE"
+  - "Define MVP scope and release criteria"
+  - "Create feature specifications with edge cases"
+  - "Define user personas and journeys"
+  - "Establish product metrics and analytics events"
+
+knowledge_areas:
+  - "product-management"
+  - "requirements-engineering"
+  - "user-story-writing"
+  - "acceptance-criteria"
+  - "prioritization-frameworks"
+  - "agile-methodologies"
+
+inputs:
+  - artifact_id: "vision"
+    contract: "text"
+    required: true
+    description: "Product vision"
+  - artifact_id: "target-audience"
+    contract: "json"
+    required: true
+    description: "Target audience segments"
+  - artifact_id: "business-goals"
+    contract: "json"
+    required: true
+    description: "Business goals and metrics"
+  - artifact_id: "functional-requirements"
+    contract: "json"
+    required: true
+    description: "Functional requirements"
+  - artifact_id: "non-functional-requirements"
+    contract: "json"
+    required: true
+    description: "Non-functional requirements"
+  - artifact_id: "product-positioning"
+    contract: "markdown"
+    required: true
+    description: "Product positioning from strategist"
+  - artifact_id: "market-analysis"
+    contract: "markdown"
+    required: true
+    description: "Market analysis from strategist"
+
+outputs:
+  - artifact_id: "prd"
+    contract: "markdown"
+    description: "Complete Product Requirements Document"
+  - artifact_id: "user-stories"
+    contract: "json"
+    description: "User stories in INVEST format with acceptance criteria"
+  - artifact_id: "acceptance-criteria"
+    contract: "json"
+    description: "Executable Gherkin acceptance criteria"
+  - artifact_id: "feature-specs"
+    contract: "markdown"
+    description: "Detailed feature specifications"
+  - artifact_id: "user-personas"
+    contract: "json"
+    description: "User personas with goals and pain points"
+  - artifact_id: "user-journeys"
+    contract: "markdown"
+    description: "User journey maps"
+  - artifact_id: "mvp-scope"
+    contract: "json"
+    description: "MVP scope definition with release criteria"
+  - artifact_id: "analytics-events"
+    contract: "json"
+    description: "Analytics event definitions"
+
+dependencies:
+  - "business-analyst"
+  - "product-strategist"
+
+best_practices:
+  - "PRD structure: Problem, Solution, Users, Features, Metrics, Timeline, Risks"
+  - "User stories: As a [who], I want to [what], so that [why]"
+  - "INVEST: Independent, Negotiable, Valuable, Estimable, Small, Testable"
+  - "Acceptance criteria: Given/When/Then format, executable"
+  - "MoSCoW: Must, Should, Could, Won't for prioritization"
+  - "RICE: Reach, Impact, Confidence, Effort for scoring"
+  - "MVP: Minimum viable to test core hypothesis"
+  - "Analytics: Event naming convention, properties, user identification"
+
+validation_rules:
+  - rule: "PRD must cover all required sections"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "Every functional requirement must map to >=1 user story"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "All user stories must follow INVEST criteria"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "Acceptance criteria must be in Gherkin format"
+    severity: "BLOCKER"
+    auto_fixable: true
+  - rule: "MVP scope must be defined with clear exit criteria"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "User personas must have goals and pain points"
+    severity: "MEDIUM"
+    auto_fixable: true
+
+tools:
+  - "prd-template"
+  - "user-story-mapper"
+  - "gherkin-editor"
+  - "prioritization-matrix"
+  - "persona-builder"
+
+success_metrics:
+  - metric: "prd-completeness"
+    target: "100%"
+  - metric: "story-traceability"
+    target: "100%"
+  - metric: "gherkin-executable"
+    target: "100%"
+
+templates:
+  - "prd-template.hbs"
+  - "user-story-template.hbs"
+  - "acceptance-criteria-template.hbs"
+  - "feature-spec-template.hbs"
+  - "persona-template.hbs"

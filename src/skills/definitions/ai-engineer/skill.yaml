@@ -1,0 +1,135 @@
+# AI Engineer Skill
+
+id: ai-engineer
+name: AI Engineer
+version: "1.0.0"
+mission: "Build production AI/ML features including LLMs, RAG, agents, embeddings, and evaluation"
+
+responsibilities:
+  - "Design LLM application architecture"
+  - "Implement RAG pipelines (retrieval, generation, evaluation)"
+  - "Build AI agents with tool use"
+  - "Implement prompt engineering and management"
+  - "Set up embedding generation and vector search"
+  - "Build evaluation and monitoring pipelines"
+  - "Implement guardrails and safety"
+  - "Optimize latency and cost"
+  - "Set up fine-tuning pipelines (if needed)"
+
+knowledge_areas:
+  - "llm-applications"
+  - "rag"
+  - "agents"
+  - "prompt-engineering"
+  - "vector-databases"
+  - "evaluation"
+  - "mlops"
+  - "ai-safety"
+
+inputs:
+  - artifact_id: "functional-requirements"
+    contract: "json"
+    required: true
+    description: "AI feature requirements"
+  - artifact_id: "data-models"
+    contract: "json"
+    required: true
+    description: "Data models for AI features"
+  - artifact_id: "api-contracts"
+    contract: "yaml"
+    required: true
+    description: "API contracts for AI endpoints"
+
+outputs:
+  - artifact_id: "llm-architecture"
+    contract: "markdown"
+    description: "LLM application architecture"
+  - artifact_id: "rag-pipeline"
+    contract: "filesystem"
+    description: "RAG implementation"
+  - artifact_id: "agents"
+    contract: "filesystem"
+    description: "Agent implementations"
+  - artifact_id: "prompts"
+    contract: "filesystem"
+    description: "Prompt templates and management"
+  - artifact_id: "embeddings"
+    contract: "filesystem"
+    description: "Embedding generation and vector search"
+  - artifact_id: "evaluation"
+    contract: "filesystem"
+    description: "Evaluation benchmarks and CI"
+  - artifact_id: "guardrails"
+    contract: "filesystem"
+    description: "Safety and guardrail implementation"
+  - artifact_id: "ai-monitoring"
+    contract: "filesystem"
+    description: "AI observability and monitoring"
+  - artifact_id: "cost-optimization"
+    contract: "markdown"
+    description: "Cost analysis and optimization"
+
+dependencies:
+  - "solution-architect"
+  - "backend-engineer"
+  - "database-engineer"
+
+best_practices:
+  - "RAG: Chunking strategy, retrieval (hybrid), reranking, citation"
+  - "Agents: ReAct, plan-and-execute, tool definitions, state"
+  - "Prompts: Versioned, templated, few-shot, chain-of-thought"
+  - "Evaluation: Golden sets, LLM-as-judge, metrics (faithfulness, relevance)"
+  - "Guardrails: Input validation, output parsing, PII, hallucination"
+  - "Observability: Traces, token usage, latency, quality metrics"
+  - "Cost: Caching, model routing, batching, prompt compression"
+
+validation_rules:
+  - rule: "RAG pipeline must have evaluation benchmarks"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "All prompts must be versioned and tested"
+    severity: "HIGH"
+    auto_fixable: true
+  - rule: "Guardrails must cover PII, injection, hallucination"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "Evaluation must run in CI/CD"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "Cost monitoring with alerts"
+    severity: "HIGH"
+    auto_fixable: true
+  - rule: "Latency budgets defined and monitored"
+    severity: "HIGH"
+    auto_fixable: false
+
+tools:
+  - "langchain"
+  - "llamaindex"
+  - "openai"
+  - "anthropic"
+  - "pinecone"
+  - "weaviate"
+  - "langsmith"
+  - "ragas"
+  - "deepeval"
+
+success_metrics:
+  - metric: "rag-faithfulness"
+    target: ">90%"
+  - metric: "rag-relevance"
+    target: ">85%"
+  - metric: "agent-success-rate"
+    target: ">80%"
+  - metric: "latency-p99"
+    target: "<5s"
+  - metric: "cost-per-request"
+    target: "<$0.01"
+
+templates:
+  - "rag-pipeline-template.hbs"
+  - "agent-template.hbs"
+  - "prompt-template.hbs"
+  - "evaluation-template.hbs"
+  - "guardrail-template.hbs"
+  - "monitoring-template.hbs"

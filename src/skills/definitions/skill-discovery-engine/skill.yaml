@@ -1,0 +1,117 @@
+# Skill Discovery Engine Skill
+
+id: skill-discovery-engine
+name: Skill Discovery Engine
+version: "1.0.0"
+mission: "Determine complete expert roster and execution graph based on project requirements"
+
+responsibilities:
+  - "Analyze project requirements to identify required skills"
+  - "Map project type to standard skill set"
+  - "Build dependency graph (DAG) between skills"
+  - "Identify parallel execution groups"
+  - "Calculate execution order"
+  - "Estimate duration per skill and total"
+  - "Identify required templates"
+  - "Generate skill definitions for missing skills"
+
+knowledge_areas:
+  - "skill-engineering"
+  - "dependency-resolution"
+  - "project-analysis"
+  - "graph-algorithms"
+  - "meta-programming"
+
+inputs:
+  - artifact_id: "prd"
+    contract: "markdown"
+    required: true
+    description: "Product Requirements Document"
+  - artifact_id: "tech-spec"
+    contract: "markdown"
+    required: true
+    description: "Technical Specification"
+  - artifact_id: "user-stories"
+    contract: "json"
+    required: true
+    description: "User stories"
+  - artifact_id: "architecture-decisions"
+    contract: "markdown"
+    required: true
+    description: "Architecture decisions"
+  - artifact_id: "non-functional-requirements"
+    contract: "json"
+    required: true
+    description: "Non-functional requirements"
+
+outputs:
+  - artifact_id: "skill-graph"
+    contract: "json"
+    description: "Complete skill graph with DAG"
+  - artifact_id: "skill-definitions"
+    contract: "json"
+    description: "Selected skill definitions"
+  - artifact_id: "parallel-groups"
+    contract: "json"
+    description: "Parallel execution groups"
+  - artifact_id: "execution-order"
+    contract: "json"
+    description: "Topological execution order"
+  - artifact_id: "estimated-duration"
+    contract: "json"
+    description: "Duration estimates per skill"
+  - artifact_id: "required-templates"
+    contract: "json"
+    description: "List of required templates"
+  - artifact_id: "skill-gaps"
+    contract: "json"
+    description: "Missing skills that need generation"
+
+dependencies:
+  - "product-manager"
+  - "solution-architect"
+
+best_practices:
+  - "Always include: PM, Architect, Security, QA, Docs"
+  - "Add Frontend/Backend based on UI/API requirements"
+  - "Add Mobile if native mobile required"
+  - "Add AI Engineer if ML/LLM features"
+  - "Add Database Engineer if persistent data"
+  - "Add Cloud/DevOps if cloud deployment"
+  - "Graph must be acyclic"
+  - "Parallel groups must be truly independent"
+
+validation_rules:
+  - rule: "Graph must be acyclic (no circular dependencies)"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "All required skills must be present"
+    severity: "BLOCKER"
+    auto_fixable: true
+  - rule: "Parallel groups must have no cross-dependencies"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "Every output artifact must have a producer skill"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "Execution order must be topologically valid"
+    severity: "BLOCKER"
+    auto_fixable: true
+
+tools:
+  - "dag-algorithm"
+  - "topological-sort"
+  - "skill-registry"
+  - "template-registry"
+
+success_metrics:
+  - metric: "skill-coverage"
+    target: "100%"
+  - metric: "graph-validity"
+    target: "100%"
+  - metric: "parallel-efficiency"
+    target: ">70%"
+
+templates:
+  - "skill-graph-template.hbs"
+  - "execution-plan-template.hbs"

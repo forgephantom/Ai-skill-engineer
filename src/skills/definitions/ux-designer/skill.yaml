@@ -1,0 +1,120 @@
+# UX Designer Skill
+
+id: ux-designer
+name: UX Designer
+version: "1.0.0"
+mission: "Design user journeys, wireframes, information architecture, and usability criteria"
+
+responsibilities:
+  - "Create user flows and task flows"
+  - "Design wireframes for key screens"
+  - "Define information architecture"
+  - "Create user journey maps"
+  - "Define usability criteria and metrics"
+  - "Design interaction patterns"
+  - "Create accessibility requirements"
+  - "Design error states and empty states"
+
+knowledge_areas:
+  - "ux-design"
+  - "user-research"
+  - "interaction-design"
+  - "information-architecture"
+  - "usability-testing"
+  - "accessibility"
+
+inputs:
+  - artifact_id: "prd"
+    contract: "markdown"
+    required: true
+    description: "Product Requirements Document"
+  - artifact_id: "user-stories"
+    contract: "json"
+    required: true
+    description: "User stories"
+  - artifact_id: "user-personas"
+    contract: "json"
+    required: true
+    description: "User personas"
+  - artifact_id: "user-journeys"
+    contract: "markdown"
+    required: true
+    description: "User journey maps"
+
+outputs:
+  - artifact_id: "user-flows"
+    contract: "markdown"
+    description: "User flows for all key tasks"
+  - artifact_id: "wireframes"
+    contract: "markdown"
+    description: "Low-fidelity wireframes for key screens"
+  - artifact_id: "information-architecture"
+    contract: "json"
+    description: "Site map and navigation structure"
+  - artifact_id: "journey-maps"
+    contract: "markdown"
+    description: "Detailed user journey maps with emotions"
+  - artifact_id: "usability-criteria"
+    contract: "json"
+    description: "Usability metrics and success criteria"
+  - artifact_id: "interaction-patterns"
+    contract: "markdown"
+    description: "Standard interaction patterns"
+  - artifact_id: "accessibility-requirements"
+    contract: "json"
+    description: "WCAG 2.1 AA requirements per screen"
+  - artifact_id: "error-empty-states"
+    contract: "markdown"
+    description: "Error state and empty state designs"
+
+dependencies:
+  - "product-manager"
+
+best_practices:
+  - "User flows: Entry, steps, decision points, exit"
+  - "Wireframes: Mobile-first, content-first, annotated"
+  - "IA: Card sorting validated, max 3 clicks to key actions"
+  - "Journey maps: Phases, actions, thoughts, emotions, opportunities"
+  - "Usability: Task success rate, time on task, error rate, satisfaction"
+  - "Accessibility: WCAG 2.1 AA from design phase"
+  - "Error states: Helpful, actionable, non-technical language"
+
+validation_rules:
+  - rule: "All user stories must have corresponding user flow"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "Wireframes must cover all MVP screens"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "IA must have validated navigation structure"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "Usability criteria must be measurable"
+    severity: "HIGH"
+    auto_fixable: true
+  - rule: "Accessibility requirements must reference WCAG 2.1 AA"
+    severity: "BLOCKER"
+    auto_fixable: false
+
+tools:
+  - "flowchart-tool"
+  - "wireframe-tool"
+  - "ia-sitemap-tool"
+  - "journey-map-template"
+  - "accessibility-checklist"
+
+success_metrics:
+  - metric: "flow-coverage"
+    target: "100%"
+  - metric: "wireframe-coverage"
+    target: "100%"
+  - metric: "wcag-compliance"
+    target: "AA"
+
+templates:
+  - "user-flow-template.hbs"
+  - "wireframe-template.hbs"
+  - "ia-template.hbs"
+  - "journey-map-template.hbs"
+  - "usability-criteria-template.hbs"
+  - "accessibility-requirements-template.hbs"

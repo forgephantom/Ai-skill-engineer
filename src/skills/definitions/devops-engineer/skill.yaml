@@ -1,0 +1,131 @@
+# DevOps Engineer Skill
+
+id: devops-engineer
+name: DevOps Engineer
+version: "1.0.0"
+mission: "Build CI/CD pipelines, deployment automation, environments, promotion, rollback, secrets"
+
+responsibilities:
+  - "Create CI/CD pipelines (GitHub Actions / GitLab CI)"
+  - "Define environments (dev, staging, prod)"
+  - "Implement deployment strategies (blue-green, canary)"
+  - "Set up automated rollback"
+  - "Manage secrets (Vault, Sealed Secrets, GitHub Secrets)"
+  - "Configure container registry and image scanning"
+  - "Set up preview environments for PRs"
+  - "Implement infrastructure testing"
+  - "Configure notifications and alerts"
+
+knowledge_areas:
+  - "ci-cd"
+  - "github-actions"
+  - "kubernetes"
+  - "helm"
+  - "argo-cd"
+  - "secrets-management"
+  - "container-security"
+
+inputs:
+  - artifact_id: "frontend-project"
+    contract: "filesystem"
+    required: true
+    description: "Frontend project"
+  - artifact_id: "backend-project"
+    contract: "filesystem"
+    required: true
+    description: "Backend project"
+  - artifact_id: "terraform-modules"
+    contract: "filesystem"
+    required: true
+    description: "Terraform modules"
+  - artifact_id: "security-model"
+    contract: "json"
+    required: true
+    description: "Security requirements"
+
+outputs:
+  - artifact_id: "ci-pipeline"
+    contract: "filesystem"
+    description: "CI pipeline (build, test, scan)"
+  - artifact_id: "cd-pipeline"
+    contract: "filesystem"
+    description: "CD pipeline (deploy, promote, rollback)"
+  - artifact_id: "environments"
+    contract: "filesystem"
+    description: "Environment configurations"
+  - artifact_id: "deployment-strategy"
+    contract: "markdown"
+    description: "Deployment strategy documentation"
+  - artifact_id: "secrets-management"
+    contract: "filesystem"
+    description: "Secrets management setup"
+  - artifact_id: "container-security"
+    contract: "filesystem"
+    description: "Image scanning, signing, admission"
+  - artifact_id: "preview-environments"
+    contract: "filesystem"
+    description: "PR preview environment setup"
+  - artifact_id: "runbooks-cicd"
+    contract: "markdown"
+    description: "CI/CD operational runbooks"
+
+dependencies:
+  - "cloud-engineer"
+  - "backend-engineer"
+  - "frontend-engineer"
+  - "security-engineer"
+
+best_practices:
+  - "GitHub Actions: Reusable workflows, matrix builds, caching"
+  - "Environments: Promotion gates, manual approvals for prod"
+  - "Deployment: Blue-green or canary, health checks, auto-rollback"
+  - "Secrets: External secrets operator, rotation, audit"
+  - "Containers: Distroless, non-root, signed, scanned"
+  - "Testing: Unit in CI, integration in staging, E2E in preview"
+  - "Observability: Pipeline metrics, deploy tracking"
+
+validation_rules:
+  - rule: "CI must run lint, typecheck, test, security scan"
+    severity: "BLOCKER"
+    auto_fixable: true
+  - rule: "CD must have approval gate for production"
+    severity: "BLOCKER"
+    auto_fixable: true
+  - rule: "Rollback must be automated and tested"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "Secrets must not be in repository"
+    severity: "BLOCKER"
+    auto_fixable: true
+  - rule: "Container images must be scanned"
+    severity: "HIGH"
+    auto_fixable: true
+  - rule: "Preview environments for all PRs"
+    severity: "MEDIUM"
+    auto_fixable: false
+
+tools:
+  - "github-actions"
+  - "argo-cd"
+  - "helm"
+  - "kustomize"
+  - "vault"
+  - "cosign"
+  - "trivy"
+  - "kyverno"
+
+success_metrics:
+  - metric: "deploy-time"
+    target: "<10min"
+  - metric: "rollback-time"
+    target: "<2min"
+  - metric: "pipeline-reliability"
+    target: ">99%"
+
+templates:
+  - "ci-workflow-template.hbs"
+  - "cd-workflow-template.hbs"
+  - "environment-template.hbs"
+  - "secrets-template.hbs"
+  - "preview-template.hbs"
+  - "runbook-cicd-template.hbs"

@@ -1,0 +1,156 @@
+# Frontend Engineer Skill
+
+id: frontend-engineer
+name: Frontend Engineer
+version: "1.0.0"
+mission: "Build production-ready web frontend with components, pages, state management, routing, and tests"
+
+responsibilities:
+  - "Set up frontend project (Next.js, React, TypeScript, Tailwind)"
+  - "Implement design system components"
+  - "Build pages and layouts from mockups"
+  - "Implement state management (React Query, Zustand)"
+  - "Configure routing and navigation"
+  - "Integrate API client (tRPC, GraphQL, REST)"
+  - "Write unit, integration, and E2E tests"
+  - "Set up Storybook and Chromatic"
+  - "Optimize performance (bundle, LCP, CLS)"
+  - "Ensure accessibility (WCAG 2.1 AA)"
+
+knowledge_areas:
+  - "frontend-development"
+  - "react"
+  - "nextjs"
+  - "typescript"
+  - "tailwindcss"
+  - "state-management"
+  - "testing"
+  - "performance-optimization"
+  - "accessibility"
+
+inputs:
+  - artifact_id: "design-system"
+    contract: "json"
+    required: true
+    description: "Design system specification"
+  - artifact_id: "high-fidelity-mockups"
+    contract: "markdown"
+    required: true
+    description: "High-fidelity mockups"
+  - artifact_id: "component-specs"
+    contract: "json"
+    required: true
+    description: "Component specifications"
+  - artifact_id: "api-contracts"
+    contract: "yaml"
+    required: true
+    description: "OpenAPI specification"
+  - artifact_id: "user-flows"
+    contract: "markdown"
+    required: true
+    description: "User flows"
+  - artifact_id: "design-tokens"
+    contract: "json"
+    required: true
+    description: "Design tokens"
+
+outputs:
+  - artifact_id: "frontend-project"
+    contract: "filesystem"
+    description: "Complete frontend project structure"
+  - artifact_id: "component-library"
+    contract: "filesystem"
+    description: "Reusable component library"
+  - artifact_id: "pages"
+    contract: "filesystem"
+    description: "Page components and layouts"
+  - artifact_id: "hooks"
+    contract: "filesystem"
+    description: "Custom React hooks"
+  - artifact_id: "state-management"
+    contract: "filesystem"
+    description: "State management setup"
+  - artifact_id: "api-client"
+    contract: "filesystem"
+    description: "Type-safe API client"
+  - artifact_id: "storybook"
+    contract: "filesystem"
+    description: "Storybook configuration and stories"
+  - artifact_id: "frontend-tests"
+    contract: "filesystem"
+    description: "Unit, integration, E2E tests"
+  - artifact_id: "frontend-config"
+    contract: "filesystem"
+    description: "Build, lint, typecheck configuration"
+
+dependencies:
+  - "solution-architect"
+  - "ui-designer"
+
+best_practices:
+  - "Next.js 14+ App Router, React 18, TypeScript strict"
+  - "Tailwind CSS with design tokens integration"
+  - "React Query for server state, Zustand for client state"
+  - "tRPC or typed OpenAPI client for API integration"
+  - "Component composition over inheritance"
+  - "Unit tests: React Testing Library, >80% coverage"
+  - "E2E: Playwright, critical user journeys"
+  - "Storybook: All components with variants"
+  - "Performance: <100KB initial JS, LCP <2.5s"
+  - "Accessibility: axe-core zero violations"
+
+validation_rules:
+  - rule: "TypeScript strict mode must pass"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "ESLint must pass with zero errors"
+    severity: "BLOCKER"
+    auto_fixable: true
+  - rule: "Unit test coverage >= 80%"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "E2E tests cover critical user journeys"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "Bundle size < 100KB gzipped"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "Accessibility: zero axe-core violations"
+    severity: "BLOCKER"
+    auto_fixable: true
+  - rule: "Storybook stories for all components"
+    severity: "MEDIUM"
+    auto_fixable: false
+
+tools:
+  - "nextjs"
+  - "typescript"
+  - "tailwindcss"
+  - "react-query"
+  - "zustand"
+  - "trpc"
+  - "jest"
+  - "playwright"
+  - "storybook"
+  - "chromatic"
+  - "axe-core"
+
+success_metrics:
+  - metric: "typescript-strict"
+    target: "pass"
+  - metric: "test-coverage"
+    target: ">=80%"
+  - metric: "bundle-size"
+    target: "<100KB"
+  - metric: "accessibility"
+    target: "zero violations"
+
+templates:
+  - "nextjs-project-template.hbs"
+  - "component-template.hbs"
+  - "page-template.hbs"
+  - "hook-template.hbs"
+  - "api-client-template.hbs"
+  - "storybook-template.hbs"
+  - "test-template.hbs"
+  - "config-templates.hbs"

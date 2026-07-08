@@ -1,0 +1,150 @@
+# Backend Engineer Skill
+
+id: backend-engineer
+name: Backend Engineer
+version: "1.0.0"
+mission: "Build production-ready backend services with APIs, domain models, events, workers, and tests"
+
+responsibilities:
+  - "Set up backend project (Go, Node.js, or Python)"
+  - "Implement API endpoints from OpenAPI spec"
+  - "Design and implement domain models"
+  - "Implement business logic and use cases"
+  - "Set up event-driven architecture (message broker)"
+  - "Implement background workers and jobs"
+  - "Set up database (migrations, repositories)"
+  - "Implement authentication and authorization"
+  - "Add observability (logs, metrics, traces)"
+  - "Write unit, integration, and contract tests"
+
+knowledge_areas:
+  - "backend-development"
+  - "api-development"
+  - "domain-driven-design"
+  - "event-driven-architecture"
+  - "database-design"
+  - "authentication"
+  - "observability"
+  - "testing"
+
+inputs:
+  - artifact_id: "api-contracts"
+    contract: "yaml"
+    required: true
+    description: "OpenAPI specification"
+  - artifact_id: "data-models"
+    contract: "json"
+    required: true
+    description: "Data models from architect"
+  - artifact_id: "architecture-decisions"
+    contract: "markdown"
+    required: true
+    description: "ADRs and architecture decisions"
+  - artifact_id: "security-model"
+    contract: "json"
+    required: true
+    description: "Auth, authz, encryption specs"
+  - artifact_id: "infrastructure-design"
+    contract: "json"
+    required: true
+    description: "Infrastructure design"
+
+outputs:
+  - artifact_id: "backend-project"
+    contract: "filesystem"
+    description: "Complete backend project structure"
+  - artifact_id: "api-services"
+    contract: "filesystem"
+    description: "API service implementations"
+  - artifact_id: "domain-models"
+    contract: "filesystem"
+    description: "Domain models and business logic"
+  - artifact_id: "repositories"
+    contract: "filesystem"
+    description: "Data access layer"
+  - artifact_id: "event-handlers"
+    contract: "filesystem"
+    description: "Event publishing and handling"
+  - artifact_id: "workers"
+    contract: "filesystem"
+    description: "Background workers and jobs"
+  - artifact_id: "auth-module"
+    contract: "filesystem"
+    description: "Authentication and authorization"
+  - artifact_id: "observability"
+    contract: "filesystem"
+    description: "Logging, metrics, tracing setup"
+  - artifact_id: "backend-tests"
+    contract: "filesystem"
+    description: "Unit, integration, contract tests"
+  - artifact_id: "database-migrations"
+    contract: "filesystem"
+    description: "Database migration files"
+
+dependencies:
+  - "solution-architect"
+  - "database-engineer"
+
+best_practices:
+  - "Clean architecture: domain, application, infrastructure layers"
+  - "API-first: Generate server stubs from OpenAPI"
+  - "Domain-driven design: Entities, value objects, aggregates"
+  - "Event-driven: Async communication, eventual consistency"
+  - "Repository pattern for data access"
+  - "JWT/OAuth2 for auth, RBAC/ABAC for authz"
+  - "OpenTelemetry for observability"
+  - "Tests: Unit >80%, Integration all endpoints, Contract tests"
+  - "Database: Migrations versioned, reversible"
+
+validation_rules:
+  - rule: "All OpenAPI endpoints must be implemented"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "Type safety: strict mode / type checking passes"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "Unit test coverage >= 80%"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "Integration tests for all API endpoints"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "Contract tests against OpenAPI spec"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "Observability: logs, metrics, traces configured"
+    severity: "HIGH"
+    auto_fixable: true
+  - rule: "Database migrations must be reversible"
+    severity: "MEDIUM"
+    auto_fixable: false
+
+tools:
+  - "go"  # or nodejs/python
+  - "sqlc"
+  - "watermill"
+  - "nats"
+  - "opentelemetry"
+  - "jest"  # or equivalent
+  - "testcontainers"
+  - "pact"
+
+success_metrics:
+  - metric: "api-coverage"
+    target: "100%"
+  - metric: "test-coverage"
+    target: ">=80%"
+  - metric: "contract-tests"
+    target: "100%"
+
+templates:
+  - "go-project-template.hbs"
+  - "api-service-template.hbs"
+  - "domain-model-template.hbs"
+  - "repository-template.hbs"
+  - "event-handler-template.hbs"
+  - "worker-template.hbs"
+  - "auth-template.hbs"
+  - "observability-template.hbs"
+  - "migration-template.hbs"
+  - "test-templates.hbs"

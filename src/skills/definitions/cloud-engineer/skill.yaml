@@ -1,0 +1,120 @@
+# Cloud Engineer Skill
+
+id: cloud-engineer
+name: Cloud Engineer
+version: "1.0.0"
+mission: "Design cloud infrastructure: Terraform, networking, security groups, IAM, cost estimates"
+
+responsibilities:
+  - "Write Terraform modules for all infrastructure"
+  - "Design VPC, subnets, routing, NAT gateways"
+  - "Configure security groups and network ACLs"
+  - "Define IAM roles and policies (least privilege)"
+  - "Set up managed services (RDS, ElastiCache, S3, etc.)"
+  - "Configure DNS, SSL certificates"
+  - "Design multi-AZ / multi-region architecture"
+  - "Estimate monthly costs"
+  - "Set up drift detection"
+
+knowledge_areas:
+  - "cloud-infrastructure"
+  - "terraform"
+  - "networking"
+  - "iam"
+  - "cost-optimization"
+  - "aws"  # or GCP/Azure
+
+inputs:
+  - artifact_id: "infrastructure-design"
+    contract: "json"
+    required: true
+    description: "Infrastructure design from architect"
+  - artifact_id: "security-model"
+    contract: "json"
+    required: true
+    description: "Security model for IAM"
+  - artifact_id: "capacity-estimates"
+    contract: "json"
+    required: true
+    description: "Capacity estimates"
+
+outputs:
+  - artifact_id: "terraform-modules"
+    contract: "filesystem"
+    description: "Reusable Terraform modules"
+  - artifact_id: "terraform-root"
+    contract: "filesystem"
+    description: "Root Terraform configuration"
+  - artifact_id: "networking"
+    contract: "filesystem"
+    description: "VPC, subnets, routing"
+  - artifact_id: "iam"
+    contract: "filesystem"
+    description: "IAM roles and policies"
+  - artifact_id: "managed-services"
+    contract: "filesystem"
+    description: "RDS, ElastiCache, S3, etc."
+  - artifact_id: "dns-ssl"
+    contract: "filesystem"
+    description: "Route53, ACM certificates"
+  - artifact_id: "cost-estimate"
+    contract: "markdown"
+    description: "Monthly cost breakdown"
+  - artifact_id: "drift-detection"
+    contract: "filesystem"
+    description: "Drift detection configuration"
+
+dependencies:
+  - "solution-architect"
+  - "database-engineer"
+
+best_practices:
+  - "Terraform: Modules, remote state, locking, version pinning"
+  - "Network: Multi-AZ, private subnets for compute, public for LB"
+  - "IAM: Least privilege, condition keys, boundaries"
+  - "Cost: Right-sizing, reserved instances, spot, lifecycle"
+  - "Security: Encryption at rest/transit, VPC flow logs"
+  - "Operations: Drift detection, tagging strategy"
+
+validation_rules:
+  - rule: "Terraform must pass fmt, validate, plan"
+    severity: "BLOCKER"
+    auto_fixable: true
+  - rule: "All resources must have tags"
+    severity: "HIGH"
+    auto_fixable: true
+  - rule: "IAM policies must follow least privilege"
+    severity: "BLOCKER"
+    auto_fixable: false
+  - rule: "Multi-AZ for all stateful services"
+    severity: "HIGH"
+    auto_fixable: false
+  - rule: "Encryption enabled on all storage"
+    severity: "BLOCKER"
+    auto_fixable: true
+  - rule: "Cost estimate must be within budget"
+    severity: "MEDIUM"
+    auto_fixable: false
+
+tools:
+  - "terraform"
+  - "aws-cli"
+  - "tfsec"
+  - "infracost"
+  - "terragrunt"
+
+success_metrics:
+  - metric: "terraform-valid"
+    target: "100%"
+  - metric: "tag-coverage"
+    target: "100%"
+  - metric: "drift-detection"
+    target: "enabled"
+
+templates:
+  - "terraform-module-template.hbs"
+  - "vpc-template.hbs"
+  - "iam-template.hbs"
+  - "rds-template.hbs"
+  - "s3-template.hbs"
+  - "cost-estimate-template.hbs"
