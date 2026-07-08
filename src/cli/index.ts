@@ -1,6 +1,9 @@
 /**
  * AI Skill Engineer - CLI Entry Point
  *
+ * Copyright (c) 2026 forgephantom
+ * MIT License - see LICENSE file for details
+ *
  * Main command-line interface for the AI Skill Engineer framework.
  */
 

@@ -1,0 +1,37 @@
+name: Update README Stats
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # daily
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get repo stats
+        id: stats
+        run: |
+          STARS=$(curl -s https://api.github.com/repos/forgephantom/Ai-skill-engineer | jq '.stargazers_count')
+          FORKS=$(curl -s https://api.github.com/repos/forgephantom/Ai-skill-engineer | jq '.forks_count')
+          echo "stars=$STARS" >> $GITHUB_OUTPUT
+          echo "forks=$FORKS" >> $GITHUB_OUTPUT
+
+      - name: Update star count in README
+        run: |
+          STARS=${{ steps.stats.outputs.stars }}
+          FORKS=${{ steps.stats.outputs.forks }}
+          echo "⭐ **$STARS** Stars | 🍴 **$FORKS** Forks" > .github/stats.txt
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add .github/stats.txt
+          git diff --quiet && exit 0
+          git commit -m "chore: update repo stats"
+          git push

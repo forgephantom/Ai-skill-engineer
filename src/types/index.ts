@@ -1,6 +1,9 @@
 /**
  * AI Skill Engineer - Core Type Definitions
  *
+ * Copyright (c) 2026 forgephantom
+ * MIT License - see LICENSE file for details
+ *
  * This file contains all the core types used throughout the framework.
  * Based on the SPEC.md specification.
  */

@@ -1,0 +1,11 @@
+# Default owners
+* @forgephantom
+
+# Source code
+/src/ @forgephantom
+
+# GitHub configuration
+.github/ @forgephantom
+
+# Documentation
+*.md @forgephantom

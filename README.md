@@ -1,1003 +1,501 @@
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="media/banner.svg">
+  <img alt="AI Skill Engineer" src="media/banner.svg" width="100%">
+</picture>
+
+<br>
+
+<div align="center">
+
 # AI Skill Engineer
 
 > **Transform a single human idea into a complete, production-ready application — autonomously.**
 
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.4-blue)](https://www.typescriptlang.org)
-[![Node](https://img.shields.io/badge/Node-20%2B-brightgreen)](https://nodejs.org)
-[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-126%20passing-brightgreen)](.)
-[![Coverage](https://img.shields.io/badge/Coverage-56%25-yellow)](.)
+<br>
+
+[![GitHub stars](https://img.shields.io/github/stars/forgephantom/Ai-skill-engineer?style=for-the-badge&logo=github&color=blue&label=Stars)](https://github.com/forgephantom/Ai-skill-engineer/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/forgephantom/Ai-skill-engineer?style=for-the-badge&logo=github&color=blue&label=Forks)](https://github.com/forgephantom/Ai-skill-engineer/forks)
+[![CI](https://img.shields.io/github/actions/workflow/status/forgephantom/Ai-skill-engineer/ci.yml?style=for-the-badge&logo=githubactions&label=CI)](https://github.com/forgephantom/Ai-skill-engineer/actions)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.4-for-the-badge?logo=typescript&color=3178C6)](https://www.typescriptlang.org)
+[![Node](https://img.shields.io/badge/Node-20%2B-for-the-badge?logo=node.js&color=339933)](https://nodejs.org)
+
+[![Release](https://img.shields.io/github/v/release/forgephantom/Ai-skill-engineer?style=for-the-badge&logo=github&label=Release)](https://github.com/forgephantom/Ai-skill-engineer/releases)
+[![License](https://img.shields.io/badge/License-MIT-for_the_badge?color=green)](LICENSE)
+[![Last Commit](https://img.shields.io/github/last-commit/forgephantom/Ai-skill-engineer?style=for-the-badge&logo=github&color=blue)](https://github.com/forgephantom/Ai-skill-engineer/commits/main)
+[![Open Issues](https://img.shields.io/github/issues/forgephantom/Ai-skill-engineer?style=for-the-badge&logo=github&color=yellow)](https://github.com/forgephantom/Ai-skill-engineer/issues)
+[![Open PRs](https://img.shields.io/github/issues-pr/forgephantom/Ai-skill-engineer?style=for-the-badge&logo=github&color=brightgreen)](https://github.com/forgephantom/Ai-skill-engineer/pulls)
+[![Dependabot](https://img.shields.io/badge/Dependabot-enabled-for_the_badge?color=blue&logo=dependabot)](https://github.com/forgephantom/Ai-skill-engineer/network/updates)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-for_the_badge?color=brightgreen)](CONTRIBUTING.md)
+[![Activity](https://img.shields.io/github/commit-activity/m/forgephantom/Ai-skill-engineer?style=for-the-badge&logo=github&color=blue)](https://github.com/forgephantom/Ai-skill-engineer/commits/main)
+
+<br>
+
+**🏆 Orchestrate 24 AI engineering roles | 10-phase autonomous workflow | Plug any LLM provider**
+
+<br>
+
+[![](https://img.shields.io/github/created-at/forgephantom/Ai-skill-engineer?style=flat&logo=github&label=Created)](https://github.com/forgephantom/Ai-skill-engineer)
+[![](https://img.shields.io/github/repo-size/forgephantom/Ai-skill-engineer?style=flat&logo=github&label=Size)](https://github.com/forgephantom/Ai-skill-engineer)
+[![](https://img.shields.io/github/languages/code-size/forgephantom/Ai-skill-engineer?style=flat&logo=github&label=Code%20Size)](https://github.com/forgephantom/Ai-skill-engineer)
+[![](https://img.shields.io/github/contributors/forgephantom/Ai-skill-engineer?style=flat&logo=github&label=Contributors)](https://github.com/forgephantom/Ai-skill-engineer/graphs/contributors)
+[![Open in GitHub Codespaces](https://img.shields.io/badge/Codespace-ready-blue?style=flat&logo=github)](https://github.com/codespaces/new/forgephantom/Ai-skill-engineer)
+
+</div>
 
 ---
 
-## Overview
+## Why AI Skill Engineer?
 
-AI Skill Engineer is a **TypeScript-based autonomous engineering framework** that orchestrates a team of simulated expert roles — product managers, architects, engineers, QA, and DevOps — to convert a natural-language description into a fully realized project. It runs as a CLI tool, manages state across 10 sequential phases, persists artifacts, and produces a complete delivery package.
-
-Unlike code assistants that generate snippets, AI Skill Engineer runs a **multi-skill, multi-phase workflow** with dependency-aware execution, artifact versioning, validation gates, and human-approval checkpoints.
-
----
-
-## Features
-
-- **10-Phase Autonomous Workflow** — From understanding to delivery, each phase feeds the next
-- **24 Built-in Skill Definitions** — Product strategist, solution architect, frontend/backend/mobile engineers, AI engineer, security engineer, QA engineer, and more
-- **DAG-Based Execution** — Skills execute in parallel groups respecting dependency order
-- **Artifact Store** — File-system and in-memory storage for all phase outputs
-- **State Persistence** — Resume interrupted projects from the last completed phase
-- **CLI Interface** — `init`, `run`, `status`, `resume`, `stop`, `validate`, `doctor` commands
-- **Custom Skill Loading** — Load skill definitions from YAML files with dynamic executor imports
-- **Validation Pipeline** — Type-checking, linting, security scanning, performance testing, accessibility checks
-- **Human Approval Gate** — Optional review checkpoint before optimization and delivery
-- **Delivery Packaging** — Complete project output with architecture, code, tests, docs, and deploy guide
-
----
-
-## Architecture
+Unlike code assistants that generate snippets, AI Skill Engineer runs a **complete multi-skill, multi-phase engineering workflow** — from idea to production-ready delivery package.
 
 ```
-┌──────────────────────────────────────────────────────────┐
-│                       CLI (Commander)                     │
-│   init │ run │ status │ resume │ stop │ validate │ doctor │
-└──────────────────────┬───────────────────────────────────┘
-                       │
-┌──────────────────────▼───────────────────────────────────┐
-│                    Orchestrator                           │
-│  Phase Management │ State │ Event Emitter │ Retry Logic   │
-│  10-phase sequential workflow with parallel skill groups  │
-└──────┬───────────────────────────────────┬───────────────┘
-       │                                   │
-┌──────▼──────────┐             ┌──────────▼──────────────┐
-│   Skill Registry │             │   Execution Engine       │
-│  24 built-in     │             │  Parallel / DAG / Single │
-│  skills          │◄───────────►│  Template Renderer       │
-│  YAML parsing    │             │  LLM Executor (stub)    │
-│  Dynamic imports │             │  Workspace Management   │
-└──────┬──────────┘             └──────────┬──────────────┘
-       │                                   │
-       └───────────┬───────────────────────┘
-                   │
-┌──────────────────▼───────────────────────────────────────┐
-│                    Storage Layer                          │
-│   Artifact Store (filesystem / memory)                    │
-│   State Store   (filesystem / memory)                    │
-│   Per-project isolation │ JSON serialization             │
-└──────────────────────────────────────────────────────────┘
+Idea → Understand → Plan → Build → Review → Fix → Validate → Approve → Optimize → Deliver
 ```
 
----
-
-## Installation
-
-### Prerequisites
-
-- **Node.js** v20.0.0 or later
-- **npm** v9 or later
-
-### Install from source
-
-```bash
-git clone https://github.com/forgephantom/Ai-skill-engineer.git
-cd ai-skill-engineer
-npm install
-npm run build
-```
-
-### Global CLI (optional)
-
-```bash
-npm link
-ai-se --help
-```
+| What makes it different | |
+|------------------------|-|
+| **24 simulated expert roles** | Product strategists, solution architects, frontend/backend/AI engineers, security, QA, DevOps, and more |
+| **DAG-based parallel execution** | Skills run in dependency-respecting parallel groups |
+| **State persistence** | Resume from the last completed phase — no data loss |
+| **Validation pipeline** | Type-checking, linting, security scanning, performance tests built in |
+| **Pluggable executors** | Connect any LLM provider (OpenAI, Anthropic, Ollama, etc.) via a simple interface |
+| **Delivery packaging** | Complete project with architecture docs, code, tests, deployment, and runbooks |
 
 ---
 
 ## Quick Start
 
 ```bash
-# Initialize a new project
-ai-se init "Build a SaaS platform for automated compliance reporting"
-
-# Run the full 10-phase workflow
+git clone https://github.com/forgephantom/Ai-skill-engineer.git
+cd ai-skill-engineer && npm install && npm run build && npm link
+ai-se init "Build a SaaS platform for compliance reporting"
 ai-se run --project <project-id>
-
-# Run without human approval gates
-ai-se run --project <project-id> --no-human-approval
-
-# Check system health
-ai-se doctor
-
-# Resume a paused project
-ai-se resume --project <project-id>
 ```
 
-### Output
-
-After completion, the delivery package is available at:
-
-```
-./output/<project-id>/
-├── project-config.json
-├── state.json
-└── artifacts/
-    └── ...
-```
+[📖 Full walkthrough with sample output →](docs/walkthrough.md)
 
 ---
 
-## Use Case Walkthrough
-
-### End-to-End Example: "Build a Freelancer Marketplace"
-
-This walkthrough demonstrates a complete run from idea to delivery using a real-world scenario.
-
----
-
-#### Step 1: Initialize the Project
+## Live Demo
 
 ```bash
-ai-se init "A marketplace connecting freelance developers with non-technical founders" \
-  --name freelancer-marketplace \
-  --output ./output \
-  --no-human-approval
-```
+# Initialize a project from a natural-language idea
+$ ai-se init "Build a SaaS platform for compliance reporting" --name compliance-saas
 
-**What happens behind the scenes:**
-- A unique `projectId` is generated (e.g., `proj-a1b2c3d4`)
-- Project configuration is created with default settings
-- Output directory structure is created at `./output/proj-a1b2c3d4/`
-- The skill registry loads all 24 built-in skill definitions from YAML
-- The orchestrator initializes with phase 1 (`understand`) set as current
+✔ Project initialized: compliance-saas (proj-a1b2c3d4)
 
-**Expected output:**
-```
-✔ Project initialized: freelancer-marketplace (proj-a1b2c3d4)
-```
+# Run the full 10-phase autonomous workflow
+$ ai-se run --project proj-a1b2c3d4 --no-human-approval
 
----
-
-#### Step 2: Inspect the Project State
-
-```bash
-ai-se status --project ./output/proj-a1b2c3d4
-```
-
-This shows the current phase, completed phases, and registered artifacts:
-
-```
-Project: freelancer-marketplace (proj-a1b2c3d4)
-Current Phase: understand (pending)
-Phases:
-  understand:   pending
-  plan:         pending
-  discover-skills: pending
-  build:        pending
-  review:       pending
-  fix:          pending
-  validate:     pending
-  human-approval: pending
-  optimize:     pending
-  deliver:      pending
-```
-
----
-
-#### Step 3: Run the Autonomous Workflow
-
-```bash
-ai-se run --project ./output/proj-a1b2c3d4 --no-human-approval
-```
-
-The system executes all 10 phases sequentially. Below is the annotated output for each phase.
-
----
-
-##### Phase 1: Understand
-
-```
 ╔════════════════════════════════════════════════════════════╗
 ║         AI Skill Engineer - Autonomous Workflow            ║
 ╚════════════════════════════════════════════════════════════╝
 
-- Phase 1/10: understand...
-```
-
-**Skills executed in parallel:** Business Analyst, Product Strategist
-
-| Skill | Input | Output |
-|-------|-------|--------|
-| Business Analyst | Project idea text | Functional requirements, constraints, risks |
-| Product Strategist | Project idea text | Vision statement, business goals, success criteria |
-
-**Artifacts produced:**
-```
-artifacts/
-├── vision.md                    # Product vision statement
-├── business-goals.json          # Measurable business objectives
-├── functional-requirements.json # Feature requirements with priorities
-├── non-functional-requirements.json # Performance, security, scalability specs
-├── constraints.json             # Technical, business, regulatory constraints
-├── risks.json                   # Identified risks with mitigations
-└── success-criteria.json        # Acceptance criteria for measuring success
-```
-
-**Output:**
-```
-  • Vision: A digital marketplace connecting freelance developers with non-technical founders
-  • Functional Requirements: 12
-  • Non-Functional Requirements: 8
-  • Risks Identified: 5
-✔ Phase 1/10: understand completed
-```
-
----
-
-##### Phase 2: Plan
-
-```
-- Phase 2/10: plan...
-```
-
-**Skills executed in parallel:** Product Manager, Solution Architect, Technical Writer
-
-| Skill | Input | Output |
-|-------|-------|--------|
-| Product Manager | Understand output (requirements, goals) | PRD, user stories, roadmap, milestones |
-| Solution Architect | Understand output + requirements | Technical specification, architecture decisions, API contracts, data models |
-| Technical Writer | All plan artifacts | Technical documentation structure |
-
-**Artifacts produced:**
-```
-artifacts/
-├── prd.md                        # Product Requirements Document
-├── user-stories.json             # 47 user stories with acceptance criteria
-├── acceptance-criteria.json      # Detailed acceptance criteria per story
-├── technical-specification.json  # Complete tech spec
-│   ├── architecture-decisions    # ADRs (e.g., "Use microservices on Kubernetes")
-│   ├── api-contracts             # REST/GraphQL API specifications
-│   ├── data-models               # PostgreSQL schema, Redis cache strategy
-│   ├── infrastructure-design     # GKE cluster, Cloud SQL, VPC layout
-│   └── security-model            # OAuth2, RBAC, encryption at rest/in-transit
-├── milestones.json               # 12-week delivery roadmap
-└── roadmap.json                  # Phased release plan
-```
-
-**Output:**
-```
-  • User Stories: 47
-  • Acceptance Criteria: 142
-  • Milestones: 6
-  • Roadmap Phases: 4
-✔ Phase 2/10: plan completed
-```
-
----
-
-##### Phase 3: Discover Skills
-
-```
-- Phase 3/10: discover-skills...
-```
-
-**Skill executed:** Skill Discovery Engine
-
-This phase analyzes the plan output and determines which engineering skills are required, builds a dependency graph (DAG), and identifies parallel execution groups.
-
-**Logic executed by the skill-discovery-engine:**
-1. Parse the technical specification for technology choices
-2. Identify required roles (frontend, backend, database, DevOps, etc.)
-3. Group skills by dependencies (e.g., database must complete before backend can start)
-4. Estimate duration for each skill group
-5. Identify missing skills that need to be generated
-
-**Artifacts produced:**
-```
-artifacts/
-├── skill-graph.json               # Complete DAG of required skills
-│   ├── skills: ["frontend-engineer", "backend-engineer", ...]
-│   ├── dependency-graph: { "frontend-engineer": ["ux-designer"], ... }
-│   ├── parallel-groups: [["ux-designer","security-engineer"], ["frontend-engineer","backend-engineer"]]
-│   └── execution-order: ["ux-designer", "security-engineer", "frontend-engineer", ...]
-├── skill-definitions.json         # Selected skill configurations
-├── parallel-groups.json           # Groups that can run concurrently
-├── execution-order.json           # Topological execution sequence
-├── estimated-duration.json        # Per-skill time estimates
-└── required-templates.json        # Templates needed for code generation
-```
-
-**Output:**
-```
-  • Skills Discovered: 12
-  • Parallel Groups: 4
-  • Estimated Duration: 45m
-✔ Phase 3/10: discover-skills completed
-```
-
----
-
-##### Phase 4: Build
-
-```
-- Phase 4/10: build...
-```
-
-**Skills executed in parallel groups** (DAG-based, respecting dependencies):
-
-| Group | Skills | Description |
-|-------|--------|-------------|
-| 1 | UX Designer, Security Engineer | Design foundations |
-| 2 | UI Designer, Database Engineer | Interface + data layer |
-| 3 | Frontend Engineer, Backend Engineer, AI Engineer | Core application |
-| 4 | Cloud Engineer, DevOps Engineer, QA Engineer | Infrastructure + quality |
-
-Each skill receives inputs from previous phases and produces its artifacts independently. The execution engine manages the parallel execution with configurable concurrency (default: 4).
-
-**Artifacts produced (per skill):**
-```
-artifacts/
-├── frontend-engineer/
-│   ├── ui-components/         # React/Next.js components
-│   ├── pages/                 # Route pages
-│   ├── hooks/                 # Custom React hooks
-│   └── styles/                # Tailwind CSS
-├── backend-engineer/
-│   ├── api/                   # REST/GraphQL endpoints
-│   ├── services/              # Business logic layer
-│   ├── middleware/            # Auth, logging, error handling
-│   └── tests/                 # Integration tests
-├── database-engineer/
-│   ├── schema.sql             # PostgreSQL schema
-│   ├── migrations/            # Versioned migrations
-│   ├── indexes.sql            # Performance indexes
-│   └── seeds.sql              # Development seed data
-├── devops-engineer/
-│   ├── Dockerfile             # Multi-stage container build
-│   ├── k8s-deployment.yaml    # Kubernetes manifests
-│   └── ci-cd.yaml             # GitHub Actions pipeline
-└── ... (other skills)
-```
-
-**Output:**
-```
-  • Artifacts Created: 156
-  • Skills Executed: 12
-✔ Phase 4/10: build completed
-```
-
----
-
-##### Phase 5: Review
-
-```
-- Phase 5/10: review...
-```
-
-**Skill executed:** Code Reviewer
-
-The reviewer analyzes all artifacts across multiple dimensions:
-- **Correctness** — Logic errors, edge cases, null safety
-- **Architecture** — Coupling, cohesion, pattern violations
-- **Security** — OWASP Top 10, secrets exposure, input validation
-- **Performance** — N+1 queries, memory leaks, bundle size
-- **Scalability** — Statelessness, caching strategy, database indexing
-- **Maintainability** — Code duplication, naming, documentation
-
-**Artifacts produced:**
-```
-artifacts/
-├── review-findings.json           # All issues found
-│   ├── findings: [
-│   │   { severity: "BLOCKER", dimension: "security", title: "SQL injection in user search", ... },
-│   │   { severity: "HIGH", dimension: "performance", title: "N+1 query on dashboard", ... },
-│   │   ...
-│   ]
-├── review-summary.json            # Aggregated statistics
-│   ├── total: 23
-│   ├── blockers: 2
-│   ├── high: 7
-│   ├── medium: 9
-│   └── low: 5
-└── review-report.md               # Human-readable report
-```
-
-**Output:**
-```
-  • Findings: 23
-  • Blockers: 2
-  • High: 7
-  • Auto-fixable: 15
-✔ Phase 5/10: review completed
-```
-
----
-
-##### Phase 6: Fix
-
-```
-- Phase 6/10: fix...
-```
-
-**Skill executed:** Code Fixer
-
-The fixer applies automated fixes to all auto-fixable findings (15 out of 23). Non-fixable items (blockers that require human judgment) are escalated.
-
-**Artifacts produced:**
-```
-artifacts/
-├── fix-summary.json               # Fix results
-│   ├── fixed: 15
-│   ├── failed: 0
-│   ├── escalated: 2
-│   └── regressions: 0
-└── fixed-artifacts/               # Updated files
-    └── ... (patched source files)
-```
-
-**Output:**
-```
-  • Fixed: 15
-  • Failed: 0
-  • Escalated: 2
-✔ Phase 6/10: fix completed
-```
-
----
-
-##### Phase 7: Validate
-
-```
-- Phase 7/10: validate...
-```
-
-**Skill executed:** Validation Engine
-
-Runs the complete validation pipeline:
-
-| Stage | Tool | Checks |
-|-------|------|--------|
-| Type Checking | TypeScript `tsc --noEmit` | Type safety, strict null checks |
-| Linting | ESLint | Code style, anti-patterns, unused variables |
-| Security Scan | ESLint security plugin | OWASP rules, secrets detection, dependency audit |
-| Performance Test | Custom benchmarks | Response times, memory usage, bundle size budgets |
-| Accessibility Test | axe-core rules | WCAG 2.1 AA compliance, contrast ratios, ARIA attributes |
-| Contract Tests | OpenAPI spec validation | API request/response conformance |
-
-**Artifacts produced:**
-```
-artifacts/
-├── validation-results.json         # Per-stage results
-│   ├── stages: [
-│   │   { name: "type-checking", passed: true, errors: 0, warnings: 2 },
-│   │   { name: "linting", passed: true, errors: 0, warnings: 5 },
-│   │   { name: "security-scan", passed: true, errors: 0, warnings: 0 },
-│   │   ...
-│   ]
-├── validation-summary.json         # Overall pass/fail
-│   ├── totalStages: 6
-│   ├── passedStages: 6
-│   └── duration: 12s
-└── validation-report.md            # Detailed report
-```
-
-**Output:**
-```
-  • Stages: 6
-  • Passed: 6
-  • Failed: 0
-✔ Phase 7/10: validate completed
-```
-
----
-
-##### Phase 8: Human Approval
-
-```
-- Phase 8/10: human-approval...
-```
-
-Since we ran with `--no-human-approval`, this phase auto-approves. In manual mode, the Principal Engineer Simulator presents a PR-style review for human sign-off.
-
-**Output:**
-```
-  • Decision: APPROVED
-  • Reviewer: auto-approved
+✔ Phase 1/10: understand completed   (strategy + requirements)
+✔ Phase 2/10: plan completed         (PRD + tech spec + roadmap)
+✔ Phase 3/10: discover-skills completed (DAG built)
+✔ Phase 4/10: build completed        (code + infra generated)
+✔ Phase 5/10: review completed       (findings: 23)
+✔ Phase 6/10: fix completed          (fixed: 15)
+✔ Phase 7/10: validate completed     (stages passed: 6/6)
 ✔ Phase 8/10: human-approval completed
-```
-
----
-
-##### Phase 9: Optimize
-
-```
-- Phase 9/10: optimize...
-```
-
-**Skill executed:** Optimization Engine (3 iterations)
-
-Each iteration analyzes current artifacts and applies optimizations:
-
-- **Performance** — Bundle splitting, lazy loading, database query optimization, caching headers
-- **Security** — Additional input sanitization, rate limiting, CORS hardening
-- **Scalability** — Connection pooling, horizontal scaling config, CDN setup
-- **Cost** — Cloud resource right-sizing, serverless where appropriate
-- **Developer Experience** — Hot reload, debug configurations, improved error messages
-
-**Artifacts produced:**
-```
-artifacts/
-├── optimization-results.json       # Per-iteration results
-│   ├── iterations: [
-│   │   { iteration: 1, improvements: ["lazy load routes", "add Redis cache"] },
-│   │   { iteration: 2, improvements: ["optimize DB queries", "add CDN"] },
-│   │   { iteration: 3, improvements: ["right-size k8s resources", "add connection pool"] }
-│   ]
-└── optimization-summary.json       # Total improvement metrics
-    ├── totalImprovement: "23%"
-    └── finalArtifacts: [...]       # Optimized artifact references
-```
-
-**Output:**
-```
-  • Iterations: 3
-  • Total Improvement: 23.0%
-✔ Phase 9/10: optimize completed
-```
-
----
-
-##### Phase 10: Deliver
-
-```
-- Phase 10/10: deliver...
-```
-
-**Skill executed:** Delivery Engineer
-
-Assembles all artifacts into a comprehensive delivery package:
-
-**Delivery package structure:**
-```
-delivery/
-├── executive-summary.md            # One-page overview
-├── product-overview.md             # Vision, goals, target audience
-├── architecture/
-│   ├── decisions.md                # Architecture Decision Records
-│   ├── diagrams.md                 # System architecture, data flow
-│   └── threat-model.md             # Security threat model
-├── features/
-│   ├── user-stories.md             # All implemented stories
-│   └── acceptance-criteria.md      # Criteria per feature
-├── source-code/
-│   ├── structure.md                # Folder structure explanation
-│   ├── languages.md                # Tech stack summary
-│   └── build-instructions.md       # How to build and run
-├── tests/
-│   ├── unit-coverage.md            # Unit test report
-│   ├── integration-tests.md        # API contract tests
-│   └── e2e-scenarios.md            # Critical user journeys
-├── deployment/
-│   ├── guide.md                    # Step-by-step deploy instructions
-│   ├── dockerfile                  # Production container config
-│   └── kubernetes-manifests/       # K8s YAML files
-├── infrastructure/
-│   ├── terraform/                  # IaC modules
-│   └── helm-charts/                # Helm package configs
-├── monitoring/
-│   ├── dashboards.md               # Grafana dashboard configs
-│   ├── alerts.md                   # PagerDuty alert rules
-│   └── slis.md                     # Service Level Indicators
-├── runbooks/
-│   ├── deployment.md               # Deploy runbook
-│   ├── incident-response.md        # Incident handling procedures
-│   └── rollback.md                 # Rollback instructions
-└── future-improvements.md          # 3-month improvement roadmap
-```
-
-**Output:**
-```
-  • Package: 234 items
-  • Size: 12.4 MB
+✔ Phase 9/10: optimize completed     (improvement: 23%)
+✔ Phase 10/10: deliver completed     (package: 234 items)
 
 ╔════════════════════════════════════════════════════════════╗
 ║              WORKFLOW COMPLETED SUCCESSFULLY               ║
 ╚════════════════════════════════════════════════════════════╝
 
-Delivery package created at:
-  ./output/proj-a1b2c3d4/delivery/
+Delivery package: ./output/proj-a1b2c3d4/delivery/
+```
+
+## Connecting AI Providers — Skill Executors
+
+Skills produce artifacts via **executors** — pluggable modules that implement the `SkillExecutor` interface. The framework ships with a stubbed `LLMExecutor` (placeholder content). To generate real output, implement `executor.ts` in any skill directory.
+
+### Architecture
+
+```
+skill.yaml                         executor.ts
+┌─────────────────┐              ┌────────────────────────────┐
+│ id: my-skill     │              │ class MyExecutor           │
+│ model: claude-3  │───injects──►│   implements SkillExecutor  │
+│ temperature: 0.3 │  config     │   execute(inputs, context) │
+│ maxTokens: 8192  │              │     → SkillResult          │
+└─────────────────┘              └────────────────────────────┘
+                                         │
+                                    OpenAI / Anthropic / Ollama / etc.
+```
+
+Each skill receives runtime config from its YAML definition:
+
+```typescript
+interface SkillConfig {
+  model?: string;        // "gpt-4", "claude-3-5-sonnet", "ollama/mistral"
+  temperature?: number;  // 0-1
+  maxTokens?: number;    // max tokens per response
+  timeout?: number;      // ms
+  retryAttempts?: number;
+}
 ```
 
 ---
 
-#### Step 4: Inspect the Delivery Package
+### 1. Anthropic Claude (Recommended)
 
-```bash
-ls -la ./output/proj-a1b2c3d4/delivery/
-tree ./output/proj-a1b2c3d4/delivery/
+Install: `npm install @anthropic-ai/sdk`
+
+**`src/skills/definitions/ai-engineer/executor.ts`:**
+
+```typescript
+import Anthropic from '@anthropic-ai/sdk';
+import { SkillExecutor, SkillInput, ExecutionContext, SkillResult } from '../../../types';
+
+export class ClaudeExecutor implements SkillExecutor {
+  private client: Anthropic;
+
+  constructor() {
+    this.client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+  }
+
+  async execute(inputs: SkillInput, context: ExecutionContext): Promise<SkillResult> {
+    const systemPrompt = `You are a senior AI engineer. Your mission: build production-quality output.
+Input artifacts: ${JSON.stringify([...inputs.artifacts.keys()])}`;
+
+    const response = await this.client.messages.create({
+      model: inputs.config.model || 'claude-3-5-sonnet-20241022',
+      max_tokens: inputs.config.maxTokens || 8192,
+      temperature: inputs.config.temperature ?? 0.3,
+      system: [{ type: 'text', text: systemPrompt }],
+      messages: [
+        { role: 'user', content: JSON.stringify([...inputs.artifacts.values()]) },
+      ],
+    });
+
+    return {
+      success: true,
+      output: {
+        artifacts: [{ content: response.content[0].text, metadata: { model: inputs.config.model } }],
+        metadata: { model: inputs.config.model },
+      },
+      duration: 0,
+    };
+  }
+}
+```
+
+**`src/skills/definitions/ai-engineer/skill.yaml`:**
+
+```yaml
+id: ai-engineer
+name: AI Engineer
+model: claude-3-5-sonnet-20241022
+temperature: 0.3
+maxTokens: 8192
 ```
 
 ---
 
-#### Step 5: Resume an Interrupted Workflow
+### 2. OpenAI / GPT-4
 
-If the process is interrupted (e.g., Ctrl+C), the state is persisted. Resume from the last completed phase:
+Install: `npm install openai`
 
-```bash
-ai-se resume --project ./output/proj-a1b2c3d4
+```typescript
+import OpenAI from 'openai';
+import { SkillExecutor, SkillInput, ExecutionContext, SkillResult } from '../../../types';
+
+export class OpenAIExecutor implements SkillExecutor {
+  private client: OpenAI;
+
+  constructor() {
+    this.client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  }
+
+  async execute(inputs: SkillInput, context: ExecutionContext): Promise<SkillResult> {
+    const response = await this.client.chat.completions.create({
+      model: inputs.config.model || 'gpt-4-turbo',
+      temperature: inputs.config.temperature ?? 0.3,
+      max_tokens: inputs.config.maxTokens || 4096,
+      messages: [
+        { role: 'system', content: 'You are a senior software engineer.' },
+        { role: 'user', content: JSON.stringify([...inputs.artifacts.values()]) },
+      ],
+    });
+
+    return {
+      success: true,
+      output: {
+        artifacts: [{ content: response.choices[0].message.content }],
+        metadata: { model: inputs.config.model },
+      },
+      duration: 0,
+    };
+  }
+}
 ```
 
-This restores the orchestrator state, artifact store, and continues execution from where it left off — no data loss.
+**Compatible with any OpenAI-compatible API** (Azure OpenAI, Together AI, Groq, etc.) — just change the `baseURL`:
+
+```typescript
+this.client = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+  baseURL: process.env.AZURE_OPENAI_ENDPOINT, // or https://api.groq.com/openai/v1
+});
+```
 
 ---
 
-#### Example: Running Multiple Projects
+### 3. Ollama (Local, Free)
 
-```bash
-# Project 1: SaaS platform
-ai-se init "B2B SaaS for automated compliance reporting" -n compliance-saas -o ./projects
+No SDK needed — uses `fetch` directly.
 
-# Project 2: Mobile app
-ai-se init "Fitness tracking app with AI coaching" -n fitness-app -o ./projects
-
-# Run both independently (separate terminals)
-ai-se run --project ./projects/proj-xxx1 --no-human-approval
-ai-se run --project ./projects/proj-xxx2 --no-human-approval
+```typescript
+export class OllamaExecutor implements SkillExecutor {
+  async execute(inputs: SkillInput, context: ExecutionContext): Promise<SkillResult> {
+    const model = (inputs.config.model || 'mistral').replace('ollama/', '');
+    const res = await fetch('http://localhost:11434/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model,
+        prompt: `You are a senior engineer. Generate based on:\n${JSON.stringify([...inputs.artifacts.values()], null, 2)}`,
+        stream: false,
+        options: { temperature: inputs.config.temperature ?? 0.3 },
+      }),
+    });
+    const data = await res.json();
+    return {
+      success: true,
+      output: { artifacts: [{ content: data.response }], metadata: { model } },
+      duration: 0,
+    };
+  }
+}
 ```
 
 ---
 
-#### Example: Using Validation Gates in CI
+### 4. Google Gemini
 
-```bash
-# Validate an existing project without re-running the full workflow
-ai-se validate --project ./output/proj-a1b2c3d4
+Install: `npm install @google/generative-ai`
+
+```typescript
+import { GoogleGenerativeAI } from '@google/generative-ai';
+
+export class GeminiExecutor implements SkillExecutor {
+  private genAI: GoogleGenerativeAI;
+
+  constructor() {
+    this.genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+  }
+
+  async execute(inputs: SkillInput, context: ExecutionContext): Promise<SkillResult> {
+    const model = this.genAI.getGenerativeModel({
+      model: inputs.config.model || 'gemini-2.0-flash',
+    });
+    const result = await model.generateContent(JSON.stringify([...inputs.artifacts.values()]));
+    return {
+      success: true,
+      output: { artifacts: [{ content: result.response.text() }], metadata: {} },
+      duration: 0,
+    };
+  }
+}
 ```
-
-This runs the validation pipeline (type-checking, linting, security scan, performance tests) against the project's artifacts, useful for CI/CD integration.
 
 ---
 
-#### Example: Interactive Initialization
+### 5. Multi-Model Routing
 
-For a guided setup, omit the idea argument:
+Use different models per skill for cost optimization:
 
-```bash
-ai-se init
+```yaml
+# src/skills/definitions/product-strategist/skill.yaml
+id: product-strategist
+model: claude-3-haiku          # cheap, fast — simple analysis
+temperature: 0.5
 ```
 
-This launches an interactive prompt:
+```yaml
+# src/skills/definitions/frontend-engineer/skill.yaml
+id: frontend-engineer
+model: claude-3-5-sonnet       # powerful — code generation
+temperature: 0.2
+maxTokens: 16384
+```
+
+```yaml
+# src/skills/definitions/code-reviewer/skill.yaml
+id: code-reviewer
+model: gpt-4-turbo             # different provider entirely
+temperature: 0.1
+```
+
+---
+
+### Quick Reference: Provider Setup
+
+| Provider | Install | Env Variable | Default Model |
+|----------|---------|-------------|---------------|
+| Anthropic | `npm install @anthropic-ai/sdk` | `ANTHROPIC_API_KEY` | `claude-3-5-sonnet-20241022` |
+| OpenAI | `npm install openai` | `OPENAI_API_KEY` | `gpt-4-turbo` |
+| Ollama | none (fetch API) | none | `mistral` |
+| Google Gemini | `npm install @google/generative-ai` | `GEMINI_API_KEY` | `gemini-2.0-flash` |
+| Azure OpenAI | `npm install openai` | `AZURE_OPENAI_KEY` + `AZURE_OPENAI_ENDPOINT` | `gpt-4` |
+
+---
+
+### Auto-Loading Executors
+
+Place your `executor.ts` alongside the skill's YAML definition:
 
 ```
-? Describe your project idea: A platform for managing remote team standups
-? Project name: (remote-standup-app)
+src/skills/definitions/
+├── my-custom-skill/
+│   ├── skill.yaml          ← skill metadata + model config
+│   └── executor.ts         ← auto-loaded at runtime
+├── frontend-engineer/
+│   ├── skill.yaml
+│   └── executor.ts         ← one per skill
+└── ...
 ```
+
+The `SkillRegistry` detects `executor.ts` automatically. No registration needed. Configure everything in YAML — model, temperature, tokens, timeout — all passed to `inputs.config` at runtime.
 
 ---
 
 ## CLI Reference
 
-### `init [idea]`
+| Command | Description |
+|---------|-------------|
+| `init [idea]` | Initialize a new project |
+| `run --project <id>` | Execute the workflow |
+| `status --project <id>` | Show project state |
+| `resume --project <id>` | Resume interrupted workflow |
+| `stop --project <id>` | Stop running project |
+| `validate --project <id>` | Run validation pipeline |
+| `doctor` | Check system health |
+| `skills list/show <id>` | Manage skill definitions |
+| `templates list/show <name>` | Manage templates |
+| `config show/set <key> <value>` | Manage project config |
 
-Initialize a new project.
-
-| Option | Description | Default |
-|--------|-------------|---------|
-| `-n, --name <name>` | Project name | Auto-generated from idea |
-| `-o, --output <path>` | Output directory | `./output` |
-| `--no-auto-fix` | Disable auto-fix | Enabled |
-| `--no-human-approval` | Skip human approval | Required |
-| `--max-parallel <n>` | Max parallel skills | `4` |
-| `--validation-level <level>` | strict, standard, minimal | `strict` |
-| `--optimization-iterations <n>` | Optimization rounds | `3` |
-
-### `run`
-
-Execute the autonomous workflow.
-
-| Option | Description | Default |
-|--------|-------------|---------|
-| `-p, --project <id>` | Project ID or path | Required |
-| `--no-auto-fix` | Disable auto-fix | Enabled |
-| `--no-human-approval` | Skip human approval | Required |
-| `--max-parallel <n>` | Max parallel skills | `4` |
-
-### `status`
-
-Show current project status.
-
-| Option | Description |
-|--------|-------------|
-| `-p, --project <id>` | Project ID or path |
-
-### `resume`
-
-Resume a paused or interrupted project.
-
-| Option | Description |
-|--------|-------------|
-| `-p, --project <id>` | Project ID or path |
-
-### `stop`
-
-Stop a running project.
-
-| Option | Description |
-|--------|-------------|
-| `-p, --project <id>` | Project ID or path |
-
-### `validate`
-
-Run validation on project artifacts.
-
-| Option | Description |
-|--------|-------------|
-| `-p, --project <id>` | Project ID or path |
-
-### `doctor`
-
-Check system health, Node.js version, and installed dependencies.
-
-### `skills`
-
-Manage skill definitions.
-
-| Subcommand | Description |
-|------------|-------------|
-| `list` | List all registered skills |
-| `show <id>` | Show skill details |
-
-### `templates`
-
-Manage templates.
-
-| Subcommand | Description |
-|------------|-------------|
-| `list` | List available templates |
-| `show <name>` | Show template content |
-
-### `config`
-
-Manage project configuration.
-
-| Subcommand | Description |
-|------------|-------------|
-| `show` | Show current config |
-| `set <key> <value>` | Set a config value |
+Key options: `--max-parallel <n>` (default 4), `--validation-level <strict\|standard\|minimal>`, `--optimization-iterations <n>` (default 3), `--no-human-approval`.
 
 ---
 
-## The 10-Phase Workflow
+## 10-Phase Workflow
 
-| Phase | Name | Skills Executed | Key Outputs |
-|-------|------|-----------------|-------------|
+| # | Phase | Skills | Key Outputs |
+|---|-------|--------|-------------|
 | 1 | **Understand** | Business Analyst, Product Strategist | Vision, goals, requirements, risks |
 | 2 | **Plan** | Product Manager, Solution Architect, Technical Writer | PRD, user stories, tech spec, roadmap |
-| 3 | **Discover Skills** | Skill Discovery Engine | Skill graph with dependency DAG |
+| 3 | **Discover Skills** | Skill Discovery Engine | Skill dependency DAG with parallel groups |
 | 4 | **Build** | All project skills (parallel groups) | Architecture, code, UI, API, DB, infra |
-| 5 | **Review** | Code Reviewer | Review findings, severity breakdown |
+| 5 | **Review** | Code Reviewer | Findings with severity breakdown |
 | 6 | **Fix** | Code Fixer | Remediated artifacts, regression check |
 | 7 | **Validate** | Validation Engine | Static analysis, lint, type-check, test results |
-| 8 | **Human Approval** | Principal Engineer Simulator | Approval decision, feedback (auto or manual) |
+| 8 | **Human Approval** | Principal Engineer Simulator | Approval or feedback (auto or manual) |
 | 9 | **Optimize** | Optimization Engine | Performance, security, cost, UX improvements |
-| 10 | **Deliver** | Delivery Engineer | Complete project package with docs and deploy guide |
+| 10 | **Deliver** | Delivery Engineer | Complete package with docs, deploy guide, runbooks |
 
 ---
 
-## Built-in Skills
+## Built-in Skills (24)
 
-| Skill ID | Role | Knowledge Areas |
-|----------|------|----------------|
-| `product-strategist` | Strategy & Vision | product-management, market-analysis |
-| `business-analyst` | Requirements & Analysis | requirements-engineering, stakeholder |
-| `product-manager` | Product Definition | product-management, agile |
-| `solution-architect` | System Architecture | system-architecture, microservices |
-| `technical-writer` | Documentation | technical-writing, api-docs |
-| `ux-designer` | User Experience | ux-design, user-research |
-| `ui-designer` | Visual Design | ui-design, design-systems |
-| `frontend-engineer` | Frontend Development | frontend-development, react |
-| `backend-engineer` | Backend Development | backend-development, api-design |
-| `mobile-engineer` | Mobile Development | mobile-development, react-native |
-| `ai-engineer` | AI/ML Engineering | llm-applications, rag, agents |
-| `database-engineer` | Database Engineering | database-design, postgresql |
-| `cloud-engineer` | Cloud Infrastructure | cloud-infrastructure, terraform |
-| `devops-engineer` | DevOps & CI/CD | ci-cd, kubernetes, helm |
-| `security-engineer` | Security | security, threat-modeling |
-| `qa-engineer` | Quality Assurance | quality-assurance, test-automation |
-| `documentation-engineer` | Docs & Runbooks | technical-writing, documentation |
-| `code-reviewer` | Code Review | code-review, static-analysis |
-| `code-fixer` | Automated Fixes | code-fix, refactoring |
-| `validation-engine` | Validation Pipeline | validation, testing |
-| `optimization-engine` | Performance Optimization | optimization, profiling |
-| `delivery-engineer` | Project Delivery | delivery, packaging |
-| `principal-engineer-simulator` | Approval & Oversight | engineering-leadership |
-| `skill-discovery-engine` | Skill Graph Builder | skill-engineering, dependency-resolution |
+`product-strategist` · `business-analyst` · `product-manager` · `solution-architect` · `technical-writer` · `ux-designer` · `ui-designer` · `frontend-engineer` · `backend-engineer` · `mobile-engineer` · `ai-engineer` · `database-engineer` · `cloud-engineer` · `devops-engineer` · `security-engineer` · `qa-engineer` · `documentation-engineer` · `code-reviewer` · `code-fixer` · `validation-engine` · `optimization-engine` · `delivery-engineer` · `principal-engineer-simulator` · `skill-discovery-engine`
 
 ---
 
-## Project Structure
-
-```
-ai-skill-engineer/
-├── src/
-│   ├── cli/                    # Commander-based CLI
-│   │   └── index.ts            # All CLI commands
-│   ├── orchestrator/
-│   │   └── index.ts            # 10-phase workflow orchestration
-│   ├── execution/
-│   │   └── engine.ts           # Single, parallel, DAG execution
-│   ├── skills/
-│   │   ├── registry.ts         # Skill loading, registration, discovery
-│   │   └── definitions/        # 24 built-in skill YAML definitions
-│   │       ├── product-strategist/
-│   │       ├── frontend-engineer/
-│   │       └── ...
-│   ├── storage/
-│   │   └── index.ts            # Artifact & state stores (FS/memory)
-│   ├── types/
-│   │   └── index.ts            # All TypeScript interfaces & types
-│   ├── utils/
-│   │   └── index.ts            # Logging, IDs, templates, retry, validation
-│   └── validation/
-│       └── index.ts            # Validation pipeline stages
-├── templates/
-│   └── (Handlebars templates for project generation)
-├── tests/
-│   ├── unit/                   # Unit tests (skills, utils, storage, etc.)
-│   ├── integration/            # CLI integration tests
-│   └── e2e/                    # End-to-end workflow tests
-├── dist/                       # Compiled JavaScript output
-├── package.json
-├── tsconfig.json
-├── jest.config.js
-└── .eslintrc.json
-```
-
----
-
-## Configuration
-
-### Project Config
-
-Set on `init` or edited via `config set`:
-
-```json
-{
-  "projectId": "proj-abc123",
-  "name": "my-project",
-  "maxParallelSkills": 4,
-  "validationLevel": "strict",
-  "autoFix": true,
-  "humanApprovalRequired": true,
-  "optimizationIterations": 3,
-  "outputPath": "./output"
-}
-```
-
-### Orchestrator Config
-
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `maxRetries` | number | 3 | Max retries per phase |
-| `phaseTimeout` | number (ms) | 300000 | Phase timeout |
-| `parallelExecution` | boolean | true | Enable parallel skill execution |
-| `autoFix` | boolean | true | Auto-fix review findings |
-| `humanApprovalRequired` | boolean | true | Require human approval |
-| `optimizationEnabled` | boolean | true | Enable optimization phase |
-| `outputDirectory` | string | `./output` | Output path |
-| `logLevel` | enum | `INFO` | DEBUG, INFO, WARN, ERROR |
-
----
-
-## Skill Definitions
-
-Skills are defined in YAML format with a schema that includes:
+## Custom Skill Definitions
 
 ```yaml
-id: frontend-engineer
-name: Frontend Engineer
+id: my-skill
+name: My Skill
 version: "1.0.0"
-mission: "Build responsive, accessible UI with modern frameworks"
-
+mission: "One-sentence mission statement"
+model: claude-3-5-sonnet          # optional: provider model
+temperature: 0.3                  # optional: 0-1
+maxTokens: 8192                   # optional: max tokens
 responsibilities:
-  - "Set up project scaffolding and build tooling"
-
-knowledge_areas:
-  - "frontend-development"
-  - "react"
-
+  - "Do X"
+  - "Do Y"
+knowledge_areas: ["domain"]
 inputs:
-  - artifact_id: "wireframes"
-    contract: "markdown"
+  - artifact_id: "input-name"
+    contract: "json|markdown|yaml|filesystem"
     required: true
-
 outputs:
-  - artifact_id: "ui-components"
-    contract: "filesystem"
-
-dependencies:
-  - "solution-architect"
-  - "ux-designer"
-
+  - artifact_id: "output-name"
+    contract: "markdown"
+dependencies: ["dependency-skill-id"]
 validation_rules:
-  - rule: "All components must have TypeScript types"
+  - rule: "Output must include X"
     severity: "BLOCKER"
 ```
-
-Custom executors can be placed as `executor.ts` (or `.js`) alongside a `skill.yaml` and will be dynamically loaded at runtime.
 
 ---
 
 ## Development
 
 ```bash
-# Type-check
-npm run typecheck
-
-# Lint
-npm run lint
-
-# Run tests
-npm test                      # All tests
-npm run test:unit             # Unit tests only
-npm run test:integration      # Integration tests
-npm run test:e2e              # End-to-end tests
-
-# Build
-npm run build
-
-# Run in development mode
-npm run dev -- init "My idea"
-npm run dev -- run --project <id> --no-human-approval
-
-# Generate coverage report
-npm test -- --coverage
-
-# Full validation (lint + typecheck + test)
-npm run validate
+npm run typecheck    # TypeScript strict mode
+npm run lint         # ESLint
+npm test             # Jest (unit + integration + E2E)
+npm run build        # Compile to dist/
+npm run dev -- init "My idea"   # Run in dev mode
 ```
 
-### Architecture Decisions
-
-- **TypeScript** — Full static typing with strict mode
-- **Commander.js** — CLI framework with subcommands and options
-- **Inquirer.js** — Interactive prompts for init
-- **Ora** — Terminal spinners for long-running operations
-- **Chalk** — Colored terminal output
-- **fs-extra** — File system operations with promises
-- **Handlebars** — Template rendering for generated artifacts
-- **Zod** — Runtime configuration validation
-- **Jest** — Testing (unit, integration, E2E)
-- **EventEmitter3** — Event-driven orchestrator communication
-- **Glob** — File matching for skill discovery
-
----
-
-## Testing
-
-The test suite is organized into three layers:
-
-| Layer | Directory | Count | Focus |
-|-------|-----------|-------|-------|
-| Unit | `tests/unit/` | 113+ tests | Individual modules in isolation |
-| Integration | `tests/integration/` | 7 tests | CLI command registration |
-| E2E | `tests/e2e/` | 3 tests | Full workflow from init to delivery |
-
-Run the entire suite with `npm test` (coverage generated automatically).
+**Stack:** TypeScript, Commander.js, Inquirer.js, Ora, Chalk, fs-extra, Handlebars, Zod, Jest, EventEmitter3.
 
 ---
 
 ## Contributing
 
-Contributions are welcome. Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) and [ROADMAP.md](ROADMAP.md).
 
-Key areas for contribution:
-- **Custom skill executors** — Implement real LLM-powered executors for any of the 24 skills
-- **New skill definitions** — Add YAML definitions for additional engineering roles
-- **Validation pipeline stages** — Extend the validation engine with new checks (e.g., bundle size, dependency audit)
-- **Storage backends** — Add S3, DynamoDB, or PostgreSQL storage adapters
-- **UI dashboard** — Build a web interface for workflow visibility and manual approval
+High-impact areas:
+- ✦ **Custom executors** — Wire up real LLM providers (OpenAI, Anthropic, Ollama, Gemini, etc.)
+- ✦ **New skill definitions** — Add YAML for additional engineering roles
+- ✦ **Validation stages** — Extend the pipeline with new checks
+- ✦ **Storage backends** — Add S3, DynamoDB, PostgreSQL adapters
+- ✦ **UI dashboard** — Web interface for workflow visibility
+
+---
+
+## Show Your Support
+
+<div align="center">
+
+[![Star](https://img.shields.io/github/stars/forgephantom/Ai-skill-engineer?style=for-the-badge&logo=github&label=★%20Star%20this%20repo)](https://github.com/forgephantom/Ai-skill-engineer/stargazers)
+[![Fork](https://img.shields.io/github/forks/forgephantom/Ai-skill-engineer?style=for-the-badge&logo=github&label=Fork)](https://github.com/forgephantom/Ai-skill-engineer/forks)
+[![Follow](https://img.shields.io/github/followers/forgephantom?style=for-the-badge&logo=github&label=Follow)](https://github.com/forgephantom)
+
+</div>
+
+**Starring the repo helps others discover this project and shows your appreciation.** Every star motivates continued development!
+
+[![Star History Chart](https://api.star-history.com/svg?repos=forgephantom/Ai-skill-engineer&type=Date)](https://star-history.com/#forgephantom/Ai-skill-engineer&Date)
 
 ---
 
 ## License
 
-[MIT](LICENSE) — Build autonomous engineering systems freely.
+[MIT](LICENSE) — Copyright (c) 2026 forgephantom. See [LICENSE](LICENSE) for full text.
+
+---
+
+## Legal Disclaimer
+
+**AI Skill Engineer** is a development tool that generates code and project artifacts using AI models. By using this software:
+
+1. **AI-generated code** — The output produced by this tool is generated by large language models and may contain errors, security vulnerabilities, or non-compliant code. You are responsible for reviewing, testing, and validating all generated output before deploying it to any production environment.
+
+2. **No warranty** — The software is provided "AS IS", without warranty of any kind. The generated output is not guaranteed to be correct, secure, performant, or free of defects.
+
+3. **`--no-human-approval`** — This flag bypasses the human review gate. Use it only for development/testing. For production use, always review generated code manually and ensure proper security and compliance checks.
+
+4. **Third-party dependencies** — The generated project may include suggestions for third-party packages, libraries, or services. You are responsible for reviewing their licenses and terms of service.
+
+5. **API keys** — You are responsible for all API usage and costs associated with your own API keys. The maintainer does not provide or manage API keys.
+
+6. **Compliance** — You are solely responsible for ensuring that any project generated with this tool complies with all applicable laws, regulations, and industry standards.

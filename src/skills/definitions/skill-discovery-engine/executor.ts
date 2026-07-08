@@ -1,3 +1,10 @@
+/**
+ * AI Skill Engineer - Skill Discovery Engine Executor
+ *
+ * Copyright (c) 2026 forgephantom
+ * MIT License - see LICENSE file for details
+ */
+
 import { SkillExecutor, SkillInput, ExecutionContext, SkillResult, SkillGraph, SkillDefinition } from '../../../types';
 
 export function createExecutor(): SkillExecutor {

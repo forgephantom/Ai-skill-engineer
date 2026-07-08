@@ -1,6 +1,9 @@
 /**
  * AI Skill Engineer - Validation Pipeline
  *
+ * Copyright (c) 2026 forgephantom
+ * MIT License - see LICENSE file for details
+ *
  * Comprehensive quality gate simulation with parallel execution.
  */
 

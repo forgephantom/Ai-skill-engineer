@@ -1,5 +1,8 @@
 /**
  * AI Skill Engineer - Utility Functions
+ *
+ * Copyright (c) 2026 forgephantom
+ * MIT License - see LICENSE file for details
  */
 
 import * as fs from 'fs-extra';

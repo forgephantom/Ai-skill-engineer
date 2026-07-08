@@ -1,0 +1,26 @@
+name: Contributors
+
+on:
+  push:
+    branches: [main, master]
+  schedule:
+    - cron: '0 0 * * 1'  # weekly
+  workflow_dispatch:
+
+jobs:
+  contributors:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate contributors
+        uses: akhilmhdh/contributors-readme-action@v2.3.10
+        with:
+          readme_path: README.md
+          commit_message: "chore: update contributors list"
+          use_username: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,43 @@
+name: Dogfood
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'  # weekly
+  workflow_dispatch:
+
+jobs:
+  dogfood:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Run ai-se on itself
+        run: |
+          node dist/cli/index.js init "Build the AI Skill Engineer framework itself" \
+            --name dogfood-test \
+            --output /tmp/dogfood \
+            --no-human-approval
+
+          node dist/cli/index.js run \
+            --project /tmp/dogfood/proj-* \
+            --no-human-approval \
+            --max-parallel 2
+
+      - name: Verify output
+        run: |
+          echo "=== Delivery Package ==="
+          find /tmp/dogfood -name "DELIVERY_MANIFEST.json" -exec cat {} \;
+          echo "=== Artifacts ==="
+          ls -la /tmp/dogfood/*/delivery/ 2>/dev/null || echo "No delivery artifacts (expected - LLM stubbed)"

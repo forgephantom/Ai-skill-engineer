@@ -1,6 +1,9 @@
 /**
  * AI Skill Engineer - Orchestrator
  *
+ * Copyright (c) 2026 forgephantom
+ * MIT License - see LICENSE file for details
+ *
  * The core orchestrator that manages the 10-phase autonomous workflow.
  */
 
