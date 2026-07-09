@@ -115,6 +115,434 @@ ai-se resume --project proj-a1b2c3d4
 
 ---
 
+## End-to-End Example: Freelancer Marketplace
+
+This example walks through a complete run using the idea:
+
+> *"A marketplace connecting freelance developers with non-technical founders"*
+
+**Project:** `freelancer-marketplace` (ID: `proj-a1b2c3d4`)
+
+### Step 1: Initialize
+
+```bash
+ai-se init "A marketplace connecting freelance developers with non-technical founders" \
+  --name freelancer-marketplace \
+  --output ./output \
+  --no-human-approval
+```
+
+**What happens:**
+- A unique ID `proj-a1b2c3d4` is generated
+- Output directory `./output/proj-a1b2c3d4/` is created
+- All 24 skill definitions are loaded from YAML
+- Orchestrator starts at phase 1 (`understand`)
+
+**Output:**
+```
+✔ Project initialized: freelancer-marketplace (proj-a1b2c3d4)
+```
+
+---
+
+### Step 2: Run the Workflow
+
+```bash
+ai-se run --project ./output/proj-a1b2c3d4 --no-human-approval
+```
+
+The system executes all 10 phases. Here is the annotated output for each:
+
+---
+
+### Phase 1/10: Understand
+
+**Skills:** Business Analyst, Product Strategist (parallel)
+
+**What they do:**
+- **Business Analyst** reads the idea text and extracts structured requirements, constraints, and risks
+- **Product Strategist** reads the idea text and defines the vision, business goals, and success criteria
+
+**Artifacts produced:**
+```
+artifacts/
+├── vision.md                    # Product vision statement
+├── business-goals.json          # Measurable business objectives
+├── functional-requirements.json # Feature requirements with priorities
+├── non-functional-requirements.json
+├── constraints.json
+├── risks.json
+└── success-criteria.json
+```
+
+**Detailed example output (vision.md):**
+```markdown
+# Product Vision
+
+A digital marketplace that connects freelance software developers
+with non-technical founders who need technical talent to build
+their ideas. The platform handles discovery, vetting, project
+management, escrow payments, and dispute resolution.
+```
+
+**Detailed example output (functional-requirements.json):**
+```json
+{
+  "requirements": [
+    {
+      "id": "FR-001",
+      "description": "Freelancers can create profiles with skills, portfolio, and availability",
+      "priority": "MUST",
+      "acceptanceCriteria": [
+        "Profile includes bio, skills tags, work history, and hourly rate",
+        "Freelancer can upload portfolio items (links, images, descriptions)"
+      ]
+    },
+    {
+      "id": "FR-002",
+      "description": "Founders can post project listings with budget and timeline",
+      "priority": "MUST"
+    },
+    {
+      "id": "FR-003",
+      "description": "Integrated escrow payment system holds funds until milestones are completed",
+      "priority": "MUST"
+    }
+  ]
+}
+```
+
+**Terminal output:**
+```
+✔ Phase 1/10: understand completed
+  • Vision: A digital marketplace connecting freelance developers with non-technical founders
+  • Functional Requirements: 12
+  • Non-Functional Requirements: 8
+  • Risks Identified: 5
+```
+
+---
+
+### Phase 2/10: Plan
+
+**Skills:** Product Manager, Solution Architect, Technical Writer (parallel)
+
+**What they do:**
+- **Product Manager** takes the Understand artifacts and produces a PRD, user stories, roadmap, and milestones
+- **Solution Architect** produces a technical specification, Architecture Decision Records, API contracts, and data models
+- **Technical Writer** structures all documentation
+
+**Detailed example output — User Stories:**
+```
+  • User Stories: 47
+  • Acceptance Criteria: 142
+  • Milestones: 6
+  • Roadmap Phases: 4
+```
+
+**Example user story (user-stories.json):**
+```json
+{
+  "stories": [
+    {
+      "id": "US-001",
+      "title": "Freelancer profile creation",
+      "as_a": "Freelance developer",
+      "i_want": "to create a detailed profile showcasing my skills and experience",
+      "so_that": "founders can discover and hire me for projects",
+      "acceptance_criteria": [
+        "Profile includes name, bio, skills, hourly rate, and portfolio",
+        "Skills are selected from a predefined taxonomy",
+        "Profile is visible in search results within 5 minutes of creation"
+      ]
+    }
+  ]
+}
+```
+
+**Terminal output:**
+```
+  • User Stories: 47
+  • Acceptance Criteria: 142
+  • Milestones: 6
+  • Roadmap Phases: 4
+✔ Phase 2/10: plan completed
+```
+
+---
+
+### Phase 3/10: Discover Skills
+
+**Skill:** Skill Discovery Engine
+
+**What it does:**
+- Analyzes the Plan artifacts to determine which engineering skills are needed
+- Builds a dependency DAG (Directed Acyclic Graph)
+- Groups independent skills for parallel execution
+- Estimates duration
+
+**Output:**
+```
+  • Skills Discovered: 12
+    - UX Designer, UI Designer, Frontend Engineer, Backend Engineer,
+      Database Engineer, AI Engineer, Security Engineer, Cloud Engineer,
+      DevOps Engineer, QA Engineer, Documentation Engineer, Mobile Engineer
+  • Parallel Groups: 4
+    Group 1: UX Designer, Security Engineer
+    Group 2: UI Designer, Database Engineer
+    Group 3: Frontend Engineer, Backend Engineer, AI Engineer
+    Group 4: Cloud Engineer, DevOps Engineer, QA Engineer
+  • Estimated Duration: 45m
+✔ Phase 3/10: discover-skills completed
+```
+
+**DAG structure (simplified):**
+```
+UX Designer ──► UI Designer ──► Frontend Engineer
+                                        │
+Security Engineer ──────────────────────┤
+                                        │
+                    Database Engineer ──► Backend Engineer
+                                        │
+                              AI Engineer
+                                        │
+                    Cloud Engineer ─────► DevOps Engineer ──► QA Engineer
+```
+
+---
+
+### Phase 4/10: Build
+
+**Skills:** 12 skills in 4 parallel groups (DAG-resolved)
+
+**What each group produces:**
+
+| Group | Skills | Key Artifacts |
+|-------|--------|---------------|
+| 1 | UX Designer | Wireframes, user flow diagrams, interaction specs |
+| 1 | Security Engineer | Threat model, auth flow, encryption strategy |
+| 2 | UI Designer | High-fidelity mockups, design system, component library |
+| 2 | Database Engineer | Schema, migrations, indexes, query plans |
+| 3 | Frontend Engineer | React app, components, routes, state management |
+| 3 | Backend Engineer | API endpoints, middleware, business logic |
+| 3 | AI Engineer | Matching algorithm, recommendation engine |
+| 4 | Cloud Engineer | AWS/GCP infra as code, networking, scaling |
+| 4 | DevOps Engineer | CI/CD pipelines, Docker, monitoring setup |
+| 4 | QA Engineer | Test plans, E2E tests, load test scripts |
+
+**Terminal output:**
+```
+  • Artifacts Created: 156
+  • Skills Executed: 12
+✔ Phase 4/10: build completed
+```
+
+---
+
+### Phase 5/10: Review
+
+**Skill:** Code Reviewer
+
+**What it does:**
+- Reads all 156 build artifacts
+- Scores across: correctness, architecture, security, performance, scalability, maintainability
+- Tags findings with severity: Blocker, High, Medium, Low, Info
+- Marks auto-fixable items
+
+**Output:**
+```
+  • Findings: 23
+  • Blockers: 2
+    - API endpoint /api/escrow/pay lacks input validation
+    - Database migration V003 contains a non-indexed foreign key
+  • High: 7
+  • Medium: 9
+  • Low: 5
+  • Auto-fixable: 15
+✔ Phase 5/10: review completed
+```
+
+---
+
+### Phase 6/10: Fix
+
+**Skill:** Code Fixer
+
+**What it does:**
+- Applies automated fixes to all 15 auto-fixable findings
+- Runs regression check after each fix
+- Escalates non-fixable items (2 blockers that require human judgment)
+
+**Output:**
+```
+  • Fixed: 15
+  • Failed: 0
+  • Escalated: 2
+    - API endpoint /api/escrow/pay lacks input validation (BLOCKER)
+    - Database migration V003 contains a non-indexed foreign key (BLOCKER)
+✔ Phase 6/10: fix completed
+```
+
+---
+
+### Phase 7/10: Validate
+
+**Skill:** Validation Engine
+
+**What it does:**
+- Runs 6 validation stages against the generated project:
+
+| Stage | Check | Status |
+|-------|-------|--------|
+| Type Checking | TypeScript `tsc --noEmit` | ✅ Pass (0 errors) |
+| Linting | ESLint on all source files | ✅ Pass (0 errors) |
+| Security Scan | Snyk / npm audit on dependencies | ✅ Pass (0 critical) |
+| Performance Test | Lighthouse / k6 load test | ✅ Pass (p95 < 200ms) |
+| Accessibility | axe-core WCAG 2.1 AA scan | ✅ Pass (0 violations) |
+| Contract Tests | API contract conformance | ✅ Pass (all endpoints) |
+
+**Output:**
+```
+  • Stages: 6
+  • Passed: 6
+  • Failed: 0
+✔ Phase 7/10: validate completed
+```
+
+---
+
+### Phase 8/10: Human Approval
+
+**Skill:** Principal Engineer Simulator
+
+**What it does:**
+- Compiles all findings, fixes, and validation results into a PR-style review summary
+- In manual mode (default): presents the summary and waits for approve/reject/feedback
+- In auto mode (`--no-human-approval`): approves automatically
+
+**Output (auto mode):**
+```
+  • Decision: APPROVED
+  • Reviewer: auto-approved
+  • Summary:
+    ┌─────────────────────────────────────────────────────┐
+    │  Phase 1: Understand       ✅ 5 artifacts           │
+    │  Phase 2: Plan            ✅ 47 user stories        │
+    │  Phase 3: Discover        ✅ 12 skills, 4 groups    │
+    │  Phase 4: Build           ✅ 156 artifacts          │
+    │  Phase 5: Review          ✅ 23 findings            │
+    │  Phase 6: Fix             ✅ 15/15 auto-fixed       │
+    │  Phase 7: Validate        ✅ 6/6 stages passed      │
+    └─────────────────────────────────────────────────────┘
+✔ Phase 8/10: human-approval completed
+```
+
+---
+
+### Phase 9/10: Optimize
+
+**Skill:** Optimization Engine (3 iterations)
+
+**What it does:**
+- Iteratively improves across 5 dimensions:
+
+| Dimension | Improvement |
+|-----------|-------------|
+| Performance | Bundle splitting, lazy loading, CDN caching |
+| Security | CSP headers, rate limiting, SQL injection hardening |
+| Scalability | Auto-scaling groups, read replicas, connection pooling |
+| Cost | Reserved instances, spot instances, cache sizing |
+| DX | Error messages, logging, developer documentation |
+
+**Output:**
+```
+  • Iteration 1: +8.2% improvement (low-hanging fruit)
+  • Iteration 2: +9.5% improvement (structural changes)
+  • Iteration 3: +5.3% improvement (fine-tuning)
+  • Total Improvement: 23.0%
+✔ Phase 9/10: optimize completed
+```
+
+---
+
+### Phase 10/10: Deliver
+
+**Skill:** Delivery Engineer
+
+**What it does:**
+- Assembles all 156+ artifacts into a structured delivery package
+
+**Delivery package structure:**
+```
+delivery/
+├── README.md                          # Project documentation
+├── docs/
+│   ├── architecture.md                # System architecture
+│   ├── api-reference.md               # API documentation
+│   ├── deployment-guide.md            # Deployment instructions
+│   ├── monitoring.md                  # Monitoring setup
+│   └── runbook.md                     # Operations runbook
+├── src/
+│   ├── frontend/                      # React application
+│   ├── backend/                       # Node.js API
+│   ├── mobile/                        # React Native app
+│   └── ai/                            # ML matching engine
+├── tests/
+│   ├── unit/                          # 340 unit tests
+│   ├── integration/                   # 85 integration tests
+│   └── e2e/                           # 22 E2E tests
+├── infra/
+│   ├── terraform/                     # Infrastructure as code
+│   ├── docker/                        # Docker Compose
+│   └── kubernetes/                    # K8s manifests
+├── monitoring/
+│   ├── grafana/                       # Dashboards
+│   └── prometheus/                    # Alert rules
+├── scripts/
+│   ├── setup.sh
+│   ├── deploy.sh
+│   └── rollback.sh
+└── .github/
+    └── workflows/
+        └── ci.yml                     # CI pipeline
+```
+
+**Output:**
+```
+  • Package: 234 items
+  • Size: 12.4 MB
+
+╔════════════════════════════════════════════════════════════╗
+║              WORKFLOW COMPLETED SUCCESSFULLY               ║
+╚════════════════════════════════════════════════════════════╝
+
+Delivery package created at:
+  ./output/proj-a1b2c3d4/delivery/
+```
+
+---
+
+### Step 3: Inspect the Delivery
+
+```bash
+ls -la ./output/proj-a1b2c3d4/delivery/
+tree ./output/proj-a1b2c3d4/delivery/
+```
+
+---
+
+### Step 4: Resume if Interrupted
+
+If the process stops mid-way (Ctrl+C, crash), resume from the last completed phase:
+
+```bash
+ai-se resume --project ./output/proj-a1b2c3d4 --no-human-approval
+```
+
+State is persisted to disk after each phase — no data loss.
+
+---
+
 ## [10-Phase Workflow](docs/workflow-phases.md)
 
 | # | Phase | Skills | Key Outputs |
