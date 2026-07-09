@@ -240,20 +240,697 @@ management, escrow payments, and dispute resolution.
   • Roadmap Phases: 4
 ```
 
-**Example user story (user-stories.json):**
+**All 47 user stories organized by epic — full content (user-stories.json):**
+
 ```json
 {
-  "stories": [
+  "epics": [
     {
-      "id": "US-001",
-      "title": "Freelancer profile creation",
-      "as_a": "Freelance developer",
-      "i_want": "to create a detailed profile showcasing my skills and experience",
-      "so_that": "founders can discover and hire me for projects",
-      "acceptance_criteria": [
-        "Profile includes name, bio, skills, hourly rate, and portfolio",
-        "Skills are selected from a predefined taxonomy",
-        "Profile is visible in search results within 5 minutes of creation"
+      "epic": "Freelancer Onboarding & Profiles",
+      "stories": [
+        {
+          "id": "US-001",
+          "title": "Freelancer registration",
+          "as_a": "Freelance developer",
+          "i_want": "to sign up using my email or Google account",
+          "so_that": "I can create an account and start building my profile",
+          "acceptance_criteria": [
+            "Sign up with email/password or Google OAuth",
+            "Email verification required before profile is public",
+            "Password must be at least 8 characters with 1 number and 1 special character"
+          ]
+        },
+        {
+          "id": "US-002",
+          "title": "Freelancer profile creation",
+          "as_a": "Freelance developer",
+          "i_want": "to create a detailed profile showcasing my skills, experience, and portfolio",
+          "so_that": "founders can discover and evaluate me for their projects",
+          "acceptance_criteria": [
+            "Profile includes: profile photo, bio, skill tags, years of experience, hourly rate, availability",
+            "Skills selected from predefined taxonomy (languages, frameworks, cloud, etc.)",
+            "Portfolio items can be uploaded (URL, description, image)",
+            "Profile completion percentage shown — 100% required to appear in search",
+            "Profile is public and searchable within 5 minutes of creation"
+          ]
+        },
+        {
+          "id": "US-003",
+          "title": "Freelancer verification badges",
+          "as_a": "Freelance developer",
+          "i_want": "to earn verified badges for identity, skills, and work history",
+          "so_that": "I can stand out to founders and build trust",
+          "acceptance_criteria": [
+            "Identity verification via government ID upload",
+            "Skill verification via coding challenge or certification upload",
+            "Work history verification via founder reviews",
+            "Badges displayed prominently on profile card"
+          ]
+        },
+        {
+          "id": "US-004",
+          "title": "Freelancer availability toggling",
+          "as_a": "Freelance developer",
+          "i_want": "to toggle my availability status (available, busy, offline)",
+          "so_that": "founders only see me when I am actively looking for work",
+          "acceptance_criteria": [
+            "Three states: Available, Busy (on a project), Offline",
+            "Available freelancers appear in search results first",
+            "Busy freelancers show expected availability date"
+          ]
+        },
+        {
+          "id": "US-005",
+          "title": "Freelancer earnings dashboard",
+          "as_a": "Freelance developer",
+          "i_want": "to view my earnings, pending payments, and payout history",
+          "so_that": "I can track my income and manage my finances",
+          "acceptance_criteria": [
+            "Dashboard shows: total earned, pending balance, next payout date",
+            "Transaction history with filters (date range, status, project)",
+            "Payout methods: bank transfer, PayPal, Stripe",
+            "Monthly earning summary chart"
+          ]
+        }
+      ]
+    },
+    {
+      "epic": "Founder Onboarding & Project Posting",
+      "stories": [
+        {
+          "id": "US-006",
+          "title": "Founder registration",
+          "as_a": "Non-technical founder",
+          "i_want": "to sign up and create a company profile",
+          "so_that": "I can post projects and hire freelancers",
+          "acceptance_criteria": [
+            "Sign up with email or Google/LinkedIn OAuth",
+            "Company profile: name, website, industry, team size, funding stage",
+            "LinkedIn import for company details"
+          ]
+        },
+        {
+          "id": "US-007",
+          "title": "Post a new project",
+          "as_a": "Founder",
+          "i_want": "to create a detailed project listing with description, budget, timeline, and required skills",
+          "so_that": "qualified freelancers can apply to work on my project",
+          "acceptance_criteria": [
+            "Project form: title, description, scope, budget range, timeline, required skills",
+            "Budget options: fixed price or hourly with estimated hours",
+            "Milestone support: divide project into milestones with deliverables and payment amounts",
+            "Attachments: upload brief, wireframes, or existing code",
+            "Draft save before publishing"
+          ]
+        },
+        {
+          "id": "US-008",
+          "title": "Project listing review and approval",
+          "as_a": "Founder",
+          "i_want": "to review my project listing before it goes live",
+          "so_that": "I can ensure accuracy before freelancers see it",
+          "acceptance_criteria": [
+            "Preview page shows how the listing appears in search results",
+            "Auto-approval for verified founders, manual review for new accounts",
+            "Estimated time to go live shown (typically 1 hour)"
+          ]
+        },
+        {
+          "id": "US-009",
+          "title": "Founder dashboard",
+          "as_a": "Founder",
+          "i_want": "to see all my active and past projects in one place",
+          "so_that": "I can track progress and manage my hiring activity",
+          "acceptance_criteria": [
+            "Dashboard shows: active projects, pending applications, draft listings",
+            "Each project card shows: title, status, applications count, next milestone",
+            "Quick actions: view applications, message freelancer, release payment"
+          ]
+        }
+      ]
+    },
+    {
+      "epic": "Search & Discovery",
+      "stories": [
+        {
+          "id": "US-010",
+          "title": "Freelancer search",
+          "as_a": "Founder",
+          "i_want": "to search for freelancers by skill, rate, availability, and rating",
+          "so_that": "I can find the best match for my project",
+          "acceptance_criteria": [
+            "Full-text search across name, bio, skills, and portfolio",
+            "Filters: skill tags, hourly rate range, availability, rating minimum, location",
+            "Sort by: relevance, rating, price low-high, price high-low, most projects completed",
+            "Results show profile card with photo, name, skills, rate, rating, and badges",
+            "Pagination and debounced search (300ms delay)"
+          ]
+        },
+        {
+          "id": "US-011",
+          "title": "Project search",
+          "as_a": "Freelance developer",
+          "i_want": "to browse and search projects by skills, budget, and timeline",
+          "so_that": "I can find projects that match my expertise and availability",
+          "acceptance_criteria": [
+            "Search across project title, description, and required skills",
+            "Filters: budget range, timeline, project type (fixed/hourly), skills",
+            "Sort by: newest, budget high-low, closest deadline",
+            "Project card shows: title, budget, timeline, required skills, applicant count"
+          ]
+        },
+        {
+          "id": "US-012",
+          "title": "Recommended matches",
+          "as_a": "Freelance developer",
+          "i_want": "to receive recommended projects based on my skills and history",
+          "so_that": "I can find relevant opportunities without manual searching",
+          "acceptance_criteria": [
+            "Recommendations based on skill match score, past project categories, and rating",
+            "Top 5 recommendations shown on dashboard",
+            "AI-powered matching considers skill adjacency (React dev shown Next.js projects)"
+          ]
+        }
+      ]
+    },
+    {
+      "epic": "Applications & Hiring",
+      "stories": [
+        {
+          "id": "US-013",
+          "title": "Apply to a project",
+          "as_a": "Freelance developer",
+          "i_want": "to submit a proposal with my rate, availability, and a cover letter",
+          "so_that": "the founder can evaluate and hire me",
+          "acceptance_criteria": [
+            "Proposal includes: proposed rate, estimated timeline, cover letter, relevant portfolio items",
+            "Founder receives email notification of new application",
+            "Freelancer can withdraw application before it is reviewed"
+          ]
+        },
+        {
+          "id": "US-014",
+          "title": "Review and shortlist applicants",
+          "as_a": "Founder",
+          "i_want": "to view all applications, compare freelancers, and shortlist top candidates",
+          "so_that": "I can make an informed hiring decision",
+          "acceptance_criteria": [
+            "Applications list shows: freelancer name, rate, proposal summary, rating, completed projects",
+            "Side-by-side comparison of up to 3 freelancers",
+            "Shortlist and reject actions with optional feedback"
+          ]
+        },
+        {
+          "id": "US-015",
+          "title": "Hire a freelancer",
+          "as_a": "Founder",
+          "i_want": "to send a hiring offer with agreed terms",
+          "so_that": "we can formalize the engagement and begin work",
+          "acceptance_criteria": [
+            "Offer form: agreed rate, start date, milestone plan",
+            "Freelancer can accept, counter, or decline the offer",
+            "Contract auto-generated upon acceptance",
+            "Escrow account created with initial milestone funds"
+          ]
+        },
+        {
+          "id": "US-016",
+          "title": "Freelancer acceptance of offer",
+          "as_a": "Freelance developer",
+          "i_want": "to review and accept or negotiate a hiring offer",
+          "so_that": "I can start working on terms that work for me",
+          "acceptance_criteria": [
+            "Offer summary shows: rate, milestones, deliverables, timeline",
+            "Accept: contract is signed and project moves to 'In Progress'",
+            "Counter: freelancer can propose changes to rate or timeline",
+            "Decline: freelancer is removed from applicant list",
+            "24-hour expiration on offers"
+          ]
+        }
+      ]
+    },
+    {
+      "epic": "Project Workspace & Collaboration",
+      "stories": [
+        {
+          "id": "US-017",
+          "title": "Project workspace",
+          "as_a": "Freelance developer",
+          "i_want": "to have a shared workspace with task tracking, file sharing, and messaging",
+          "so_that": "I can collaborate efficiently with the founder",
+          "acceptance_criteria": [
+            "Task board: columns for To Do, In Progress, Review, Done",
+            "File sharing: upload and organize project files with version history",
+            "Messaging: real-time chat with message history and file attachments",
+            "Activity feed: shows all recent changes, messages, and milestone completions"
+          ]
+        },
+        {
+          "id": "US-018",
+          "title": "Milestone tracking",
+          "as_a": "Founder",
+          "i_want": "to track milestone progress and approve completed deliverables",
+          "so_that": "I can release payments only when work meets my expectations",
+          "acceptance_criteria": [
+            "Milestone list with status: Pending, In Progress, Submitted for Review, Approved, Paid",
+            "Founder can request changes on submitted deliverables",
+            "Funds released from escrow upon milestone approval",
+            "Automatic reminder if milestone is past due"
+          ]
+        },
+        {
+          "id": "US-019",
+          "title": "In-platform messaging",
+          "as_a": "User (both roles)",
+          "i_want": "to send direct messages and receive notifications",
+          "so_that": "I can communicate without sharing personal contact details",
+          "acceptance_criteria": [
+            "Real-time messaging powered by WebSockets",
+            "Message read receipts and typing indicators",
+            "Notifications: email and in-app for new messages, milestones, and payments",
+            "Notification preferences: frequency control and mute options"
+          ]
+        }
+      ]
+    },
+    {
+      "epic": "Payments & Escrow",
+      "stories": [
+        {
+          "id": "US-020",
+          "title": "Escrow payment deposit",
+          "as_a": "Founder",
+          "i_want": "to deposit project funds into an escrow account",
+          "so_that": "the freelancer knows payment is secured before starting work",
+          "acceptance_criteria": [
+            "Deposit via credit card, bank transfer, or Stripe",
+            "Funds held in escrow until milestones are approved",
+            "Transaction fee shown before confirmation",
+            "Receipt emailed after successful deposit"
+          ]
+        },
+        {
+          "id": "US-021",
+          "title": "Milestone payment release",
+          "as_a": "Founder",
+          "i_want": "to approve and release payment for completed milestones",
+          "so_that": "the freelancer gets paid for completed work",
+          "acceptance_criteria": [
+            "Release flow: review deliverable → approve → funds transferred from escrow",
+            "Funds arrive in freelancer's account within 2-5 business days",
+            "Platform fee deducted from payment (configurable percentage)"
+          ]
+        },
+        {
+          "id": "US-022",
+          "title": "Dispute resolution",
+          "as_a": "User (both roles)",
+          "i_want": "to open a dispute if there is a disagreement about deliverables or payment",
+          "so_that": "the platform can mediate and reach a fair resolution",
+          "acceptance_criteria": [
+            "Dispute can be opened within 14 days of milestone submission",
+            "Both parties can submit evidence (messages, files, screenshots)",
+            "Mediation timeline: 7 days for resolution",
+            "Resolution options: full payment, partial payment, refund, or milestone revision"
+          ]
+        }
+      ]
+    },
+    {
+      "epic": "Reviews & Reputation",
+      "stories": [
+        {
+          "id": "US-023",
+          "title": "Rate a freelancer",
+          "as_a": "Founder",
+          "i_want": "to leave a rating and written review after project completion",
+          "so_that": "other founders can benefit from my experience",
+          "acceptance_criteria": [
+            "Star rating 1-5 with required written review",
+            "Categories: quality, communication, timeliness, budget adherence",
+            "Review visible on freelancer profile after both parties review or 14 days pass"
+          ]
+        },
+        {
+          "id": "US-024",
+          "title": "Rate a founder",
+          "as_a": "Freelance developer",
+          "i_want": "to rate my experience working with a founder",
+          "so_that": "other freelancers can assess founder reliability",
+          "acceptance_criteria": [
+            "Star rating 1-5 with categories: communication, payment promptness, clarity of requirements",
+            "Mutual review system: review hidden until both parties submit",
+            "Founder rating displayed on project listings"
+          ]
+        },
+        {
+          "id": "US-025",
+          "title": "Top-rated freelancer badge",
+          "as_a": "Freelance developer",
+          "i_want": "to earn a Top Rated badge after completing 10+ projects with 4.5+ average rating",
+          "so_that": "I can attract higher-quality projects and command premium rates",
+          "acceptance_criteria": [
+            "Automatic badge awarded on meeting thresholds",
+            "Top Rated freelancers shown first in search",
+            "Badge visible on profile card and in search results",
+            "Quarterly reassessment — badge can be lost if rating drops below 4.0"
+          ]
+        }
+      ]
+    },
+    {
+      "epic": "Admin & Moderation",
+      "stories": [
+        {
+          "id": "US-026",
+          "title": "Flag inappropriate content",
+          "as_a": "User (both roles)",
+          "i_want": "to flag projects, profiles, or messages that violate platform rules",
+          "so_that": "the moderation team can review and take action",
+          "acceptance_criteria": [
+            "Flag button on all public content (projects, profiles, messages)",
+            "Flag categories: spam, inappropriate, fraud, intellectual property violation",
+            "Moderation dashboard for admin review"
+          ]
+        },
+        {
+          "id": "US-027",
+          "title": "Admin user management",
+          "as_a": "Platform admin",
+          "i_want": "to view, suspend, or ban users and review dispute cases",
+          "so_that": "I can maintain platform integrity and enforce terms of service",
+          "acceptance_criteria": [
+            "User list with search, filters (role, status, verification level)",
+            "User detail view: profile, project history, payment history, flags, reviews",
+            "Suspend: user cannot login, projects paused, pending payments held",
+            "Ban: permanent removal with 30-day fund withdrawal window",
+            "Audit log of all admin actions"
+          ]
+        }
+      ]
+    },
+    {
+      "epic": "Notifications & Communications",
+      "stories": [
+        {
+          "id": "US-028",
+          "title": "Email notifications",
+          "as_a": "User (both roles)",
+          "i_want": "to receive email notifications for key events",
+          "so_that": "I stay informed without constantly checking the platform",
+          "acceptance_criteria": [
+            "Events: new application, offer received, message, milestone submission, payment released",
+            "Customizable notification preferences per event type",
+            "Daily digest option for non-urgent notifications",
+            "Unsubscribe link in every email"
+          ]
+        },
+        {
+          "id": "US-029",
+          "title": "In-app notification center",
+          "as_a": "User (both roles)",
+          "i_want": "to see all my notifications in one place within the app",
+          "so_that": "I can review past notifications and never miss important updates",
+          "acceptance_criteria": [
+            "Notification bell icon with unread count badge",
+            "Notification list with read/unread state, timestamp, and category",
+            "Clicking notification navigates to relevant context",
+            "Mark all as read and individual dismiss"
+          ]
+        }
+      ]
+    },
+    {
+      "epic": "Mobile & Cross-Platform",
+      "stories": [
+        {
+          "id": "US-030",
+          "title": "Responsive web design",
+          "as_a": "User (both roles)",
+          "i_want": "to use the platform on my mobile browser with full functionality",
+          "so_that": "I can manage projects on the go",
+          "acceptance_criteria": [
+            "All core flows work on mobile browsers (profile, search, messaging, payments)",
+            "Touch-friendly UI with appropriate tap targets (minimum 44px)",
+            "Mobile navigation with bottom tab bar",
+            "Offline support for reading cached messages and project data"
+          ]
+        },
+        {
+          "id": "US-031",
+          "title": "Push notifications",
+          "as_a": "User (both roles)",
+          "i_want": "to receive push notifications on my mobile device",
+          "so_that": "I get alerted to important events even when the browser tab is closed",
+          "acceptance_criteria": [
+            "Web push notifications via Service Worker",
+            "Permission request on first relevant action",
+            "Notification preferences synced across devices"
+          ]
+        }
+      ]
+    },
+    {
+      "epic": "Security & Compliance",
+      "stories": [
+        {
+          "id": "US-032",
+          "title": "Two-factor authentication",
+          "as_a": "User (both roles)",
+          "i_want": "to enable two-factor authentication on my account",
+          "so_that": "my account is protected even if my password is compromised",
+          "acceptance_criteria": [
+            "TOTP-based 2FA via authenticator app (Google Authenticator, Authy)",
+            "Backup codes provided during setup",
+            "2FA can be disabled only after verifying current password and 2FA code"
+          ]
+        },
+        {
+          "id": "US-033",
+          "title": "Data export",
+          "as_a": "User (both roles)",
+          "i_want": "to export all my data (profile, messages, transaction history)",
+          "so_that": "I have a copy of my information as required by GDPR",
+          "acceptance_criteria": [
+            "Export request generates a downloadable ZIP within 24 hours",
+            "Data includes: profile, messages, transactions, reviews, project history",
+            "Export available in JSON and CSV formats",
+            "Request and download tracked in audit log"
+          ]
+        },
+        {
+          "id": "US-034",
+          "title": "Account deletion",
+          "as_a": "User (both roles)",
+          "i_want": "to permanently delete my account and all associated data",
+          "so_that": "I can remove my presence from the platform",
+          "acceptance_criteria": [
+            "Account deletion request with 7-day grace period for reversal",
+            "Pending payments and projects must be resolved before deletion",
+            "Data permanently removed within 30 days",
+            "Confirmation email sent before final deletion"
+          ]
+        }
+      ]
+    },
+    {
+      "epic": "AI-Powered Features",
+      "stories": [
+        {
+          "id": "US-035",
+          "title": "AI skill matching",
+          "as_a": "Founder",
+          "i_want": "to see AI-recommended freelancers ranked by compatibility score",
+          "so_that": "I can quickly find the best candidates without manually reviewing every application",
+          "acceptance_criteria": [
+            "Compatibility score calculated from: skill match, past project similarity, rating, response time",
+            "Top 3 AI recommendations shown at the top of the applicant list",
+            "Score breakdown displayed (skill match: 92%, experience: 85%, etc.)",
+            "Recommendations improve over time based on hiring outcomes"
+          ]
+        },
+        {
+          "id": "US-036",
+          "title": "AI project scope suggestion",
+          "as_a": "Founder",
+          "i_want": "AI to suggest milestone breakdowns and timelines based on my project description",
+          "so_that": "I can create realistic project scopes even if I am not technical",
+          "acceptance_criteria": [
+            "AI analyzes project description and suggests 3-5 milestones",
+            "Each milestone includes: estimated effort, suggested timeline, deliverables",
+            "Founder can accept, edit, or regenerate suggestions",
+            "Suggestions based on similar completed projects on the platform"
+          ]
+        },
+        {
+          "id": "US-037",
+          "title": "AI fraud detection",
+          "as_a": "Platform admin",
+          "i_want": "the system to automatically detect suspicious activity patterns",
+          "so_that": "fraudulent accounts and scams are flagged before they harm users",
+          "acceptance_criteria": [
+            "Detection rules: rapid-fire account creation, copy-paste profiles, payment anomalies",
+            "Flagged accounts sent to manual review queue",
+            "False positive rate below 1%"
+          ]
+        }
+      ]
+    },
+    {
+      "epic": "Reports & Analytics",
+      "stories": [
+        {
+          "id": "US-038",
+          "title": "Platform analytics dashboard",
+          "as_a": "Platform admin",
+          "i_want": "to view platform-wide metrics (users, projects, revenue, disputes)",
+          "so_that": "I can monitor growth and identify issues proactively",
+          "acceptance_criteria": [
+            "Dashboard widgets: new users (daily/weekly/monthly), active projects, total revenue, dispute rate",
+            "Time-series charts with date range picker",
+            "Export to CSV/PDF",
+            "Automated weekly email report"
+          ]
+        },
+        {
+          "id": "US-039",
+          "title": "Freelancer earnings report",
+          "as_a": "Freelance developer",
+          "i_want": "to generate a PDF earnings report for tax purposes",
+          "so_that": "I can easily file my taxes",
+          "acceptance_criteria": [
+            "Report includes: total earnings by year, per-project breakdown, platform fees",
+            "Available in PDF format",
+            "Covers all historical data since account creation",
+            "Downloadable from earnings dashboard"
+          ]
+        }
+      ]
+    },
+    {
+      "epic": "Platform Settings & Customization",
+      "stories": [
+        {
+          "id": "US-040",
+          "title": "Custom notification rules",
+          "as_a": "User (both roles)",
+          "i_want": "to create custom notification rules (e.g., only notify me for projects over $5,000)",
+          "so_that": "I only receive alerts that matter to me",
+          "acceptance_criteria": [
+            "Rule conditions: budget threshold, skill match score, project type, founder rating",
+            "Actions: email, push, or silent",
+            "Multiple active rules allowed",
+            "Rule testing: preview how many notifications would have been sent"
+          ]
+        },
+        {
+          "id": "US-041",
+          "title": "Language and currency preferences",
+          "as_a": "User (both roles)",
+          "i_want": "to set my preferred language and currency in account settings",
+          "so_that": "the platform displays content in my preferred format",
+          "acceptance_criteria": [
+            "Supported languages: English, Spanish, French, German, Portuguese",
+            "Supported currencies: USD, EUR, GBP, BRL, INR",
+            "All prices and earnings displayed in preferred currency",
+            "Content translated using i18n framework"
+          ]
+        }
+      ]
+    },
+    {
+      "epic": "Onboarding & Tutorials",
+      "stories": [
+        {
+          "id": "US-042",
+          "title": "Freelancer onboarding wizard",
+          "as_a": "New freelance developer",
+          "i_want": "to complete a step-by-step onboarding wizard",
+          "so_that": "I can set up my profile, verify my identity, and apply to my first project quickly",
+          "acceptance_criteria": [
+            "Step 1: Basic info (name, photo, location)",
+            "Step 2: Skills and experience",
+            "Step 3: Portfolio upload",
+            "Step 4: Identity verification",
+            "Step 5: Browse recommended projects",
+            "Progress saved across sessions"
+          ]
+        },
+        {
+          "id": "US-043",
+          "title": "Founder onboarding wizard",
+          "as_a": "New founder",
+          "i_want": "to complete a guided setup for posting my first project",
+          "so_that": "I can get started even if I have never hired freelancers before",
+          "acceptance_criteria": [
+            "Step 1: Company profile",
+            "Step 2: Project description with AI-assisted scope suggestions",
+            "Step 3: Budget and milestone setup",
+            "Step 4: Review and publish",
+            "Tooltips and help links at every step"
+          ]
+        }
+      ]
+    },
+    {
+      "epic": "API & Integrations",
+      "stories": [
+        {
+          "id": "US-044",
+          "title": "Public API for project listings",
+          "as_a": "External developer",
+          "i_want": "to access project listings via a REST API",
+          "so_that": "I can build third-party tools and integrations",
+          "acceptance_criteria": [
+            "RESTful API with API key authentication",
+            "Endpoints: list projects, get project details, search freelancers",
+            "Rate limiting: 1000 requests/hour per key",
+            "API documentation with OpenAPI/Swagger spec"
+          ]
+        },
+        {
+          "id": "US-045",
+          "title": "Slack integration",
+          "as_a": "Founder",
+          "i_want": "to receive project notifications in a Slack channel",
+          "so_that": "my team stays updated without checking the platform",
+          "acceptance_criteria": [
+            "OAuth-based Slack integration",
+            "Configurable event types: new application, message, milestone update, payment",
+            "Channel selection during setup"
+          ]
+        },
+        {
+          "id": "US-046",
+          "title": "Calendar sync",
+          "as_a": "Freelance developer",
+          "i_want": "to sync project milestones and deadlines to my Google Calendar",
+          "so_that": "I never miss a deadline",
+          "acceptance_criteria": [
+            "Google Calendar OAuth integration",
+            "Milestones and deadlines synced as calendar events",
+            "Two-way sync: changes in either platform reflected in both",
+            "Configurable sync frequency"
+          ]
+        }
+      ]
+    },
+    {
+      "epic": "Gamification & Engagement",
+      "stories": [
+        {
+          "id": "US-047",
+          "title": "Freelancer achievement badges",
+          "as_a": "Freelance developer",
+          "i_want": "to earn achievement badges for completing milestones like first project, 10 projects, $10k earned",
+          "so_that": "I feel recognized and motivated to stay active on the platform",
+          "acceptance_criteria": [
+            "Achievement badges: First Project, Rising Star (5 projects), Top Rated (10 projects), Thousand Club ($10k earned)",
+            "Badges displayed on profile",
+            "Notification when new badge is earned",
+            "Rarity indicator shown (e.g., 5% of freelancers have this badge)"
+          ]
+        }
       ]
     }
   ]
