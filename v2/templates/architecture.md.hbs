@@ -1,0 +1,204 @@
+# Architecture Documentation for {{projectName}}
+
+> **Version:** 1.0.0
+> **Last Updated:** {{date}}
+> **Author:** AI Skill Engineer - Solution Architect
+
+---
+
+## 1. System Context (C4 Level 1)
+
+```mermaid
+{{contextDiagram}}
+```
+
+### External Systems
+{{#each externalSystems}}
+- **{{name}}**: {{description}} - Integration: {{integrationType}}
+{{/each}}
+
+---
+
+## 2. Container Diagram (C4 Level 2)
+
+```mermaid
+{{containerDiagram}}
+```
+
+### Containers
+{{#each containers}}
+- **{{name}}** ({{technology}}): {{description}}
+  - Responsibilities: {{#each responsibilities}}{{.}}{{#unless @last}}, {{/unless}}{{/each}}
+  - Ports: {{#each ports}}{{.}}{{#unless @last}}, {{/unless}}{{/each}}
+{{/each}}
+
+---
+
+## 3. Component Diagram (C4 Level 3)
+
+```mermaid
+{{componentDiagram}}
+```
+
+### Key Components
+{{#each components}}
+#### {{name}}
+- **Container**: {{container}}
+- **Technology**: {{technology}}
+- **Responsibilities**: {{#each responsibilities}}{{.}}{{#unless @last}}, {{/unless}}{{/each}}
+- **Interfaces**: {{#each interfaces}}{{.}}{{#unless @last}}, {{/unless}}{{/each}}
+{{/each}}
+
+---
+
+## 4. Deployment Diagram (C4 Level 4)
+
+```mermaid
+{{deploymentDiagram}}
+```
+
+### Infrastructure
+{{#each infrastructure}}
+- **{{name}}**: {{description}} - Region: {{region}} - Specs: {{specs}}
+{{/each}}
+
+---
+
+## 5. Data Flow Diagrams
+
+### Request Flow
+```mermaid
+{{requestFlowDiagram}}
+```
+
+### Event Flow
+```mermaid
+{{eventFlowDiagram}}
+```
+
+---
+
+## 6. Sequence Diagrams
+
+{{#each sequences}}
+### {{name}}
+```mermaid
+{{diagram}}
+```
+{{/each}}
+
+---
+
+## 7. Architecture Decision Records
+
+{{#each adrs}}
+### ADR-{{id}}: {{title}}
+**Status:** {{status}} | **Date:** {{date}}
+
+**Context:** {{context}}
+
+**Decision:** {{decision}}
+
+**Consequences:** {{consequences}}
+
+**Alternatives:**
+{{#each alternatives}}
+- {{.}}
+{{/each}}
+{{/each}}
+
+---
+
+## 8. Security Architecture
+
+### Trust Boundaries
+{{#each trustBoundaries}}
+- **{{name}}**: {{description}}
+{{/each}}
+
+### Data Protection
+- **Encryption at Rest:** {{encryptionAtRest}}
+- **Encryption in Transit:** {{encryptionInTransit}}
+- **Key Management:** {{keyManagement}}
+
+### Access Control
+- **Authentication:** {{authMethod}}
+- **Authorization:** {{authzModel}}
+- **Audit Logging:** {{auditLogging}}
+
+---
+
+## 9. Observability Architecture
+
+### Metrics
+{{#each metrics}}
+- **{{name}}**: {{description}} - Type: {{type}} - Target: {{target}}
+{{/each}}
+
+### Logging
+- **Format:** {{logFormat}}
+- **Aggregation:** {{logAggregation}}
+- **Retention:** {{logRetention}}
+
+### Tracing
+- **System:** {{tracingSystem}}
+- **Sampling Rate:** {{samplingRate}}
+- **Propagation:** {{propagation}}
+
+### Alerting
+{{#each alerts}}
+- **{{name}}**: {{condition}} - Severity: {{severity}} - Runbook: {{runbook}}
+{{/each}}
+
+---
+
+## 10. Disaster Recovery
+
+### RPO/RTO
+- **RPO:** {{rpo}}
+- **RTO:** {{rto}}
+
+### Backup Strategy
+{{#each backups}}
+- **{{name}}**: {{frequency}} - Retention: {{retention}} - Location: {{location}}
+{{/each}}
+
+### Failover Procedure
+{{failoverProcedure}}
+
+---
+
+## 11. Capacity Planning
+
+### Current Capacity
+{{#each currentCapacity}}
+- **{{resource}}**: {{current}} / {{limit}} ({{utilization}}%)
+{{/each}}
+
+### Scaling Triggers
+{{#each scalingTriggers}}
+- **{{metric}}**: {{threshold}} → {{action}}
+{{/each}}
+
+### Growth Projections
+{{#each growthProjections}}
+- **{{period}}**: {{projection}}
+{{/each}}
+
+---
+
+## 12. Technology Stack
+
+| Layer | Technology | Version | Justification |
+|-------|------------|---------|---------------|
+{{#each techStack}}
+| {{layer}} | {{technology}} | {{version}} | {{justification}} |
+{{/each}}
+
+---
+
+## 13. Glossary
+
+{{#each glossary}}
+- **{{term}}**: {{definition}}
+{{/each}}

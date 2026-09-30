@@ -1,0 +1,35 @@
+# User Stories for {{projectName}}
+
+> **Version:** 1.0.0
+> **Generated:** {{date}}
+> **Total Stories:** {{totalStories}}
+
+---
+
+{{#each stories}}
+## {{id}}: {{title}}
+
+**As a** {{asA}}
+**I want to** {{iWantTo}}
+**So that** {{soThat}}
+
+**Priority:** {{priority}} | **Story Points:** {{storyPoints}} | **Sprint:** {{sprint}}
+
+### Acceptance Criteria
+{{#each acceptanceCriteria}}
+- **Given** {{given}}
+  **When** {{when}}
+  **Then** {{then}}
+{{/each}}
+
+### Dependencies
+{{#each dependsOn}}
+- {{.}}
+{{/each}}
+
+### Notes
+{{notes}}
+
+---
+
+{{/each}}

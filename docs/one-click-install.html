@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Skill Engineer v2 - One-Click Install</title>
+<style>
+  body { font-family: system-ui, -apple-system, sans-serif; max-width: 760px; margin: 0 auto; padding: 24px; background: #0d1117; color: #e6edf3; }
+  h1 { font-size: 1.6rem; } h1 span { color: #58a6ff; }
+  p.sub { color: #8b949e; }
+  .tabs { display: flex; gap: 8px; margin: 20px 0; }
+  .tabs button { flex: 1; padding: 12px; border: 1px solid #30363d; background: #161b22; color: #e6edf3; border-radius: 8px; cursor: pointer; font-size: 1rem; }
+  .tabs button.active { background: #1f6feb; border-color: #1f6feb; }
+  .panel { display: none; border: 1px solid #30363d; border-radius: 8px; padding: 16px; background: #161b22; }
+  .panel.active { display: block; }
+  .panel ol { padding-left: 20px; color: #c9d1d9; }
+  .panel code { background: #0d1117; padding: 2px 6px; border-radius: 4px; font-size: .9em; }
+  .copybtn { display: block; width: 100%; margin-top: 12px; padding: 14px; font-size: 1.05rem; background: #238636; color: #fff; border: 0; border-radius: 8px; cursor: pointer; }
+  .copybtn.done { background: #1f6feb; }
+  .foot { margin-top: 24px; color: #8b949e; font-size: .9rem; }
+  .foot a { color: #58a6ff; }
+  pre.hidden { display: none; }
+</style>
+</head>
+<body>
+<h1>AI Skill Engineer <span>v2</span></h1>
+<p class="sub">Token-optimized autonomous engineering framework. One idea in, one production-ready app out, at 50-75% fewer tokens. Pick your platform, copy, paste, done.</p>
+
+<div class="tabs">
+  <button class="active" data-tab="muse">Meta Muse</button>
+  <button data-tab="chatgpt">ChatGPT</button>
+  <button data-tab="grok">Grok</button>
+</div>
+
+<div class="panel active" id="panel-muse">
+  <ol>
+    <li>Hit <b>Copy install pack</b> below.</li>
+    <li>Paste it as the first message in a new Muse chat.</li>
+    <li>Give it a project idea. That is the whole install.</li>
+  </ol>
+  <button class="copybtn" data-src="muse">Copy install pack</button>
+</div>
+
+<div class="panel" id="panel-chatgpt">
+  <ol>
+    <li>In ChatGPT go to <b>Explore GPTs</b> then <b>Create</b>.</li>
+    <li>Hit <b>Copy GPT pack</b>, paste each field (Name, Description, Instructions, starters) into the builder.</li>
+    <li>Optionally upload <code>v2/skills/INDEX.md</code> under Knowledge. Save.</li>
+  </ol>
+  <button class="copybtn" data-src="chatgpt">Copy GPT pack</button>
+</div>
+
+<div class="panel" id="panel-grok">
+  <ol>
+    <li>Open Grok settings, find <b>custom instructions</b>.</li>
+    <li>Hit <b>Copy install pack</b> and paste it in.</li>
+    <li>Save, then give it a project idea.</li>
+  </ol>
+  <button class="copybtn" data-src="grok">Copy install pack</button>
+</div>
+
+<p class="foot">Full engine (TypeScript core, 24 skill files, templates, token budget): <a href="https://github.com/forgephantom/Ai-skill-engineer">github.com/forgephantom/Ai-skill-engineer</a> - see the <code>v2/</code> directory. MIT license.</p>
+
+<pre class="hidden" id="src-muse"></pre>
+<pre class="hidden" id="src-chatgpt"></pre>
+<pre class="hidden" id="src-grok"></pre>
+
+<script>
+const FILES = {
+  muse: 'one-click-packs/muse.md',
+  chatgpt: 'one-click-packs/chatgpt-gpt-pack.md',
+  grok: 'one-click-packs/grok-pack.md'
+};
+const cache = {};
+async function load(key) {
+  if (!cache[key]) {
+    const r = await fetch(FILES[key]);
+    cache[key] = await r.text();
+  }
+  return cache[key];
+}
+document.querySelectorAll('.tabs button').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.tabs button').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    document.getElementById('panel-' + b.dataset.tab).classList.add('active');
+  });
+});
+document.querySelectorAll('.copybtn').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    try {
+      const text = await load(btn.dataset.src);
+      await navigator.clipboard.writeText(text);
+      btn.textContent = 'Copied - now paste it into ' + btn.dataset.src.charAt(0).toUpperCase() + btn.dataset.src.slice(1);
+      btn.classList.add('done');
+      setTimeout(() => { btn.classList.remove('done'); btn.textContent = 'Copy install pack'; }, 3000);
+    } catch (e) {
+      btn.textContent = 'Copy failed - open the .md file in agents/one-click/ manually';
+    }
+  });
+});
+</script>
+</body>
+</html>
